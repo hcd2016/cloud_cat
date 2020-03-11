@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 标题背景颜色 -->
+    <!--<color name="colorPrimary">#ff5145</color>-->
+    <color name="colorPrimary">#4d88ff</color>
+    <!-- 标题字体颜色 -->
+    <!--<color name="colorPrimaryDark">#ffffff</color>-->
+    <!-- 标题字体颜色 -->
+    <color name="colorPrimaryDark">#4d88ff</color>
+    <!-- 通知栏背景颜色 -->
+    <!--<color name="colorPrimaryDark">#ff5145</color>-->
+    <color name="colorAccent">#4d88ff</color>
+
+    <!--<color name="colorPrimary">#E02128</color>-->
+    <!--<color name="colorPrimaryDark">#E02128</color>-->
+    <!--&lt;!&ndash;光标,radiobutton等主题颜色&ndash;&gt;-->
+    <!--<color name="colorAccent">#000000</color>-->
+
+    <!--分割线颜色-->
+    <!--    <color name="line_gray">#d5d7db</color>-->
+    <color name="line_gray">#33606060</color>
+    <!--统一灰色背景色-->
+    <color name="gray_bg">#f5f5fa</color>
+
+    <!-- 白色 -->
+    <color name="white">#ffffff</color>
+
+    <!--黑-->
+    <color name="black">#000000</color>
+    <color name="black_ff">#ff000000</color>
+    <color name="black_3">#333333</color>
+    <color name="black_6">#666666</color>
+    <color name="black_9">#999999</color>
+    <color name="black_303030">#ff303030</color>
+    <color name="black_66_30">#66303030</color>
+    <color name="black_606060">#ff606060</color>
+    <color name="black_80606060">#80606060</color>
+
+
+    //半透明
+    <color name="half_transparent">#b0000000</color>
+    <color name="transparent">#00000000</color>
+    <color name="transparent_263030">#26303030</color>
+
+    //进度条
+    <color name="progress_normal">#26e02128</color>
+    <color name="process_gray_noamal">#f0f0f0</color>
+
+    <color name="blue">#4d88ff</color>
+    <color name="blue_8ff">#2878FF</color>
+    <color name="blue_6ff">#8BB6FF</color>
+    <color name="blue_3fd">#3B83FD</color>
+    <color name="blue_3B86ff">#3B86FF</color>
+
+    <color name="white_c62">#F45C62</color>
+    <color name="red_b7b">#ffff7b7b</color>
+    <color name="red_b36">#fff14b36</color>
+
+
+    <color name="green_18b">#11C18B</color>
+
+    <color name="gray_3360">#33606060</color>
+    <color name="gray_9e">#9E9E9E</color>
+    <color name="gray_6ff">#F1F6FF</color>
+    <color name="gray_be">#BEBEBE</color>
+    <color name="gray_c2">#C2C2C2</color>
+    <color name="gray_60">#606060</color>
+    <color name="gray_777">#777777</color>
+    <color name="gray_f5">#f5f5f5</color>
+    <color name="gray_70">#33707070</color>
+    <color name="gray_4ff">#ffeff4ff</color>
+
+
+    <color name="orange_9900">#ffff9900</color>
+    <color name="orange_f2f">#fffd9f2f</color>
+
+
+
+</resources>

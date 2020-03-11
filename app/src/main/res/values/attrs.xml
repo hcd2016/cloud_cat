@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="BaseTitleView">
+        <attr name="title" format="string" />
+        <attr name="back_icon" format="reference" />
+        <attr name="left_icon" format="reference" />
+        <attr name="right_icon" format="reference" />
+        <attr name="right_text" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="MyRadioButton">
+        <attr name="rbDrawableSize" format="dimension"/>
+        <attr name="rbDrawableTop" format="reference"/>
+        <attr name="rbDrawableLeft" format="reference"/>
+        <attr name="rbDrawableRight" format="reference"/>
+        <attr name="rbDrawableBottom" format="reference"/>
+    </declare-styleable>
+
+    <declare-styleable name="OverlayImageView">
+        <attr name="offsetMode">
+            <enum name="left" value="0" />
+            <enum name="top" value="1" />
+            <enum name="right" value="2" />
+            <enum name="bottom" value="3" />
+        </attr>
+        <attr name="bgLayerImage" format="reference" />
+        <attr name="maskImage" format="reference" />
+        <attr name="offset" format="integer" />
+    </declare-styleable>
+
+    <declare-styleable name="Theme">
+        <attr name="customImageViewStyle" format="reference" />
+    </declare-styleable>
+
+    <!-- 自定义圆角ImageView -->
+    <declare-styleable name="CustomImageView">
+        <attr name="circle" format="boolean" />
+        <attr name="radius" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="MyCountDownTimer">
+        <attr name="newLayout" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="IndicatorView">
+        <attr name="indicator_count" format="integer|reference"/>
+        <attr name="indicator_s_resid" format="reference"/>
+        <attr name="indicator_n_resid" format="reference"/>
+        <attr name="indicator_width" format="dimension|reference"/>
+        <attr name="indicator_height" format="dimension|reference"/>
+        <attr name="indicator_margin_left" format="dimension|reference"/>
+    </declare-styleable>
+</resources>
