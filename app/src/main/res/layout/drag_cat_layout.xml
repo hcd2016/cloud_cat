@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.vpfinace.cloud_cat.weight.DragView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/dragView"
+    android:layout_width="78dp"
+    android:layout_height="78dp">
+
+    <ImageView
+        android:id="@+id/iv_img"
+        android:layout_width="52dp"
+        android:layout_height="52dp"
+        android:layout_centerInParent="true"
+        android:src="@drawable/homepage_popup_cat" />
+
+    <TextView
+        android:id="@+id/tv_counts"
+        android:layout_width="17dp"
+        android:layout_height="16dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/shape_red_554_c6"
+        android:gravity="center"
+        android:text="38"
+        android:textColor="@color/white"
+        android:textSize="12sp" />
+</com.vpfinace.cloud_cat.weight.DragView>

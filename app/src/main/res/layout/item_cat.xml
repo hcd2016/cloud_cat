@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="78dp"
+    android:clipChildren = "false"
+    android:id="@+id/rl_item_container"
+    android:background="@drawable/shape_white_c10"
+    android:orientation="vertical">
+
+        <com.vpfinace.cloud_cat.weight.DragView
+            android:visibility="invisible"
+            android:layout_centerInParent="true"
+            android:id="@+id/item_dragView"
+            android:layout_width="78dp"
+            android:layout_height="78dp">
+
+                <ImageView
+                    android:layout_width="52dp"
+                    android:layout_height="52dp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/homepage_popup_cat" />
+
+                <TextView
+                    android:layout_width="17dp"
+                    android:layout_height="16dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true"
+                    android:background="@drawable/shape_red_554_c6"
+                    android:gravity="center"
+                    android:text="38"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
+        </com.vpfinace.cloud_cat.weight.DragView>
+
+        <ImageView
+            android:visibility="gone"
+            android:layout_centerInParent="true"
+            android:id="@+id/iv_gif"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+</RelativeLayout>
