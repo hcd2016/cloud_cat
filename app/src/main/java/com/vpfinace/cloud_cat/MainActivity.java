@@ -10,10 +10,9 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.vpfinace.cloud_cat.base.PermissionBaseActivity;
-import com.vpfinace.cloud_cat.ui.HomeFragment;
-import com.vpfinace.cloud_cat.ui.MailFragment;
-import com.vpfinace.cloud_cat.ui.MyMillFragment;
-import com.vpfinace.cloud_cat.ui.SettingFragment;
+import com.vpfinace.cloud_cat.ui.home.HomeFragment;
+import com.vpfinace.cloud_cat.ui.cattery.CatteryFragment;
+import com.vpfinace.cloud_cat.ui.mine.MineFragment;
 import com.vpfinace.cloud_cat.utils.StatusTextUtils;
 import com.vpfinace.cloud_cat.weight.MyRadioButton;
 
@@ -30,20 +29,16 @@ public class MainActivity extends PermissionBaseActivity {
     MyRadioButton rb2;
     @BindView(R.id.rb_3)
     MyRadioButton rb3;
-    @BindView(R.id.rb_4)
-    MyRadioButton rb4;
     @BindView(R.id.group)
     RadioGroup group;
 
     public static final String TAG1 = "tag1";
     public static final String TAG2 = "tag2";
     public static final String TAG3 = "tag3";
-    public static final String TAG4 = "tag4";
 
     private HomeFragment homeFragment;
-    private MailFragment mailFragment;
-    private MyMillFragment myMillFragment;
-    private SettingFragment settingFragment;
+    private CatteryFragment catteryFragment;
+    private MineFragment mineFragment;
 
     @Override
     public int getLayoutId() {
@@ -58,6 +53,7 @@ public class MainActivity extends PermissionBaseActivity {
     @Override
     protected void initView() {
         super.initView();
+        StatusTextUtils.setLightStatusBar(this, true);
         group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -65,14 +61,11 @@ public class MainActivity extends PermissionBaseActivity {
                     case R.id.rb_1://首页
                         showFragmentByTag(TAG1);
                         break;
-                    case R.id.rb_2://蜂鸟商城
+                    case R.id.rb_2://猫舍
                         showFragmentByTag(TAG2);
                         break;
-                    case R.id.rb_3://我的矿机
+                    case R.id.rb_3://我的
                         showFragmentByTag(TAG3);
-                        break;
-                    case R.id.rb_4://设置
-                        showFragmentByTag(TAG4);
                         break;
                 }
             }
@@ -97,7 +90,6 @@ public class MainActivity extends PermissionBaseActivity {
         FragmentTransaction beginTransaction = getSupportFragmentManager().beginTransaction();
         switch (tag) {
             case TAG1:
-                StatusTextUtils.setLightStatusBar(this, false);
                 homeFragment = (HomeFragment) getSupportFragmentManager().findFragmentByTag(TAG1);
                 if (null == homeFragment) {//不存在,添加
                     homeFragment = HomeFragment.getInstance();
@@ -108,36 +100,23 @@ public class MainActivity extends PermissionBaseActivity {
                 beginTransaction.commitAllowingStateLoss();//提交事务
                 break;
             case TAG2:
-                StatusTextUtils.setLightStatusBar(this, true);
-                mailFragment = (MailFragment) getSupportFragmentManager().findFragmentByTag(TAG2);
-                if (null == mailFragment) {//不存在,添加
-                    mailFragment = MailFragment.getInstance();
-                    beginTransaction.add(R.id.fl_fragment_container, mailFragment, TAG2);
+                catteryFragment = (CatteryFragment) getSupportFragmentManager().findFragmentByTag(TAG2);
+                if (null == catteryFragment) {//不存在,添加
+                    catteryFragment = CatteryFragment.getInstance();
+                    beginTransaction.add(R.id.fl_fragment_container, catteryFragment, TAG2);
                 }
                 hideAll(beginTransaction);//隐藏所有fragment
-                beginTransaction.show(mailFragment);//显示当前fragment
+                beginTransaction.show(catteryFragment);//显示当前fragment
                 beginTransaction.commitAllowingStateLoss();//提交事务
                 break;
             case TAG3:
-                StatusTextUtils.setLightStatusBar(this, true);
-                myMillFragment = (MyMillFragment) getSupportFragmentManager().findFragmentByTag(TAG3);
-                if (null == myMillFragment) {//不存在,添加
-                    myMillFragment = MyMillFragment.getInstance();
-                    beginTransaction.add(R.id.fl_fragment_container, myMillFragment, TAG3);
+                mineFragment = (MineFragment) getSupportFragmentManager().findFragmentByTag(TAG3);
+                if (null == mineFragment) {//不存在,添加
+                    mineFragment = MineFragment.getInstance();
+                    beginTransaction.add(R.id.fl_fragment_container, mineFragment, TAG3);
                 }
                 hideAll(beginTransaction);//隐藏所有fragment
-                beginTransaction.show(myMillFragment);//显示当前fragment
-                beginTransaction.commitAllowingStateLoss();//提交事务
-                break;
-            case TAG4:
-                StatusTextUtils.setLightStatusBar(this, true);
-                settingFragment = (SettingFragment) getSupportFragmentManager().findFragmentByTag(TAG4);
-                if (null == settingFragment) {//不存在,添加
-                    settingFragment = SettingFragment.getInstance();
-                    beginTransaction.add(R.id.fl_fragment_container, settingFragment, TAG4);
-                }
-                hideAll(beginTransaction);//隐藏所有fragment
-                beginTransaction.show(settingFragment);//显示当前fragment
+                beginTransaction.show(mineFragment);//显示当前fragment
                 beginTransaction.commitAllowingStateLoss();//提交事务
                 break;
         }
@@ -157,10 +136,6 @@ public class MainActivity extends PermissionBaseActivity {
                 rb3.setChecked(true);
                 StatusTextUtils.setLightStatusBar(this, true);
                 break;
-            case TAG4:
-                rb4.setChecked(true);
-                StatusTextUtils.setLightStatusBar(this, true);
-                break;
         }
     }
 
@@ -169,14 +144,11 @@ public class MainActivity extends PermissionBaseActivity {
         if (null != homeFragment) {
             beginTransaction.hide(homeFragment);
         }
-        if (null != mailFragment) {
-            beginTransaction.hide(mailFragment);
+        if (null != catteryFragment) {
+            beginTransaction.hide(catteryFragment);
         }
-        if (null != myMillFragment) {
-            beginTransaction.hide(myMillFragment);
-        }
-        if (null != settingFragment) {
-            beginTransaction.hide(settingFragment);
+        if (null != mineFragment) {
+            beginTransaction.hide(mineFragment);
         }
     }
 

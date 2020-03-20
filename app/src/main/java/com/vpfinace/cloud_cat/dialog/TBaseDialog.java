@@ -77,3 +77,11 @@ public abstract class TBaseDialog extends Dialog {
     }
 
 }
+/**
+ * 调用示例:
+ */
+
+//public RecycleDialog(Context context) {
+//    super(context, R.layout.dialog_recycle);
+//    setWindowParam(ViewGroup.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT, Gravity.BOTTOM, 0);
+//}
