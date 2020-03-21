@@ -5,7 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.vpfinace.cloud_cat.R;
-import com.vpfinace.cloud_cat.ui.home.HomeFragment;
+import com.vpfinace.cloud_cat.ui.home.fragment.HomeFragment;
 
 import androidx.recyclerview.widget.RecyclerView;
 

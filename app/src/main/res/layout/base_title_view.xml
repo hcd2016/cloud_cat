@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:padding="15dp"
-            android:src="@drawable/arrow_left_black" />
+            android:src="@drawable/icon_return_black" />
 
         <ImageView
             android:id="@+id/iv_left_icon"
@@ -30,13 +30,14 @@
             android:visibility="gone" />
 
         <TextView
+            android:textStyle="bold"
             android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="标题"
             android:textColor="@color/black_303030"
-            android:textSize="16sp" />
+            android:textSize="18sp" />
 
         <ImageView
             android:id="@+id/iv_right_icon"

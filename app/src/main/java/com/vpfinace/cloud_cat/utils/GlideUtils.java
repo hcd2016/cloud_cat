@@ -6,6 +6,8 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.load.resource.gif.GifDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
@@ -63,6 +65,20 @@ public class GlideUtils {
                 return false;
             }
         }).into(imageView);
+    }
+
+    /**
+     * 圆形
+     */
+    public static void loadCircle(Context context, Object src, ImageView imageView) {
+        Glide.with(context).load(src).apply(RequestOptions.bitmapTransform(new CircleCrop())).into(imageView);//标准圆形图片。
+    }
+
+    /**
+     * 圆角
+     */
+    public static void loadCorner(Context context, Object src, ImageView imageView, int radius) {
+        Glide.with(context).load(src).apply(RequestOptions.bitmapTransform(new RoundedCorners(radius))).into(imageView);//四周都是圆角的圆角矩形图片。
     }
 
     /**

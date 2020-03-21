@@ -1,4 +1,4 @@
-package com.vpfinace.cloud_cat.ui.home;
+package com.vpfinace.cloud_cat.ui.home.fragment;
 
 import android.util.Log;
 import android.view.View;
@@ -19,6 +19,10 @@ import com.vpfinace.cloud_cat.bean.ViewBean;
 import com.vpfinace.cloud_cat.dialog.GetMoneyDialog;
 import com.vpfinace.cloud_cat.dialog.LuckyWheelDialog;
 import com.vpfinace.cloud_cat.dialog.RecycleDialog;
+import com.vpfinace.cloud_cat.dialog.StoreListDialog;
+import com.vpfinace.cloud_cat.ui.home.activity.DividendCatActivity;
+import com.vpfinace.cloud_cat.ui.home.activity.PicListActivity;
+import com.vpfinace.cloud_cat.ui.home.activity.TopActivity;
 import com.vpfinace.cloud_cat.utils.GlideUtils;
 import com.vpfinace.cloud_cat.weight.CatManager;
 import com.vpfinace.cloud_cat.weight.DragView;
@@ -287,14 +291,20 @@ public class HomeFragment extends BaseFragment {
                 luckyWheelDialog.show();
                 break;
             case R.id.iv_top:
+                startActivity(TopActivity.class);
                 break;
             case R.id.iv_how_to_play:
                 break;
             case R.id.ll_dividends_cat_container:
+                startActivity(DividendCatActivity.class);
                 break;
             case R.id.ll_pic_guide_container:
+                startActivity(PicListActivity.class);
                 break;
             case R.id.ll_store_container:
+                StoreListDialog storeListDialog = new StoreListDialog(getActivity());
+                storeListDialog.init();
+                storeListDialog.show();
                 break;
         }
     }

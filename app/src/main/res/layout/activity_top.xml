@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:background="@drawable/list_icon_bg">
+
+        <View
+            android:id="@+id/v_status_view"
+            android:layout_width="match_parent"
+            android:layout_height="20dp" />
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_below="@+id/v_status_view"
+            android:layout_marginLeft="17dp"
+            android:layout_marginTop="13dp"
+            android:src="@drawable/icon_return_white" />
+
+        <TextView
+            android:id="@+id/tv_update_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginBottom="51dp"
+            android:text="每小时更新一次"
+            android:textColor="@color/white"
+            android:textSize="12sp" />
+    </RelativeLayout>
+
+    <com.flyco.tablayout.SlidingTabLayout
+        android:id="@+id/table_layout"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="170dp"
+        android:background="@drawable/shape_white_half_c10"
+        app:tl_tab_space_equal="true"
+        app:tl_indicator_color="#FF6554"
+        app:tl_indicator_corner_radius="4dp"
+        app:tl_indicator_height="4dp"
+        app:tl_indicator_width="20dp"
+        app:tl_indicator_margin_bottom="7dp"
+        app:tl_textSelectColor="#FF6554"
+        app:tl_textBold="SELECT"
+        app:tl_textUnselectColor="@color/black_426"
+        app:tl_textsize="14sp" />
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/table_layout" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="87dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white">
+
+        <TextView
+            android:id="@+id/tv_btn_invite"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="15dp"
+            android:background="@drawable/shape_red_8e_04_c22"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="邀请好友"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+    </RelativeLayout>
+</RelativeLayout>
