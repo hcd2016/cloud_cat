@@ -142,6 +142,7 @@
                 android:paddingRight="16dp">
 
                 <LinearLayout
+                    android:id="@+id/ll_btn_red_packet"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
@@ -197,6 +198,7 @@
                 <include layout="@layout/line_gray_e6" />
 
                 <LinearLayout
+                    android:id="@+id/ll_btn_msg"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
@@ -240,6 +242,7 @@
                 android:paddingRight="16dp">
 
                 <LinearLayout
+                    android:id="@+id/ll_my_wallet"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
@@ -283,6 +286,7 @@
                 <include layout="@layout/line_gray_e6" />
 
                 <LinearLayout
+                    android:id="@+id/ll_btn_channel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
@@ -318,6 +322,7 @@
                 <include layout="@layout/line_gray_e6" />
 
                 <LinearLayout
+                    android:id="@+id/ll_btn_my_invite_code"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
@@ -361,6 +366,7 @@
                 <include layout="@layout/line_gray_e6" />
 
                 <LinearLayout
+                    android:id="@+id/ll_btn_answer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
@@ -407,6 +413,7 @@
                 android:paddingRight="16dp">
 
                 <LinearLayout
+                    android:id="@+id/ll_btn_auth"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
@@ -442,6 +449,7 @@
                 <include layout="@layout/line_gray_e6" />
 
                 <LinearLayout
+                    android:id="@+id/ll_btn_help"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
@@ -477,6 +485,7 @@
                 <include layout="@layout/line_gray_e6" />
 
                 <LinearLayout
+                    android:id="@+id/ll_btn_setting"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"

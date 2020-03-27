@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <com.vpfinace.cloud_cat.weight.MyTitle
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="渠道合伙人" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/gray_f5" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="26dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:text="获得渠道商身份，成为公司的合伙人，参与公司广告渠道分红，获取第一手项目信息。"
+        android:textColor="#ff232426"
+        android:textSize="14sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:text="有意者请发送邮件至xxx@163.com，邮件请注明【渠道合作】，可简单描述自己的实力以及可以提供给平台的资源。"
+        android:textColor="#ff666666"
+        android:textSize="12sp" />
+</LinearLayout>

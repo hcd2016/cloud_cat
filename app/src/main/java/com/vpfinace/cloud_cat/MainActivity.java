@@ -11,8 +11,8 @@ import android.widget.Toast;
 
 import com.vpfinace.cloud_cat.base.PermissionBaseActivity;
 import com.vpfinace.cloud_cat.ui.home.fragment.HomeFragment;
-import com.vpfinace.cloud_cat.ui.cattery.CatteryFragment;
-import com.vpfinace.cloud_cat.ui.mine.MineFragment;
+import com.vpfinace.cloud_cat.ui.cattery.fragment.CatteryFragment;
+import com.vpfinace.cloud_cat.ui.mine.fragment.MineFragment;
 import com.vpfinace.cloud_cat.utils.StatusTextUtils;
 import com.vpfinace.cloud_cat.weight.MyRadioButton;
 

@@ -78,7 +78,7 @@
         <ImageView
             android:layout_width="12dp"
             android:layout_height="12dp"
-            android:src="@drawable/home_page_icon_warehouse" />
+            android:src="@drawable/icon_notice" />
 
         <TextView
             android:layout_width="wrap_content"

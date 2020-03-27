@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <com.vpfinace.cloud_cat.weight.MyTitle
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="玩法规则" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/gray_f5" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingLeft="16dp"
+            android:paddingTop="16dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="猫舍是云养猫舍的收益分成系统，开放给所有用户，目的是让用户在玩游戏的同时收益最大化，娱乐和赚钱两不误："
+                android:textColor="#ff232426"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="1、你的猫舍成员包括：直邀好友、扩散好友(好友邀请的好友)。"
+                android:textColor="#ff232426"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="2、好友活跃收益：根据直邀好友、扩散好友的[活跃时长]、[看视频贡献比例]、[邀请好友数]等因素综合计算，直邀好友、扩散好友越多，每天坐享活跃收益越多：1个直邀好友=2个扩散好友"
+                android:textColor="#ff232426"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="3、关于目标金额和倍率说明"
+                android:textColor="#ff232426"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="（1）完成目标金额，用户确认后收益自动划转到你的钱包，可立即提现；并且自动晋级下一阶段；
+（2）晋级下一阶段后，有额外加速倍率，完成目标越多，加速倍率越高；加速倍率的作用是协助您更快达到目标，例如A的活跃收益是10元，倍率是1.2，实际收益是10*1.2=12元。"
+                android:textColor="#ff232426"
+                android:textSize="14sp" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/shape_white_c10"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:background="@drawable/shape_red_554_c10"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="阶段"
+                        android:textColor="#ffffffff"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="目标"
+                        android:textColor="#ffffffff"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="倍率"
+                        android:textColor="#ffffffff"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+                <!--                后台给规则-->
+                <LinearLayout
+                    android:id="@+id/ll_rules_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="4、若发现用户有恶意作弊行为，一律封禁账号并扣除账户所有余款。"
+                android:textColor="#ff232426"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="5、收益下降的原因：一台手机开多个小号，使用多个手机开小号，使用按键精灵、外挂等作弊工具。"
+                android:textColor="#ff232426"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="6、官方保留最终解释权，有疑问请联系客服。"
+                android:textColor="#ff232426"
+                android:textSize="14sp" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

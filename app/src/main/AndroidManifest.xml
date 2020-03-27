@@ -36,6 +36,21 @@
         <activity android:name=".ui.home.activity.DividendCatRecordsActivity" />
         <activity android:name=".ui.home.activity.DividendIntroduceActivity" />
         <activity android:name=".ui.home.activity.PicListActivity" />
+        <activity android:name=".ui.cattery.activity.InviteRecordsActivity" />
+        <activity android:name=".ui.cattery.activity.RulesActivity" />
+        <activity android:name=".ui.cattery.activity.SocialInfoActivity" />
+        <activity android:name=".ui.mine.activity.AuthActivity" />
+        <activity android:name=".ui.mine.activity.HelpActiviy" />
+        <activity android:name=".ui.mine.activity.HelpDetailActivity" />
+        <activity android:name=".ui.mine.activity.MyInviteCodeActivity" />
+        <activity android:name=".ui.mine.activity.MyWalletActivity" />
+        <activity android:name=".ui.mine.activity.WithdrawResultActivity" />
+        <activity android:name=".ui.mine.activity.WalletRecordsActivity" />
+        <activity android:name=".ui.mine.activity.AnswerActivity" />
+        <activity android:name=".ui.mine.activity.AnswerResultActivity" />
+        <activity android:name=".ui.mine.activity.MsgActivity" />
+        <activity android:name=".ui.mine.activity.ChannelActivity" />
+        <activity android:name=".ui.mine.activity.SettingActivity" />
     </application>
 
 </manifest>

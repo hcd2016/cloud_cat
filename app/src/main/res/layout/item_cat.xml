@@ -38,4 +38,10 @@
             android:id="@+id/iv_gif"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
+        <com.cunoraz.gifview.library.GifView
+            android:id="@+id/gif_view"
+            android:visibility="gone"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 </RelativeLayout>

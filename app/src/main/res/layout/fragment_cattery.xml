@@ -50,6 +50,7 @@
                 android:padding="20dp">
 
                 <LinearLayout
+                    android:id="@+id/ll_invite_records_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
@@ -83,6 +84,7 @@
                 </LinearLayout>
 
                 <TextView
+                    android:id="@+id/tv_btn_invite"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
@@ -107,6 +109,7 @@
                 android:paddingBottom="20dp">
 
                 <LinearLayout
+                    android:id="@+id/tv_btn_rules"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
@@ -427,6 +430,7 @@
                 android:padding="20dp">
 
                 <LinearLayout
+                    android:id="@+id/ll_my_invite_friend_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"

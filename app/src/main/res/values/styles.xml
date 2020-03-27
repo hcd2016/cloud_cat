@@ -56,4 +56,12 @@
         <item name="android:background">@drawable/selector_rect_white_gray_click_c8</item>
         <item name="android:clickable">true</item>
     </style>
+
+<!--    红灰按钮-->
+    <style name="style_btn_red_8e40_gray_f4_c23" parent="AppTheme">
+        <item name="android:background">@drawable/selector_btn_red_gray_c23</item>
+        <item name="android:enabled">false</item>
+        <item name="android:textColor">@drawable/selector_btn_text_color_white_gray</item>
+        <item name="android:clickable">true</item>
+    </style>
 </resources>

@@ -6,36 +6,39 @@
     android:orientation="vertical">
 
 
-    <RelativeLayout
+    <LinearLayout
+        android:background="@drawable/list_bg"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="180dp"
-        android:background="@drawable/list_icon_bg">
-
+        android:layout_height="wrap_content">
         <View
             android:id="@+id/v_status_view"
             android:layout_width="match_parent"
             android:layout_height="20dp" />
-
         <ImageView
+            android:layout_marginBottom="13dp"
             android:id="@+id/iv_back"
             android:layout_width="18dp"
             android:layout_height="18dp"
-            android:layout_below="@+id/v_status_view"
             android:layout_marginLeft="17dp"
             android:layout_marginTop="13dp"
             android:src="@drawable/icon_return_white" />
-
+        <ImageView
+            android:layout_marginLeft="20dp"
+            android:layout_width="118dp"
+            android:layout_height="40dp"
+            android:src="@drawable/list_bg_list"
+            />
         <TextView
+            android:layout_marginTop="8dp"
             android:id="@+id/tv_update_desc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
             android:layout_marginLeft="20dp"
-            android:layout_marginBottom="51dp"
             android:text="每小时更新一次"
             android:textColor="@color/white"
             android:textSize="12sp" />
-    </RelativeLayout>
+    </LinearLayout>
 
     <com.flyco.tablayout.SlidingTabLayout
         android:id="@+id/table_layout"

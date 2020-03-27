@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.vpfinace.cloud_cat.weight.MyTitle
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="帮助中心" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/gray_f5" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingTop="30dp"
+            android:paddingBottom="30dp">
+
+            <ImageView
+                android:layout_width="21dp"
+                android:layout_height="24dp"
+                android:src="@drawable/help_invite" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="注册邀请"
+                android:textColor="#ff232426"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:paddingBottom="20dp"
+                android:paddingTop="20dp"
+                android:gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="4dp"
+                    android:layout_height="4dp"
+                    android:src="@drawable/shape_circle_red_554" />
+
+                <TextView
+                    android:id="@+id/tv_q1"
+                    android:layout_marginLeft="4dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="注册的时候没有填邀请码，可以补填吗?"
+                    android:textColor="#ff232426"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <include layout="@layout/line_gray_e6"/>
+
+            <LinearLayout
+                android:paddingBottom="20dp"
+                android:paddingTop="20dp"
+                android:gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="4dp"
+                    android:layout_height="4dp"
+                    android:src="@drawable/shape_circle_red_554" />
+
+                <TextView
+                    android:id="@+id/tv_q2"
+                    android:layout_marginLeft="4dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="是否可以解除邀请关系?"
+                    android:textColor="#ff232426"
+                    android:textSize="14sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <include layout="@layout/line_gray_e6"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingTop="30dp"
+            android:paddingBottom="30dp">
+
+            <ImageView
+                android:layout_width="21dp"
+                android:layout_height="24dp"
+                android:src="@drawable/help_game" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="游戏"
+                android:textColor="#ff232426"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:paddingBottom="20dp"
+                android:paddingTop="20dp"
+                android:gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="4dp"
+                    android:layout_height="4dp"
+                    android:src="@drawable/shape_circle_red_554" />
+
+                <TextView
+                    android:id="@+id/tv_q3"
+                    android:layout_marginLeft="4dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="什么是有效好友？"
+                    android:textColor="#ff232426"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <include layout="@layout/line_gray_e6"/>
+
+            <LinearLayout
+                android:paddingBottom="20dp"
+                android:paddingTop="20dp"
+                android:gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="4dp"
+                    android:layout_height="4dp"
+                    android:src="@drawable/shape_circle_red_554" />
+
+                <TextView
+                    android:id="@+id/tv_q4"
+                    android:layout_marginLeft="4dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="什么是沉迷系统？"
+                    android:textColor="#ff232426"
+                    android:textSize="14sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <include layout="@layout/line_gray_e6"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingTop="30dp"
+            android:paddingBottom="30dp">
+
+            <ImageView
+                android:layout_width="21dp"
+                android:layout_height="24dp"
+                android:src="@drawable/help_money" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="收益"
+                android:textColor="#ff232426"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:paddingBottom="20dp"
+                android:paddingTop="20dp"
+                android:gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="4dp"
+                    android:layout_height="4dp"
+                    android:src="@drawable/shape_circle_red_554" />
+
+                <TextView
+                    android:id="@+id/tv_q5"
+                    android:layout_marginLeft="4dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="猫舍收益系统由哪些维度计算？"
+                    android:textColor="#ff232426"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <include layout="@layout/line_gray_e6"/>
+
+            <LinearLayout
+                android:paddingBottom="20dp"
+                android:paddingTop="20dp"
+                android:gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="4dp"
+                    android:layout_height="4dp"
+                    android:src="@drawable/shape_circle_red_554" />
+
+                <TextView
+                    android:id="@+id/tv_q6"
+                    android:layout_marginLeft="4dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="获得全球分红喵有哪些方式？"
+                    android:textColor="#ff232426"
+                    android:textSize="14sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <include layout="@layout/line_gray_e6"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingTop="30dp"
+            android:paddingBottom="30dp">
+
+            <ImageView
+                android:layout_width="21dp"
+                android:layout_height="24dp"
+                android:src="@drawable/help_withdraw" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="提现"
+                android:textColor="#ff232426"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:paddingBottom="20dp"
+                android:paddingTop="20dp"
+                android:gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="4dp"
+                    android:layout_height="4dp"
+                    android:src="@drawable/shape_circle_red_554" />
+
+                <TextView
+                    android:id="@+id/tv_q7"
+                    android:layout_marginLeft="4dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="为什么我提现不了？"
+                    android:textColor="#ff232426"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <include layout="@layout/line_gray_e6"/>
+
+            <LinearLayout
+                android:paddingBottom="20dp"
+                android:paddingTop="20dp"
+                android:gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="4dp"
+                    android:layout_height="4dp"
+                    android:src="@drawable/shape_circle_red_554" />
+
+                <TextView
+                    android:id="@+id/tv_q8"
+                    android:layout_marginLeft="4dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="为什么我提现失败或不到账？"
+                    android:textColor="#ff232426"
+                    android:textSize="14sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <include layout="@layout/line_gray_e6"/>
+</LinearLayout>

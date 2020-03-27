@@ -13,6 +13,7 @@ import com.blankj.utilcode.util.ConvertUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.cunoraz.gifview.library.GifView;
 import com.vpfinace.cloud_cat.R;
 import com.vpfinace.cloud_cat.base.BaseFragment;
 import com.vpfinace.cloud_cat.bean.ViewBean;
@@ -20,10 +21,10 @@ import com.vpfinace.cloud_cat.dialog.GetMoneyDialog;
 import com.vpfinace.cloud_cat.dialog.LuckyWheelDialog;
 import com.vpfinace.cloud_cat.dialog.RecycleDialog;
 import com.vpfinace.cloud_cat.dialog.StoreListDialog;
+import com.vpfinace.cloud_cat.dialog.ToStoreDialog;
 import com.vpfinace.cloud_cat.ui.home.activity.DividendCatActivity;
 import com.vpfinace.cloud_cat.ui.home.activity.PicListActivity;
 import com.vpfinace.cloud_cat.ui.home.activity.TopActivity;
-import com.vpfinace.cloud_cat.utils.GlideUtils;
 import com.vpfinace.cloud_cat.weight.CatManager;
 import com.vpfinace.cloud_cat.weight.DragView;
 import com.vpfinace.cloud_cat.weight.SpaceItemDecoration;
@@ -119,11 +120,9 @@ public class HomeFragment extends BaseFragment {
                     ViewBean srcViewBean = list.get(i);
                     srcViewBean.setView(dragView);
                     dragView.setVisibility(View.GONE);
-                    ImageView iv_img = dragView.findViewById(R.id.iv_img);
                     TextView tv_counts = dragView.findViewById(R.id.tv_counts);
                     tv_counts.setText(srcViewBean.getLevel() + "");
                     RelativeLayout rl_item_container = (RelativeLayout) myAdapter.getViewByPosition(rv, i, R.id.rl_item_container);
-                    ImageView iv_gif = rl_item_container.findViewById(R.id.iv_gif);
                     int finalI = i;
                     dragView.setOnActionUpListener(new DragView.OnActionUpListener() {
                         @Override
@@ -147,17 +146,20 @@ public class HomeFragment extends BaseFragment {
                                         viewBean.setLevel(viewBean.getLevel() + 1);
                                         dragView.setVisibility(View.GONE);
                                         RelativeLayout rl_item_container = (RelativeLayout) myAdapter.getViewByPosition(rv, postion, R.id.rl_item_container);
-                                        ImageView iv_gif = rl_item_container.findViewById(R.id.iv_gif);
-                                        iv_gif.setVisibility(View.VISIBLE);
-                                        viewBean.getView().setVisibility(View.GONE);
-                                        GlideUtils.loadOneTimeGif(getActivity(),R.drawable.compund1,iv_gif, new GlideUtils.GifListener() {
+                                        GifView gif_view = rl_item_container.findViewById(R.id.gif_view);
+                                        gif_view.setVisibility(View.VISIBLE);
+                                        gif_view.setGifResource(R.drawable.compund1);
+                                        gif_view.play();
+                                        gif_view.postDelayed(new Runnable() {
                                             @Override
-                                            public void gifPlayComplete() {
-                                                iv_gif.setVisibility(View.GONE);
+                                            public void run() {
+                                                gif_view.pause();
+                                                gif_view.setVisibility(View.GONE);
                                                 notifyViewDataChange();
                                                 viewBean.getView().setVisibility(View.VISIBLE);
                                             }
-                                        });
+                                        },300);
+                                        viewBean.getView().setVisibility(View.GONE);
 
                                     } else {//等级不同,互换位置
                                         int srcLevel = list.get(finalI).getLevel();
@@ -188,6 +190,23 @@ public class HomeFragment extends BaseFragment {
                                     }
                                 });
                                 recycleDialog.show();
+                            }
+
+                            //仓库范围
+                            int[] location = new int[2];
+                            llStoreContainer.getLocationOnScreen(location);
+                            int x = location[0];
+                            int y = location[1];
+
+
+
+                            int minX2 = x-30;
+                            int maxX2 = x + llStoreContainer.getWidth()+30;
+                            int minY2 = y-30;//用父类gettop()
+                            int maxY2 = y + llStoreContainer.getHeight()+30;
+                            if (rawX >= minX2 && rawX <= maxX2 && rawY >= minY2 && rawY <= maxY2) {
+                                ToStoreDialog toStoreDialog = new ToStoreDialog(getActivity());
+                                toStoreDialog.show();
                             }
                         }
                     });

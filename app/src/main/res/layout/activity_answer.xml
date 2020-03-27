@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <com.vpfinace.cloud_cat.weight.MyTitle
+        android:id="@+id/my_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="每日答题1/3" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="16dp"
+        android:paddingTop="20dp"
+        android:paddingRight="16dp"
+        android:paddingBottom="40dp">
+
+        <TextView
+            android:id="@+id/tv_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_box_red_554_c10"
+            android:paddingLeft="8dp"
+            android:paddingTop="1dp"
+            android:paddingRight="8dp"
+            android:paddingBottom="1dp"
+            android:text="单选"
+            android:textColor="#ffff6554"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tv_answer_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="（单选题）目前旅行世界最高等级的猫咪是多少？"
+            android:textColor="#ff232426"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <RadioGroup
+        android:id="@+id/rg_1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
+
+        <RadioButton
+            android:background="@android:color/transparent"
+            android:id="@+id/rb_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:button="@null"
+            android:checked="true"
+            android:drawableLeft="@drawable/selector_answer_choise"
+            android:drawablePadding="12dp"
+            android:text="12"
+            android:textColor="@color/black_426"
+            android:textSize="14sp" />
+
+        <RadioButton
+            android:background="@android:color/transparent"
+            android:id="@+id/rb_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:button="@null"
+            android:drawableLeft="@drawable/selector_answer_choise"
+            android:drawablePadding="12dp"
+            android:text="12"
+            android:textColor="@color/black_426"
+            android:textSize="14sp" />
+
+        <RadioButton
+            android:background="@android:color/transparent"
+            android:id="@+id/rb_3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:button="@null"
+            android:drawableLeft="@drawable/selector_answer_choise"
+            android:drawablePadding="12dp"
+            android:text="12"
+            android:textColor="@color/black_426"
+            android:textSize="14sp" />
+
+        <RadioButton
+            android:background="@android:color/transparent"
+            android:id="@+id/rb_4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:button="@null"
+            android:drawableLeft="@drawable/selector_answer_choise"
+            android:drawablePadding="12dp"
+            android:text="12"
+            android:textColor="@color/black_426"
+            android:textSize="14sp" />
+
+    </RadioGroup>
+
+    <RadioGroup
+        android:id="@+id/rg_2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
+
+        <CheckBox
+            android:background="@android:color/transparent"
+            android:id="@+id/cb1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:button="@null"
+            android:drawableLeft="@drawable/selector_answer_choise"
+            android:drawablePadding="12dp"
+            android:text="12"
+            android:textColor="@color/black_426"
+            android:textSize="14sp" />
+
+        <CheckBox
+            android:background="@android:color/transparent"
+            android:id="@+id/cb2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:button="@null"
+            android:drawableLeft="@drawable/selector_answer_choise"
+            android:drawablePadding="12dp"
+            android:text="12"
+            android:textColor="@color/black_426"
+            android:textSize="14sp" />
+
+        <CheckBox
+            android:background="@android:color/transparent"
+            android:id="@+id/cb3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:button="@null"
+            android:drawableLeft="@drawable/selector_answer_choise"
+            android:drawablePadding="12dp"
+            android:text="12"
+            android:textColor="@color/black_426"
+            android:textSize="14sp" />
+
+        <CheckBox
+            android:background="@android:color/transparent"
+            android:id="@+id/cb4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:button="@null"
+            android:drawableLeft="@drawable/selector_answer_choise"
+            android:drawablePadding="12dp"
+            android:text="12"
+            android:textColor="@color/black_426"
+            android:textSize="14sp" />
+    </RadioGroup>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <TextView
+        android:id="@+id/btn_next"
+        style="@style/style_btn_red_8e40_gray_f4_c23"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="32dp"
+        android:gravity="center"
+        android:paddingTop="11dp"
+        android:paddingBottom="11dp"
+        android:text="下一题"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+</LinearLayout>

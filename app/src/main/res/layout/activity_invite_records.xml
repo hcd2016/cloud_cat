@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+    <com.vpfinace.cloud_cat.weight.MyTitle
+        android:id="@+id/my_title"
+        app:title="邀请记录"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <com.flyco.tablayout.SlidingTabLayout
+        android:background="@color/gray_f5"
+        android:id="@+id/table_layout"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        app:tl_indicator_corner_radius="4dp"
+        app:tl_indicator_style="BLOCK"
+        app:tl_tab_space_equal="true"
+        app:tl_indicator_color="#FF6554"
+        app:tl_textSelectColor="@color/white"
+        app:tl_textBold="SELECT"
+        app:tl_textUnselectColor="@color/black_426"
+        app:tl_textsize="14sp" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <LinearLayout
+            android:paddingTop="10dp"
+            android:background="@color/white"
+            android:paddingBottom="32dp"
+            android:gravity="center"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:textSize="12sp"
+                android:textColor="#FEA020"
+                android:text="*实名认证的"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:textSize="12sp"
+                android:textColor="#FF6554"
+                android:text="有效用户"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:textSize="12sp"
+                android:textColor="#FEA020"
+                android:text="才能为猫舍提供收入"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+    </RelativeLayout>
+
+</LinearLayout>

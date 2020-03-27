@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/shape_white_c10"
+    android:orientation="vertical">
+
+
+    <ImageView
+        android:layout_marginTop="40dp"
+        android:layout_width="99dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center"
+        android:src="@drawable/question_prize" />
+
+    <LinearLayout
+        android:layout_marginTop="24dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="恭喜获得"
+            android:textColor="#ff232426"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="45分钟收益"
+            android:textColor="#FEA020"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginTop="12dp"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_width="19dp"
+            android:layout_height="19dp"
+            android:src="@drawable/homepage_popup_cookies"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="18900"
+            android:textColor="#ff232426"
+            android:textSize="22sp"
+            />
+    </LinearLayout>
+
+    <TextView
+        android:layout_marginBottom="20dp"
+        android:id="@+id/tv_btn_look_sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="37dp"
+        android:background="@drawable/shape_red_8e_04_c22"
+        android:paddingLeft="78dp"
+        android:paddingTop="11dp"
+        android:paddingRight="78dp"
+        android:paddingBottom="11dp"
+        android:text="确定"
+        android:textColor="#ffffffff"
+        android:textSize="16sp" />
+</LinearLayout>

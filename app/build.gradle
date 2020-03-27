@@ -62,4 +62,5 @@ dependencies {
     implementation 'org.greenrobot:eventbus:3.2.0'
     //adapter
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.34'
+    implementation 'com.github.Cutta:GifView:1.4'
 }
