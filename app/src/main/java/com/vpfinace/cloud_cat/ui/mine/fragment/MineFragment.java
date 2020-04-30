@@ -7,6 +7,7 @@ import android.widget.LinearLayout;
 import com.blankj.utilcode.util.BarUtils;
 import com.vpfinace.cloud_cat.R;
 import com.vpfinace.cloud_cat.base.BaseFragment;
+import com.vpfinace.cloud_cat.dialog.RedPacketDialog;
 import com.vpfinace.cloud_cat.ui.mine.activity.AnswerActivity;
 import com.vpfinace.cloud_cat.ui.mine.activity.AuthActivity;
 import com.vpfinace.cloud_cat.ui.mine.activity.ChannelActivity;
@@ -72,6 +73,8 @@ public class MineFragment extends BaseFragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_btn_red_packet:
+                RedPacketDialog redPacketDialog = new RedPacketDialog(getActivity());
+                redPacketDialog.show();
                 break;
             case R.id.ll_btn_msg:
                 startActivity(MsgActivity.class);

@@ -24,6 +24,7 @@
                 android:background="@drawable/shape_gray_ff2_c10">
 
                 <ImageView
+                    android:id="@+id/iv_img"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:layout_centerHorizontal="true"
@@ -31,6 +32,7 @@
                     android:src="@drawable/homepage_popup_cat" />
 
                 <TextView
+                    android:id="@+id/tv_level"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
@@ -38,9 +40,7 @@
                     android:background="@drawable/shape_red_554_c9"
                     android:gravity="center"
                     android:paddingLeft="8dp"
-                    android:paddingTop="1dp"
                     android:paddingRight="8dp"
-                    android:paddingBottom="1dp"
                     android:text="1"
                     android:textColor="#ffffffff"
                     android:textSize="12sp" />
@@ -48,6 +48,7 @@
         </FrameLayout>
 
         <TextView
+            android:id="@+id/tv_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -58,6 +59,7 @@
             android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/tv_counts"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

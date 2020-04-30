@@ -14,6 +14,7 @@ import com.vpfinace.cloud_cat.weight.MyTitle;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * 实名认证
@@ -53,9 +54,9 @@ public class AuthActivity extends BaseActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if(TextUtils.isEmpty(s.toString())) {
+                if (TextUtils.isEmpty(s.toString())) {
                     btnSave.setEnabled(false);
-                }else {
+                } else {
                     btnSave.setEnabled(true);
                 }
             }
@@ -67,5 +68,11 @@ public class AuthActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
+    }
+
+    @OnClick(R.id.btn_save)
+    public void onViewClicked() {
+        startActivity(AuthResultActivity.class);
+        finish();
     }
 }

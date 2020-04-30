@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <com.vpfinace.cloud_cat.weight.MyTitle
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="隐私" />
+
+    <include layout="@layout/spe_10dp_gray_f5"/>
+
+    <LinearLayout
+        android:gravity="center_vertical"
+        style="@style/white_btn_click_style"
+        android:paddingBottom="21dp"
+        android:paddingTop="21dp"
+        android:paddingRight="16dp"
+        android:paddingLeft="16dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="设置社交信息"
+            android:textColor="#ff232426"
+            android:textSize="16sp"
+            />
+        <View
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"/>
+        <ImageView
+            android:src="@drawable/icon_next_gray"
+            android:layout_width="10dp"
+            android:layout_height="10dp"/>
+    </LinearLayout>
+
+    <include layout="@layout/line_gray_e6_magin16"/>
+
+    <LinearLayout
+        android:gravity="center_vertical"
+        android:paddingBottom="21dp"
+        android:paddingTop="21dp"
+        android:paddingRight="16dp"
+        android:paddingLeft="16dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="我的师父可见"
+                android:textColor="#ff232426"
+                android:textSize="16sp"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="开启后，您的师父可以看见您的社交信息"
+                android:textColor="#ff999999"
+                android:textSize="12sp"
+                />
+        </LinearLayout>
+
+        <View
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"/>
+        <ImageView
+            android:src="@drawable/setting_switch_open"
+            android:layout_width="53dp"
+            android:layout_height="36dp"/>
+    </LinearLayout>
+
+    <include layout="@layout/line_gray_e6_magin16"/>
+
+    <LinearLayout
+        android:gravity="center_vertical"
+        android:paddingBottom="21dp"
+        android:paddingTop="21dp"
+        android:paddingRight="16dp"
+        android:paddingLeft="16dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="我的直邀好友/扩散好友可见"
+                android:textColor="#ff232426"
+                android:textSize="16sp"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="开启后，您的好友可以看见您的社交信息"
+                android:textColor="#ff999999"
+                android:textSize="12sp"
+                />
+        </LinearLayout>
+
+        <View
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"/>
+        <ImageView
+            android:src="@drawable/setting_switch_open"
+            android:layout_width="53dp"
+            android:layout_height="36dp"/>
+    </LinearLayout>
+
+    <include layout="@layout/line_gray_e6_magin16"/>
+</LinearLayout>

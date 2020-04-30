@@ -59,6 +59,7 @@
         android:background="@color/gray_6e6" />
 
     <LinearLayout
+        android:id="@+id/ll_btn_nickname_container"
         style="@style/white_btn_click_style"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -103,6 +104,7 @@
         android:background="@color/gray_6e6" />
 
     <LinearLayout
+        android:id="@+id/ll_btn_phone_container"
         style="@style/white_btn_click_style"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -147,6 +149,7 @@
         android:background="@color/gray_6e6" />
 
     <LinearLayout
+        android:id="@+id/ll_btn_privacy_container"
         style="@style/white_btn_click_style"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -184,6 +187,7 @@
         android:background="@color/gray_6e6" />
 
     <LinearLayout
+        android:id="@+id/ll_btn_about_container"
         style="@style/white_btn_click_style"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -228,6 +232,7 @@
         android:background="@color/gray_6e6" />
 
     <LinearLayout
+        android:id="@+id/ll_btn_sound_container"
         style="@style/white_btn_click_style"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -277,7 +282,7 @@
 
     <TextView
         android:enabled="true"
-        android:id="@+id/btn_save"
+        android:id="@+id/btn_logo_out"
         style="@style/style_btn_red_8e40_gray_f4_c23"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/ll_item_container"
+        android:padding="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:id="@+id/rl_cat_container"
+            android:layout_width="76dp"
+            android:layout_height="76dp"
+            android:background="@drawable/shape_gray_ff2_c10">
+
+            <ImageView
+                android:id="@+id/iv_img"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/homepage_popup_cat" />
+
+            <TextView
+                android:id="@+id/tv_level"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:background="@drawable/shape_red_554_c9"
+                android:gravity="center"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:text="1"
+                android:textColor="#ffffffff"
+                android:textSize="12sp" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="24dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="暹罗猫"
+                android:textColor="#ff232426"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_out_put"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="11dp"
+                android:text="4112/s"
+                android:textColor="#ffff6554"
+                android:textSize="16sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="产出金币"
+                android:textColor="#ff999999"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <View
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"/>
+        <LinearLayout
+            android:id="@+id/ll_btn_unlock"
+            android:minWidth="96dp"
+            android:paddingBottom="6dp"
+            android:paddingTop="6dp"
+            android:paddingRight="5dp"
+            android:paddingLeft="5dp"
+            android:background="@drawable/shape_red_8e_04_c23"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="23dp"
+                android:layout_height="23dp"
+                android:src="@drawable/homepage_popup_cookies" />
+
+            <TextView
+                android:id="@+id/tv_price"
+                android:layout_marginLeft="5dp"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="7436.7k"
+                android:textColor="#ffffffff"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_btn_locked"
+            android:visibility="gone"
+            android:paddingBottom="6dp"
+            android:paddingTop="6dp"
+            android:background="@drawable/shape_gray_f4_c18"
+            android:gravity="center"
+            android:layout_width="96dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="12dp"
+                android:layout_height="16dp"
+                android:src="@drawable/icon_lock" />
+
+            <TextView
+                android:id="@+id/tv_unlock_level"
+                android:layout_marginLeft="3dp"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Lv.15"
+                android:textColor="#ff999999"
+                android:textSize="18sp"
+                />
+        </LinearLayout>
+    </LinearLayout>
+
+    <include layout="@layout/line_gray_e6_magin16"/>
+</LinearLayout>

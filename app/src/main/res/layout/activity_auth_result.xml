@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+    <com.vpfinace.cloud_cat.weight.MyTitle
+        app:title="实名认证"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <ImageView
+        android:layout_marginTop="72dp"
+        android:layout_gravity="center"
+        android:src="@drawable/icon_submit"
+        android:layout_width="72dp"
+        android:layout_height="72dp"/>
+    <TextView
+        android:layout_marginTop="12dp"
+        android:layout_gravity="center"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="你已完成实名认证"
+        android:textColor="#ff232426"
+        android:textSize="16sp"
+        />
+</LinearLayout>

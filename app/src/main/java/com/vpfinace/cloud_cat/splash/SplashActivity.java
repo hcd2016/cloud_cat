@@ -4,9 +4,9 @@ package com.vpfinace.cloud_cat.splash;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import com.vpfinace.cloud_cat.MainActivity;
 import com.vpfinace.cloud_cat.R;
 import com.vpfinace.cloud_cat.base.BaseActivity;
+import com.vpfinace.cloud_cat.ui.user.activity.LoginActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,8 +31,12 @@ public class SplashActivity extends BaseActivity {
         tvDesc.postDelayed(new Runnable() {
             @Override
             public void run() {
-                startActivity(MainActivity.class);
-                finish();
+//                if(UserUtil.isLogin()) {
+//                    startActivity(MainActivity.class);
+//                }else {
+                    startActivity(LoginActivity.class);
+//                }
+//                finish();
             }
         },2000);
     }

@@ -10,13 +10,17 @@ import com.google.gson.GsonBuilder;
 import com.vpfinace.cloud_cat.app.App;
 import com.vpfinace.cloud_cat.base.BaseObserver;
 import com.vpfinace.cloud_cat.global.SpContant;
-import com.vpfinace.cloud_cat.utils.MyUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.CookieManager;
+import java.net.CookiePolicy;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
@@ -24,6 +28,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.Cache;
 import okhttp3.CacheControl;
+import okhttp3.Cookie;
+import okhttp3.CookieJar;
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
@@ -89,18 +95,13 @@ public class HttpManager {
             public Response intercept(Chain chain) throws IOException {
                 Request.Builder builder = chain.request().newBuilder();
 //                SPUtils.getInstance().getString()
-//                String sessionid = SpUtil.getString(Constant.SHARE_TAG_SESSIONID);
-//                if (App.getConfig().getLoginStatus()&&!TextUtils.isEmpty(sessionid)){
+                String sessionid = SPUtils.getInstance().getString(SpContant.SP_SESSION_ID);
+                if (!TextUtils.isEmpty(sessionid)){
+                    builder.addHeader("sessionId", sessionid);
 //                    builder.addHeader("Cookie", "SESSIONID="+sessionid);
-//                }
+                }
 //                builder.addHeader("APP-VERSION", AppUtils.getAppVersionName());
 //                builder.addHeader("APP-VERSION", "4.0.0");
-                if (!TextUtils.isEmpty(SPUtils.getInstance().getString(SpContant.SP_TOKEN))) {
-                    builder.addHeader("token", SPUtils.getInstance().getString(SpContant.SP_TOKEN));
-                }
-                if(!MyUtils.isZh()) {//英文加header
-                    builder.addHeader("lang","en_US");
-                }
                 Response response = chain.proceed(builder.build());
                 return response;
             }
@@ -123,7 +124,7 @@ public class HttpManager {
                         .build();
                 Request.Builder builder = request.newBuilder().url(url);
                 Response response = chain.proceed(builder.build());
-//                if(url.toString().contains("tryUseToAddOrder")) {
+//                if(url.toString().contains("api/front/action/list")) {
 //                    String string = response.body().string();//此代码只能调用一次,调试完必须注释掉
 //                }
                 return response;
@@ -259,8 +260,10 @@ public class HttpManager {
 //        });
 //        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
 
-//        ClearableCookieJar cookieJar =
-//                new PersistentCookieJar(new SetCookieCache(), new SharedPrefsCookiePersistor(App.getContext()));
+         HashMap<String, List<Cookie>> cookieStore = new HashMap<>();
+
+        CookieManager cookieManager = new CookieManager();
+        cookieManager.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
         OkHttpClient mOkHttpClient = new OkHttpClient.Builder()
                 .addInterceptor(headerInterceptor)
                 .addInterceptor(paramsInterceptor)
@@ -269,7 +272,18 @@ public class HttpManager {
                 .addInterceptor(rewriteCacheControlInterceptor)
 //                .addNetworkInterceptor(rewriteCacheControlInterceptor)
 //                .cookieJar(new JavaNetCookieJar(cookieManager))//设置持续化cookie
-//                .cookieJar(cookieJar)//设置持续化cookie
+                .cookieJar(new CookieJar() {
+                    @Override
+                    public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
+                        cookieStore.put(url.host(), cookies);
+                    }
+
+                    @Override
+                    public List<Cookie> loadForRequest(HttpUrl url) {
+                        List<Cookie> cookies = cookieStore.get(url.host());
+                        return cookies != null ? cookies : new ArrayList<Cookie>();
+                    }
+                })//设置持续化cookie
 //                .addInterceptor(logging)    //打印日志
                 .retryOnConnectionFailure(true)//失败重连
                 .connectTimeout(10, TimeUnit.SECONDS)

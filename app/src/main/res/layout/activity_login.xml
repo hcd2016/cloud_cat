@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <View
+        android:id="@+id/v_status_view"
+        android:layout_width="match_parent"
+        android:layout_height="20dp" />
+
+    <ImageView
+        android:layout_width="84dp"
+        android:layout_height="84dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="102dp"
+        android:src="@mipmap/ic_launcher" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <LinearLayout
+        android:id="@+id/ll_btn_wechat_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/shape_red_554_c30"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingLeft="87dp"
+        android:paddingTop="17dp"
+        android:paddingRight="87dp"
+        android:paddingBottom="17dp">
+
+        <ImageView
+            android:layout_width="19dp"
+            android:layout_height="16dp"
+            android:src="@drawable/wallet_wechat" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:text="微信登录"
+            android:textColor="#ffffffff"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_btn_eles_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="32dp"
+        android:text="其它方式登录"
+        android:textColor="#ff999999"
+        android:textSize="12sp" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="48dp"
+        android:layout_marginBottom="48dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <FrameLayout
+            android:id="@+id/fl_select_icon"
+            android:paddingRight="8dp"
+            android:paddingLeft="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/iv_select_icon"
+                android:layout_gravity="center"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:src="@drawable/icon_selected" />
+        </FrameLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="同意云养猫舍"
+            android:textColor="#ff232426"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/tv_btn_yhxy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="《用户协议》"
+            android:textColor="#ffff6554"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/tv_btn_yszc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="《隐私政策》"
+            android:textColor="#ffff6554"
+            android:textSize="12sp" />
+    </LinearLayout>
+</LinearLayout>

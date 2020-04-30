@@ -48,4 +48,5 @@ public class RecycleDialog extends TBaseDialog {
     public interface OnConfirmClickListener {
         void onConfirmClick();
     }
+
 }

@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/popup_money_bg"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:id="@+id/fl_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:padding="20dp">
+
+        <ImageView
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_gravity="center"
+            android:src="@drawable/popup_icon_close" />
+    </FrameLayout>
+
+    <ImageView
+        android:id="@+id/iv_icon"
+        android:layout_width="52dp"
+        android:layout_height="52dp"
+        android:layout_gravity="center"
+        android:src="@mipmap/ic_launcher" />
+
+    <TextView
+        android:id="@+id/tv_app_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="16dp"
+        android:text="云养猫舍"
+        android:textColor="#ffffffff"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/tv_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="28dp"
+        android:text="猫咪升到3级"
+        android:textColor="#ffffffff"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:id="@+id/ll_open_packet_container"
+        android:gravity="center"
+        android:layout_marginTop="21dp"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_box_white_s1_c4"
+            android:paddingLeft="8dp"
+            android:paddingTop="2dp"
+            android:paddingRight="8dp"
+            android:paddingBottom="2dp"
+            android:text="可提现"
+            android:textColor="#ffffffff"
+            android:textSize="12sp" />
+
+        <ImageView
+            android:id="@+id/iv_open"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="66dp"
+            android:src="@drawable/popup_money_btn1" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/ll_packet_result_container"
+        android:visibility="gone"
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="28dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1.16"
+                android:textColor="#ffffffff"
+                android:textSize="40sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="元"
+                android:textColor="#ffffffff"
+                android:textSize="30sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_my_packet_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="已存入我的钱包"
+                android:textColor="#ffffffff"
+                android:textSize="12sp" />
+
+            <ImageView
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:src="@drawable/icon_next_white" />
+        </LinearLayout>
+        <ImageView
+            android:id="@+id/iv_btn_withdraw"
+            android:layout_marginTop="79dp"
+            android:src="@drawable/popup_money_btn2"
+            android:layout_width="112dp"
+            android:layout_height="42dp"/>
+    </LinearLayout>
+
+
+
+</LinearLayout>

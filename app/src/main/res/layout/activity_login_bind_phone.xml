@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.vpfinace.cloud_cat.weight.MyTitle
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="手机号登录" />
+
+
+    <include layout="@layout/spe_10dp_gray_f5" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="16dp"
+        android:paddingTop="21dp"
+        android:paddingRight="16dp"
+        android:paddingBottom="21dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="手机号"
+            android:textColor="#ff232426"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/et_phone"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            android:layout_weight="1"
+            android:background="@null"
+            android:hint="请输入手机号"
+            android:inputType="number"
+            android:maxLength="11"
+            android:textColor="@color/black_426"
+            android:textColorHint="#ffd4d6d9"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tv_btn_get_code"
+            android:layout_width="82dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_red_554_c12"
+            android:gravity="center"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:text="获取验证码"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            android:visibility="gone" />
+    </LinearLayout>
+
+    <include layout="@layout/line_gray_e6_magin16" />
+
+    <LinearLayout
+        android:id="@+id/ll_code_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="16dp"
+        android:paddingTop="21dp"
+        android:paddingRight="16dp"
+        android:paddingBottom="21dp"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="验证码"
+            android:textColor="#ff232426"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/et_vercode"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            android:layout_weight="1"
+            android:background="@null"
+            android:hint="请输入验证码"
+            android:inputType="number"
+            android:maxLength="6"
+            android:textColor="@color/black_426"
+            android:textColorHint="#ffd4d6d9"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <include
+        android:id="@+id/v_line"
+        layout="@layout/line_gray_e6_magin16"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/tv_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="16dp"
+        android:text="你需要先用微信登录，再【我的】- 【个人信息】中绑定手机号码，才能使用手机号登录"
+        android:textColor="#ff999999"
+        android:textSize="12sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <TextView
+        android:id="@+id/btn_next"
+        style="@style/style_btn_red_8e40_gray_f4_c23"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="32dp"
+        android:gravity="center"
+        android:paddingTop="11dp"
+        android:paddingBottom="11dp"
+        android:text="下一步"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+</LinearLayout>
