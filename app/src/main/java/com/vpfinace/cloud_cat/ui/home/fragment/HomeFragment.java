@@ -55,7 +55,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class HomeFragment extends BaseFragment {
+public class HomeFragment extends BaseFragment { 
     @BindView(R.id.v_status_view)
     View vStatusView;
     @BindView(R.id.rv)
