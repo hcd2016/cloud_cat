@@ -17,6 +17,7 @@
         android:background="@color/gray_f5" />
 
     <LinearLayout
+        android:id="@+id/ll_header_container"
         style="@style/white_btn_click_style"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -40,6 +41,7 @@
             android:layout_weight="1" />
 
         <ImageView
+            android:id="@+id/iv_header"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:src="@mipmap/ic_launcher" />
@@ -83,6 +85,7 @@
             android:layout_weight="1" />
 
         <TextView
+            android:id="@+id/tv_nick_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="庙小妖风大"
@@ -128,6 +131,7 @@
             android:layout_weight="1" />
 
         <TextView
+            android:id="@+id/tv_phone_bind_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="未绑定"
@@ -211,6 +215,7 @@
             android:layout_weight="1" />
 
         <TextView
+            android:id="@+id/tv_version_num"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="1.1.0"
@@ -256,6 +261,7 @@
             android:layout_weight="1" />
 
         <ImageView
+            android:id="@+id/iv_vodie_switch"
             android:layout_width="53dp"
             android:layout_height="36dp"
             android:src="@drawable/setting_switch_close" />

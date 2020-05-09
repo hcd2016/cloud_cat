@@ -3,17 +3,24 @@ package com.vpfinace.cloud_cat.http;
 
 import com.vpfinace.cloud_cat.base.BaseResponse;
 import com.vpfinace.cloud_cat.bean.CatBean;
+import com.vpfinace.cloud_cat.bean.CatPicBean;
 import com.vpfinace.cloud_cat.bean.CatShopBean;
 import com.vpfinace.cloud_cat.bean.HomeBean;
 import com.vpfinace.cloud_cat.bean.LoginBean;
+import com.vpfinace.cloud_cat.bean.MsgBean;
+import com.vpfinace.cloud_cat.bean.MyInviteCodeBean;
+import com.vpfinace.cloud_cat.bean.TopBean;
 import com.vpfinace.cloud_cat.bean.User;
 
 import java.util.List;
 
 import io.reactivex.Observable;
+import okhttp3.RequestBody;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 
 /**
  *
@@ -67,7 +74,7 @@ public interface HttpApi {
      * 排行榜
      */
     @POST("api/front/action/rank")
-    Observable<BaseResponse<Object>> getTopList();
+    Observable<BaseResponse<TopBean>> getTopList();
     /**
      * 商店可购买列表
      */
@@ -106,8 +113,9 @@ public interface HttpApi {
      * 仓库扩容
      * @return
      */
+    @FormUrlEncoded
     @POST("api/front/action/dilation")
-    Observable<BaseResponse<Object>> storeDilation();
+    Observable<BaseResponse<Object>> storeDilation(@Field("coinNum") int coinNum);
 
     /**
      * 购买猫咪
@@ -126,4 +134,80 @@ public interface HttpApi {
     Observable<BaseResponse<Object>> amountSync(@Field("coinNum") long coinNum);
 
 
+    /**
+     * 我的邀请码(扩散数量,列表,邀请,列表等)
+     * @return
+     */
+    @POST("api/front/client/inviteCode")
+    Observable<BaseResponse<MyInviteCodeBean>> getInviteCode();
+
+    /**
+     * 实名认证
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("api/front/client/auth")
+    Observable<BaseResponse<Object>> auth(@Field("realname") String realname);
+
+    /**
+     * 消息列表
+     * @return
+     */
+    @POST("api/front/client/userMsg")
+    Observable<BaseResponse<List<MsgBean>>> getMsgList();
+
+    /**
+     * 修改头像上传
+     * @param file
+     * @return
+     */
+    @Multipart
+    @POST("api/front/client/editHeadImg")
+    Observable<BaseResponse<Object>> uploadHeaderImg(@Part("file\";filename=\"header.jpg") RequestBody file);
+
+    /**
+     * 修改昵称
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("api/front/client/editnickname")
+    Observable<BaseResponse<Object>> editNickName(@Field("nickname") String nickname);
+
+    /**
+     * 绑定(更换)手机号
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("api/front/client/bindPhone")
+    Observable<BaseResponse<Object>> bindPhone(@Field("phone") String phone,@Field("code") String code);
+
+    /**
+     * 隐私设置
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("api/front/client/privacySetting")
+    Observable<BaseResponse<Object>> privacySetting(@Field("friendVisible") String friendVisible,@Field("inviterVisible") String inviterVisible);
+
+
+    /**
+     * 社交信息提交
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("api/front/client/editSocial")
+    Observable<BaseResponse<Object>> socialInfoCommit(@Field("qq") String qq,@Field("wechat") String wechat);
+
+    /**
+     * 猫咪图鉴
+     * @return
+     */
+    @POST("api/front/action/pictoria")
+    Observable<BaseResponse<List<CatPicBean>>> getCatPicList();
+
+    /**
+     * 领取收益
+     */
+    @POST("api/front/action/drawearning")
+    Observable<BaseResponse<Object>> getEarnings();
 }

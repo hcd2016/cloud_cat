@@ -16,6 +16,11 @@ import butterknife.OnClick;
 public class GetMoneyDialog extends TBaseDialog {
     @BindView(R.id.tv_btn_confirm)
     TextView tvBtnConfirm;
+    OnCommitClickListener onCommitClickListener;
+
+    public void setOnCommitClickListener(OnCommitClickListener onCommitClickListener) {
+        this.onCommitClickListener = onCommitClickListener;
+    }
 
     public GetMoneyDialog(Context context) {
         super(context, R.layout.dialog_get_money);
@@ -24,6 +29,14 @@ public class GetMoneyDialog extends TBaseDialog {
 
     @OnClick(R.id.tv_btn_confirm)
     public void onViewClicked() {
+        if (onCommitClickListener != null) {
+            onCommitClickListener.onClick();
+        }
         dismiss();
+    }
+
+
+    public interface OnCommitClickListener {
+        void onClick();
     }
 }

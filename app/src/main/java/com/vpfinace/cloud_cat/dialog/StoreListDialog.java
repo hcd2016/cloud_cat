@@ -14,12 +14,12 @@ import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.vpfinace.cloud_cat.R;
-import com.vpfinace.cloud_cat.base.BaseActivity;
 import com.vpfinace.cloud_cat.base.BaseObserver;
 import com.vpfinace.cloud_cat.bean.CatBean;
 import com.vpfinace.cloud_cat.bean.User;
 import com.vpfinace.cloud_cat.global.EventStrings;
 import com.vpfinace.cloud_cat.http.HttpManager;
+import com.vpfinace.cloud_cat.ui.home.fragment.HomeFragment;
 import com.vpfinace.cloud_cat.utils.MyUtils;
 import com.vpfinace.cloud_cat.weight.WrapContentLinearLayoutManager;
 
@@ -52,8 +52,8 @@ public class StoreListDialog extends TBaseDialog {
     private List<CatBean> list;
     private MyAdapter myAdapter;
     public OnClickListener onClickListener;
-    BaseActivity baseActivity;
     int dilatation = 0;//扩容价格
+    private HomeFragment homeFragment;
 
     public void setOnClickListener(OnClickListener onClickListener) {
         this.onClickListener = onClickListener;
@@ -64,12 +64,12 @@ public class StoreListDialog extends TBaseDialog {
         setWindowParam(0.9f, ConvertUtils.dp2px(542), Gravity.CENTER, 0);
     }
 
-    public void init(BaseActivity activity,int dilatation) {
+    public void init(HomeFragment homeFragment, int dilatation) {
         EventBus.getDefault().register(this);
-        baseActivity = activity;
         this.dilatation = dilatation;
+        this.homeFragment = homeFragment;
         list = new ArrayList<>();
-        requestStoreList(activity);
+        requestStoreList(homeFragment);
         myAdapter = new MyAdapter(list);
         rv.setLayoutManager(new WrapContentLinearLayoutManager(mContext));
         rv.setAdapter(myAdapter);
@@ -87,8 +87,9 @@ public class StoreListDialog extends TBaseDialog {
                 storeDilationDialog.setOnConfirmClickListener(new StoreDilationDialog.OnConfirmClickListener() {
                     @Override
                     public void onConfirmClick() {
+                        homeFragment.requestAmountSync();
                         //todo 总金额是否够判断
-                        requestDilation(baseActivity);
+                        requestDilation(homeFragment);
                     }
                 });
                 storeDilationDialog.show();
@@ -113,7 +114,7 @@ public class StoreListDialog extends TBaseDialog {
         }
     }
 
-    public void refresh(BaseActivity activity){
+    public void refresh(HomeFragment activity){
         list.clear();
         requestStoreList(activity);
     }
@@ -121,11 +122,11 @@ public class StoreListDialog extends TBaseDialog {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(String event) {
         if (event.equals(EventStrings.STORE_GET_OUT_SUCCESS)) {//取出成功
-            refresh(baseActivity);
+            refresh(homeFragment);
         }
     }
 
-    public void requestStoreList(BaseActivity baseview) {
+    public void requestStoreList(HomeFragment baseview) {
         HttpManager.toRequst(HttpManager.getApi().getStoreList(), new BaseObserver<List<CatBean>>(baseview) {
             @Override
             public void _onNext(List<CatBean> catBeanList) {
@@ -144,10 +145,11 @@ public class StoreListDialog extends TBaseDialog {
     }
 
     //扩容
-    public void requestDilation(BaseActivity baseActivity) {
-        HttpManager.toRequst(HttpManager.getApi().storeDilation(), new BaseObserver<Object>(baseActivity) {
+    public void requestDilation(HomeFragment baseActivity) {
+        HttpManager.toRequst(HttpManager.getApi().storeDilation(dilatation), new BaseObserver<Object>(baseActivity) {
             @Override
             public void _onNext(Object o) {
+                homeFragment.refresh();
                 ToastUtils.showShort("扩容成功!");
             }
 
@@ -158,7 +160,7 @@ public class StoreListDialog extends TBaseDialog {
         });
     }
 
-    public void requestGetUserInfo(BaseActivity baseActivity) {
+    public void requestGetUserInfo(HomeFragment baseActivity) {
         HttpManager.toRequst(HttpManager.getApi().getUserInfo(), new BaseObserver<User>(baseActivity) {
             @Override
             public void _onNext(User user) {

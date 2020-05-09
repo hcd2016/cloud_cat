@@ -4,7 +4,7 @@
     android:layout_height="78dp"
     android:clipChildren = "false"
     android:id="@+id/rl_item_container"
-    android:background="@drawable/shape_white_c10"
+    android:background="@drawable/shape_gray_ff2_c10"
     android:orientation="vertical">
 
         <com.vpfinace.cloud_cat.weight.DragView

@@ -18,6 +18,24 @@ public class HomeBean {
     public CatShopBean cat;
     public double aderanings;
     public List<CatBean> list;
+    public long offline_earning;//离线收益
+    public int draw_earning_way;//领取离线收益方式,1是广告,2是分享
+
+    public int getDraw_earning_way() {
+        return draw_earning_way;
+    }
+
+    public void setDraw_earning_way(int draw_earning_way) {
+        this.draw_earning_way = draw_earning_way;
+    }
+
+    public long getOffline_earning() {
+        return offline_earning;
+    }
+
+    public void setOffline_earning(long offline_earning) {
+        this.offline_earning = offline_earning;
+    }
 
     public int getDilation() {
         return dilation;
@@ -85,5 +103,61 @@ public class HomeBean {
         public int userId;
         public int coin;
         public int cash;
+
+        public Object getCreateTime() {
+            return createTime;
+        }
+
+        public void setCreateTime(Object createTime) {
+            this.createTime = createTime;
+        }
+
+        public String getUpdateTime() {
+            return updateTime;
+        }
+
+        public void setUpdateTime(String updateTime) {
+            this.updateTime = updateTime;
+        }
+
+        public Object getParams() {
+            return params;
+        }
+
+        public void setParams(Object params) {
+            this.params = params;
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
+
+        public int getUserId() {
+            return userId;
+        }
+
+        public void setUserId(int userId) {
+            this.userId = userId;
+        }
+
+        public int getCoin() {
+            return coin;
+        }
+
+        public void setCoin(int coin) {
+            this.coin = coin;
+        }
+
+        public int getCash() {
+            return cash;
+        }
+
+        public void setCash(int cash) {
+            this.cash = cash;
+        }
     }
 }

@@ -3,6 +3,7 @@ package com.vpfinace.cloud_cat.app;
 
 import android.content.Context;
 
+import com.blankj.utilcode.util.SPUtils;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.DefaultRefreshFooterCreator;
 import com.scwang.smartrefresh.layout.api.DefaultRefreshHeaderCreator;
@@ -11,6 +12,7 @@ import com.scwang.smartrefresh.layout.api.RefreshHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.vpfinace.cloud_cat.R;
 import com.vpfinace.cloud_cat.config.ConfigUtil;
+import com.vpfinace.cloud_cat.global.SpContant;
 
 import androidx.multidex.MultiDexApplication;
 
@@ -26,6 +28,7 @@ public class App extends MultiDexApplication {
         configUtil = new ConfigUtil();
 //        DoraemonKit.install(this);
 //        MyUtils.init(this);
+        SPUtils.getInstance().put(SpContant.IS_SHOW_OFFLINE,true);
     }
 
     //保存一些常用的配置

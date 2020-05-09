@@ -7,8 +7,11 @@ import android.text.TextWatcher;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.vpfinace.cloud_cat.R;
 import com.vpfinace.cloud_cat.base.BaseActivity;
+import com.vpfinace.cloud_cat.base.BaseObserver;
+import com.vpfinace.cloud_cat.http.HttpManager;
 import com.vpfinace.cloud_cat.utils.MyUtils;
 import com.vpfinace.cloud_cat.weight.MyTitle;
 
@@ -63,6 +66,22 @@ public class AuthActivity extends BaseActivity {
         });
     }
 
+    public void requestAuth(){
+        HttpManager.toRequst(HttpManager.getApi().auth(etName.getText().toString()), new BaseObserver(this) {
+            @Override
+            public void _onNext(Object o) {
+                startActivity(AuthResultActivity.class);
+                finish();
+            }
+
+            @Override
+            public void _onError(String message) {
+                ToastUtils.showShort(message);
+            }
+        });
+    }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,7 +91,6 @@ public class AuthActivity extends BaseActivity {
 
     @OnClick(R.id.btn_save)
     public void onViewClicked() {
-        startActivity(AuthResultActivity.class);
-        finish();
+        requestAuth();
     }
 }

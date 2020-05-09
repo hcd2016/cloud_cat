@@ -2,12 +2,20 @@ package com.vpfinace.cloud_cat.ui.mine.fragment;
 
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.blankj.utilcode.util.BarUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.vpfinace.cloud_cat.R;
 import com.vpfinace.cloud_cat.base.BaseFragment;
+import com.vpfinace.cloud_cat.base.BaseObserver;
+import com.vpfinace.cloud_cat.bean.MyInviteCodeBean;
+import com.vpfinace.cloud_cat.bean.User;
 import com.vpfinace.cloud_cat.dialog.RedPacketDialog;
+import com.vpfinace.cloud_cat.global.EventStrings;
+import com.vpfinace.cloud_cat.http.HttpManager;
 import com.vpfinace.cloud_cat.ui.mine.activity.AnswerActivity;
 import com.vpfinace.cloud_cat.ui.mine.activity.AuthActivity;
 import com.vpfinace.cloud_cat.ui.mine.activity.ChannelActivity;
@@ -16,6 +24,11 @@ import com.vpfinace.cloud_cat.ui.mine.activity.MsgActivity;
 import com.vpfinace.cloud_cat.ui.mine.activity.MyInviteCodeActivity;
 import com.vpfinace.cloud_cat.ui.mine.activity.MyWalletActivity;
 import com.vpfinace.cloud_cat.ui.mine.activity.SettingActivity;
+import com.vpfinace.cloud_cat.utils.GlideUtils;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -41,6 +54,16 @@ public class MineFragment extends BaseFragment {
     LinearLayout llBtnHelp;
     @BindView(R.id.ll_btn_setting)
     LinearLayout llBtnSetting;
+    @BindView(R.id.tv_invite_code)
+    TextView tvInviteCode;
+    @BindView(R.id.tv_nick_name)
+    TextView tvNickName;
+    @BindView(R.id.tv_id)
+    TextView tvId;
+    @BindView(R.id.iv_header)
+    ImageView ivHeader;
+    @BindView(R.id.tv_amount)
+    TextView tvAmount;
 
     @Override
     public int getLayoutId() {
@@ -58,6 +81,9 @@ public class MineFragment extends BaseFragment {
         ViewGroup.LayoutParams layoutParams = vStatusView.getLayoutParams();
         layoutParams.height = BarUtils.getStatusBarHeight();
         vStatusView.setLayoutParams(layoutParams);
+        EventBus.getDefault().register(this);
+        requestMyInviteCode();
+        requestGetUserInfo();
     }
 
     public static MineFragment homeFragment;
@@ -67,6 +93,51 @@ public class MineFragment extends BaseFragment {
             homeFragment = new MineFragment();
         }
         return homeFragment;
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(String event) {
+        if (event.equals(EventStrings.MINE_REFRESH)) {//刷新
+            requestMyInviteCode();
+            requestGetUserInfo();
+        }
+    }
+
+    public void requestMyInviteCode() {
+        HttpManager.toRequst(HttpManager.getApi().getInviteCode(), new BaseObserver<MyInviteCodeBean>(this) {
+            @Override
+            public void _onNext(MyInviteCodeBean myInviteCodeBean) {
+                tvInviteCode.setText(myInviteCodeBean.getInviteCode() + "");
+            }
+
+            @Override
+            public void _onError(String message) {
+                ToastUtils.showShort(message);
+            }
+        });
+    }
+
+    //获取用户信息
+    public void requestGetUserInfo() {
+        HttpManager.toRequst(HttpManager.getApi().getUserInfo(), new BaseObserver<User>(this) {
+            @Override
+            public void _onNext(User user) {
+                setViewData(user);
+            }
+
+            @Override
+            public void _onError(String message) {
+                ToastUtils.showShort(message);
+            }
+        });
+    }
+
+    private void setViewData(User user) {
+        if(user == null) return;
+        tvNickName.setText(user.getNickname());
+        tvId.setText("ID:"+user.getId());
+        tvAmount.setText(user.getUserFund().getCash()+"");
+        GlideUtils.loadCircle(getActivity(),user.getHeadImgUrl(),ivHeader);
     }
 
     @OnClick({R.id.ll_btn_red_packet, R.id.ll_btn_msg, R.id.ll_my_wallet, R.id.ll_btn_channel, R.id.ll_btn_my_invite_code, R.id.ll_btn_answer, R.id.ll_btn_auth, R.id.ll_btn_help, R.id.ll_btn_setting})
@@ -101,5 +172,11 @@ public class MineFragment extends BaseFragment {
                 startActivity(SettingActivity.class);
                 break;
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }

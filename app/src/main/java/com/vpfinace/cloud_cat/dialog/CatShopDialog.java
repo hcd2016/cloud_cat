@@ -31,6 +31,8 @@ public class CatShopDialog extends TBaseDialog {
     ImageView ivClose;
     @BindView(R.id.rv)
     RecyclerView rv;
+    @BindView(R.id.tv_amount)
+    TextView tvAmount;
     private List<CatShopBean> list;
     private MyAdapter myAdapter;
     OnBuyClickListener onBuyClickListener;
@@ -39,13 +41,18 @@ public class CatShopDialog extends TBaseDialog {
         this.onBuyClickListener = onBuyClickListener;
     }
 
-    public CatShopDialog(Context context, BaseActivity activity) {
+    public CatShopDialog(Context context, BaseActivity activity,long amount) {
         super(context, R.layout.dialog_cat_shop);
         setWindowParam(0.9f, ConvertUtils.dp2px(542), Gravity.CENTER, 0);
-        init(activity);
+        init(activity,amount);
     }
 
-    public void init(BaseActivity activity) {
+    public void updateAmount(long amount) {
+        tvAmount.setText(amount+"");
+    }
+
+    public void init(BaseActivity activity,long amount) {
+        tvAmount.setText(amount+"");
         list = new ArrayList<>();
         rv.setLayoutManager(new WrapContentLinearLayoutManager(mContext));
         myAdapter = new MyAdapter(list);
@@ -78,7 +85,6 @@ public class CatShopDialog extends TBaseDialog {
     class MyAdapter extends BaseQuickAdapter<CatShopBean, BaseViewHolder> {
 
 
-
         public MyAdapter(@Nullable List<CatShopBean> data) {
             super(R.layout.item_cat_shop, data);
         }
@@ -92,13 +98,13 @@ public class CatShopDialog extends TBaseDialog {
             TextView tvTitle = helper.getView(R.id.tv_title);
             TextView tvOutPut = helper.getView(R.id.tv_out_put);
             TextView tvPrice = helper.getView(R.id.tv_price);
-            TextView tvUnlockLevel = helper.getView(R.id.tv_unlock_level);//todo
-
+            TextView tvUnlockLevel = helper.getView(R.id.tv_unlock_level);
+            tvUnlockLevel.setText("Lv."+item.getLevel());
             Glide.with(mContext).load(item.getImg()).into(ivImg);
             tvLevel.setText(item.getLevel()+"");
             tvTitle.setText(item.getTitle());
-            tvOutPut.setText(item.getOutput()+"/s");
-            if(item.getPrice1() != null) {
+            tvOutPut.setText(item.getOutput() + "/s");
+            if (item.getPrice1() != null) {
                 tvPrice.setText(item.getPrice1());
             }
 
@@ -113,7 +119,7 @@ public class CatShopDialog extends TBaseDialog {
             helper.getView(R.id.ll_item_container).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(onBuyClickListener != null) {
+                    if (onBuyClickListener != null) {
                         onBuyClickListener.OnBuyClick(item);
                     }
                 }
@@ -121,7 +127,7 @@ public class CatShopDialog extends TBaseDialog {
         }
     }
 
-    public interface OnBuyClickListener{
+    public interface OnBuyClickListener {
         void OnBuyClick(CatShopBean catShopBean);
     }
 }

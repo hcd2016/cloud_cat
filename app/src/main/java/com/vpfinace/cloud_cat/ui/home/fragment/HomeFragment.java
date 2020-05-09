@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.ConvertUtils;
+import com.blankj.utilcode.util.SPUtils;
+import com.blankj.utilcode.util.TimeUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -26,10 +28,12 @@ import com.vpfinace.cloud_cat.bean.ViewBean;
 import com.vpfinace.cloud_cat.dialog.CatShopDialog;
 import com.vpfinace.cloud_cat.dialog.GetMoneyDialog;
 import com.vpfinace.cloud_cat.dialog.LuckyWheelDialog;
+import com.vpfinace.cloud_cat.dialog.OffLineEarningsDialog;
 import com.vpfinace.cloud_cat.dialog.RecycleDialog;
 import com.vpfinace.cloud_cat.dialog.StoreListDialog;
 import com.vpfinace.cloud_cat.dialog.ToStoreDialog;
 import com.vpfinace.cloud_cat.global.EventStrings;
+import com.vpfinace.cloud_cat.global.SpContant;
 import com.vpfinace.cloud_cat.http.HttpManager;
 import com.vpfinace.cloud_cat.ui.home.activity.DividendCatActivity;
 import com.vpfinace.cloud_cat.ui.home.activity.PicListActivity;
@@ -41,6 +45,7 @@ import com.vpfinace.cloud_cat.weight.SpaceItemDecoration;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -93,11 +98,18 @@ public class HomeFragment extends BaseFragment {
     TextView tvOutPut;
     @BindView(R.id.tv_amount)
     TextView tvAmount;
+    @BindView(R.id.v_white)
+    View vWhite;
+    @BindView(R.id.tv_get)
+    TextView tvGet;
+    @BindView(R.id.tv_get_time)
+    TextView tvGetTime;
     private MyAdapter myAdapter;
     private List<ViewBean> currentViewList;//当前显示的view
     private List<CatBean> list;
     private long amount = 0;//当前总金额
     private int outPut = 0;//当前产出
+    private CatShopDialog catShopDialog;
 
     @Override
     public int getLayoutId() {
@@ -131,7 +143,17 @@ public class HomeFragment extends BaseFragment {
         llCatContainer.setEnabled(false);
         llAddCatContainer.setEnabled(false);
         requestHomeData();
-//        initCat();
+        startGetCoinTimer();
+    }
+
+    //离线收益弹窗
+    private void showOffLineDialog(long offlineEarnings) {
+        boolean isShow = SPUtils.getInstance().getBoolean(SpContant.IS_SHOW_OFFLINE);
+        if (isShow && offlineEarnings > 0) {
+            OffLineEarningsDialog offLineEarningsDialog = new OffLineEarningsDialog(getActivity(), offlineEarnings);
+            offLineEarningsDialog.show();
+        }
+        SPUtils.getInstance().put(SpContant.IS_SHOW_OFFLINE, false);
     }
 
     public HomeBean homeBean;
@@ -145,14 +167,13 @@ public class HomeFragment extends BaseFragment {
             public void _onNext(HomeBean myHomeBean) {
                 homeBean = myHomeBean;
                 setHomeData(myHomeBean);
-                List<CatBean> catBeanList = homeBean.getList();
                 for (int i = 0; i < 12; i++) {
                     CatBean catBean = new CatBean();
                     catBean.setStorageId(i + 1);
                     catBean.setCatId(0);
                     HomeFragment.this.list.add(catBean);
                 }
-                myAdapter.notifyDataSetChanged();
+                List<CatBean> catBeanList = homeBean.getList();
                 if (catBeanList != null && catBeanList.size() != 0) {
                     for (int i = 0; i < catBeanList.size(); i++) {
                         for (int j = 0; j < HomeFragment.this.list.size(); j++) {
@@ -163,13 +184,13 @@ public class HomeFragment extends BaseFragment {
                         }
                     }
                 }
-                rlContainer.postDelayed(new Runnable() {
+                myAdapter.notifyDataSetChanged();
+                llAddCatContainer.postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         initCat();
                     }
-                }, 1000);
-
+                }, 100);
             }
 
             @Override
@@ -177,9 +198,36 @@ public class HomeFragment extends BaseFragment {
                 ToastUtils.showShort(message);
             }
         });
-        if(amountRunnerble == null) {
+        if (amountRunnerble == null) {
             startTimer();
         }
+    }
+
+    //领取收益
+    public void requestGetEarnings(boolean isDialog) {
+        HttpManager.toRequst(HttpManager.getApi().getEarnings(), new BaseObserver(this) {
+            @Override
+            public void _onNext(Object o) {
+                if (isDialog) {
+                    GetMoneyDialog getMoneyDialog = new GetMoneyDialog(getActivity());
+                    getMoneyDialog.setOnCommitClickListener(new GetMoneyDialog.OnCommitClickListener() {
+                        @Override
+                        public void onClick() {
+                            getCoinRemainMil = 59 * 60 * 1000 + 59 * 1000;
+                            startGetCoinTimer();
+                        }
+                    });
+                    getMoneyDialog.show();
+                } else {
+
+                }
+            }
+
+            @Override
+            public void _onError(String message) {
+                ToastUtils.showShort(message);
+            }
+        });
     }
 
     private void setHomeData(HomeBean myHomeBean) {
@@ -195,11 +243,12 @@ public class HomeFragment extends BaseFragment {
             for (CatBean catBean : list) {
                 outPut += catBean.getOutput();
             }
-            this.outPut = outPut;
             tvOutPut.setText(outPut + "/s");
         } else {
             tvOutPut.setText("0/s");
         }
+        this.outPut = outPut;
+        showOffLineDialog(myHomeBean.getOffline_earning());
     }
 
     //刷新数据
@@ -213,7 +262,7 @@ public class HomeFragment extends BaseFragment {
         HttpManager.toRequst(HttpManager.getApi().mergeCat(from, to), new BaseObserver<Object>(this) {
             @Override
             public void _onNext(Object o) {
-
+                refresh();
             }
 
             @Override
@@ -228,9 +277,10 @@ public class HomeFragment extends BaseFragment {
         HttpManager.toRequst(HttpManager.getApi().putInStore(catBean.getCatId(), catBean.getStorageId()), new BaseObserver<Object>(this) {
             @Override
             public void _onNext(Object o) {
-                catBean.setCatId(0);
-                notifyViewDataChange();
+//                catBean.setCatId(0);
+//                notifyViewDataChange();
                 ToastUtils.showShort("放入成功");
+                refresh();
             }
 
             @Override
@@ -273,18 +323,23 @@ public class HomeFragment extends BaseFragment {
         });
     }
 
+    boolean isRequest = false;
+
     //购买猫咪
     public void requestBuyCat(int catId) {
+        isRequest = true;
         HttpManager.toRequst(HttpManager.getApi().buyCat(catId), new BaseObserver(this) {
             @Override
             public void _onNext(Object o) {
                 refresh();
                 ToastUtils.showShort("购买成功!");
+                isRequest = false;
             }
 
             @Override
             public void _onError(String message) {
                 ToastUtils.showShort(message);
+                isRequest = false;
             }
         });
     }
@@ -327,10 +382,10 @@ public class HomeFragment extends BaseFragment {
                             requestMergeCat(fromId, toId);
                         } else {//不是空的,看等级是否相同
                             if (fromCatBean.getCatLevel() == toCatBean.getCatLevel()) {//等级相同,合成
-                                toCatBean.setCatLevel(toCatBean.getCatLevel() + 1);
-                                fromCatBean.setCatId(0);
+//                                toCatBean.setCatLevel(toCatBean.getCatLevel() + 1);
+//                                fromCatBean.setCatId(0);
                                 fromCatBean.getView().setVisibility(View.GONE);
-
+                                toCatBean.getView().setVisibility(View.GONE);
                                 RelativeLayout rl_item_container = (RelativeLayout) myAdapter.getViewByPosition(rv, postion, R.id.rl_item_container);
                                 GifView gif_view = rl_item_container.findViewById(R.id.gif_view);
                                 gif_view.setVisibility(View.VISIBLE);
@@ -345,10 +400,11 @@ public class HomeFragment extends BaseFragment {
                                         gif_view.setVisibility(View.GONE);
 //                                        notifyViewDataChange();
                                         finalViewBean.getView().setVisibility(View.VISIBLE);
+                                        toCatBean.getView().setVisibility(View.GONE);
+                                        requestAmountSync();
+                                        requestMergeCat(fromCatBean.getStorageId(), toCatBean.getStorageId());
                                     }
                                 }, 300);
-                                toCatBean.getView().setVisibility(View.GONE);
-                                requestMergeCat(fromCatBean.getStorageId(), toCatBean.getStorageId());
                             } else {//等级不同,互换位置
                                 int fromId = fromCatBean.getStorageId();
                                 int toId = toCatBean.getStorageId();
@@ -369,6 +425,7 @@ public class HomeFragment extends BaseFragment {
                             @Override
                             public void onConfirmClick() {
                                 dragView.setVisibility(View.GONE);
+                                requestAmountSync();
                                 requestGcCat(list.get(finalI));
                             }
                         });
@@ -389,6 +446,7 @@ public class HomeFragment extends BaseFragment {
                         toStoreDialog.setOnComfirmClickListener(new ToStoreDialog.OnComfirmClickListener() {
                             @Override
                             public void onComfirmClick() {
+                                requestAmountSync();
                                 requestInPutStore(list.get(finalI));
                             }
                         });
@@ -426,7 +484,7 @@ public class HomeFragment extends BaseFragment {
         return homeFragment;
     }
 
-   /**
+    /**
      * 计算移动到所属位置
      *
      * @param x
@@ -458,20 +516,54 @@ public class HomeFragment extends BaseFragment {
         }
     }
 
+    //获取当前总金额
+    public long getAmount() {
+        return amount;
+    }
+
     boolean isHadEmpty = false;
 
     @OnClick({R.id.iv_shop, R.id.ll_add_cat_container, R.id.ll_cat_container, R.id.rl_get_money_container, R.id.iv_lucky_wheel, R.id.iv_top, R.id.iv_how_to_play, R.id.ll_dividends_cat_container, R.id.ll_pic_guide_container, R.id.ll_store_container})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_cat_container:
+                if (isRequest) {
+                    return;
+                }
+                isHadEmpty = false;
+                for (CatBean catBean1 : list) {
+                    if (catBean1.getCatId() == 0) {
+                        isHadEmpty = true;
+                        break;
+                    }
+                }
+                if (!isHadEmpty) {//没有空格子
+                    ToastUtils.showShort("猫咪已满,请先合成!");
+                    return;
+                }
+                requestAmountSync();
                 requestBuyCat(homeBean.getCat().getId());
                 break;
             case R.id.ll_add_cat_container:
+                if (isRequest) {
+                    return;
+                }
+                isHadEmpty = false;
+                for (CatBean catBean1 : list) {
+                    if (catBean1.getCatId() == 0) {
+                        isHadEmpty = true;
+                        break;
+                    }
+                }
+                if (!isHadEmpty) {//没有空格子
+                    ToastUtils.showShort("猫咪已满,请先合成!");
+                    return;
+                }
+                requestAmountSync();
                 requestBuyCat(homeBean.getCat().getId());
                 break;
             case R.id.rl_get_money_container://领取金币
-                GetMoneyDialog getMoneyDialog = new GetMoneyDialog(getActivity());
-                getMoneyDialog.show();
+                requestGetEarnings(true);
                 break;
             case R.id.iv_lucky_wheel:
                 LuckyWheelDialog luckyWheelDialog = new LuckyWheelDialog(getActivity());
@@ -495,7 +587,7 @@ public class HomeFragment extends BaseFragment {
                 break;
             case R.id.ll_store_container:
                 StoreListDialog storeListDialog = new StoreListDialog(getActivity());
-                storeListDialog.init((BaseActivity) getActivity(), homeBean.getDilation());
+                storeListDialog.init(this, homeBean.getDilation());
                 storeListDialog.show();
                 storeListDialog.setOnClickListener(new StoreListDialog.OnClickListener() {
                     @Override
@@ -504,6 +596,7 @@ public class HomeFragment extends BaseFragment {
                         for (CatBean catBean1 : list) {
                             if (catBean1.getCatId() == 0) {
                                 isHadEmpty = true;
+                                requestAmountSync();
                                 requestGetOutCat(catBean.getCatId());
                                 break;
                             }
@@ -515,24 +608,30 @@ public class HomeFragment extends BaseFragment {
                 });
                 break;
             case R.id.iv_shop:
-                CatShopDialog catShopDialog = new CatShopDialog(getActivity(), (BaseActivity) getActivity());
-                catShopDialog.show();
-                catShopDialog.setOnBuyClickListener(new CatShopDialog.OnBuyClickListener() {
-                    @Override
-                    public void OnBuyClick(CatShopBean catShopBean) {//商店购买列表
-                        isHadEmpty = false;
-                        for (CatBean catBean1 : list) {
-                            if (catBean1.getCatId() == 0) {
-                                isHadEmpty = true;
-                                requestBuyCat(catShopBean.getId());
-                                break;
+                if (catShopDialog == null) {
+                    catShopDialog = new CatShopDialog(getActivity(), (BaseActivity) getActivity(), amount);
+                    catShopDialog.show();
+                    catShopDialog.setOnBuyClickListener(new CatShopDialog.OnBuyClickListener() {
+                        @Override
+                        public void OnBuyClick(CatShopBean catShopBean) {//商店购买列表
+                            isHadEmpty = false;
+                            for (CatBean catBean1 : list) {
+                                if (catBean1.getCatId() == 0) {
+                                    isHadEmpty = true;
+                                    requestBuyCat(catShopBean.getId());
+                                    break;
+                                }
+                            }
+                            if (!isHadEmpty) {//没有空格子
+                                ToastUtils.showShort("猫咪已满,请先回收猫咪!");
                             }
                         }
-                        if (!isHadEmpty) {//没有空格子
-                            ToastUtils.showShort("猫咪已满,请先回收猫咪!");
-                        }
+                    });
+                } else {
+                    if (!catShopDialog.isShowing()) {
+                        catShopDialog.show();
                     }
-                });
+                }
                 break;
         }
     }
@@ -551,13 +650,16 @@ public class HomeFragment extends BaseFragment {
                 public void run() {
                     amount += outPut;
                     tvAmount.setText(amount + "");
+                    if (catShopDialog != null && catShopDialog.isShowing()) {
+                        catShopDialog.updateAmount(amount);
+                    }
                     amountHandler.postDelayed(this, 1000);
                 }
             };
             amountHandler.postDelayed(amountRunnerble, 0);
         }
 
-        if(requestRunnerble == null) {
+        if (requestRunnerble == null) {
             requestRunnerble = new Runnable() {
                 @Override
                 public void run() {
@@ -566,7 +668,7 @@ public class HomeFragment extends BaseFragment {
                     requestHandler.postDelayed(this, 5000);
                 }
             };
-            requestHandler.postDelayed(requestRunnerble,0);
+            requestHandler.postDelayed(requestRunnerble, 0);
         }
     }
 
@@ -578,8 +680,45 @@ public class HomeFragment extends BaseFragment {
         amountRunnerble = null;
     }
 
-    public void requestAmountSync(){
-        HttpManager.toRequst(HttpManager.getApi().amountSync(amount), new BaseObserver(this,false) {
+    private Handler getCoinHandler = new Handler();
+    private Runnable getCoinRunnable;
+    private long getCoinRemainMil = 70000;//剩余毫秒
+
+    //领取金币倒计时
+    public void startGetCoinTimer() {
+        if (getCoinRemainMil > 0) {
+            rlGetMoneyContainer.setEnabled(false);
+            tvGet.setVisibility(View.GONE);
+            tvGetTime.setVisibility(View.VISIBLE);
+            tvGetTime.setText(TimeUtils.millis2String(getCoinRemainMil, new SimpleDateFormat("mm:ss")));
+        }
+        if (getCoinRunnable == null) {
+            getCoinRunnable = new Runnable() {
+                @Override
+                public void run() {
+                    if (getCoinRemainMil == 0) {
+                        getCoinHandler.removeCallbacksAndMessages(this);
+                        getCoinRunnable = null;
+                        tvGet.setVisibility(View.VISIBLE);
+                        tvGetTime.setVisibility(View.GONE);
+                        rlGetMoneyContainer.setEnabled(true);
+                        return;
+                    }
+                    rlGetMoneyContainer.setEnabled(false);
+                    tvGet.setVisibility(View.GONE);
+                    tvGetTime.setVisibility(View.VISIBLE);
+                    tvGetTime.setText(TimeUtils.millis2String(getCoinRemainMil, new SimpleDateFormat("mm:ss")));
+                    getCoinHandler.postDelayed(this, 1000);
+                    getCoinRemainMil -= 1000;
+                }
+            };
+            getCoinHandler.postDelayed(getCoinRunnable, 0);
+        }
+    }
+
+
+    public void requestAmountSync() {
+        HttpManager.toRequst(HttpManager.getApi().amountSync(amount), new BaseObserver(this, false) {
             @Override
             public void _onNext(Object o) {
 //                ToastUtils.showShort("提交成功");

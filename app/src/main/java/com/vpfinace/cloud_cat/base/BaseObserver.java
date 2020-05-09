@@ -43,12 +43,16 @@ public abstract class BaseObserver<T> extends DisposableObserver<BaseResponse<T>
     @Override
     protected void onStart() {
         super.onStart();
-        view.showLoading();
+        if(isShowDialog) {
+            view.showLoading();
+        }
     }
 
     @Override
     public void onError(Throwable e) {
-        view.FinishLoading();
+        if(isShowDialog) {
+            view.FinishLoading();
+        }
         e.printStackTrace();
         if (!NetworkUtils.isConnected() || !NetworkUtils.isAvailableByPing()) {
             _onError("网络不可用");
@@ -80,7 +84,9 @@ public abstract class BaseObserver<T> extends DisposableObserver<BaseResponse<T>
 
     @Override
     public void onComplete() {
-        view.FinishLoading();
+        if(isShowDialog) {
+            view.FinishLoading();
+        }
     }
 
     public abstract void _onNext(T t);

@@ -2,10 +2,14 @@ package com.vpfinace.cloud_cat.ui.mine.activity;
 
 import android.os.Bundle;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.vpfinace.cloud_cat.R;
 import com.vpfinace.cloud_cat.base.BaseActivity;
+import com.vpfinace.cloud_cat.base.BaseObserver;
+import com.vpfinace.cloud_cat.bean.MsgBean;
+import com.vpfinace.cloud_cat.http.HttpManager;
 import com.vpfinace.cloud_cat.weight.WrapContentLinearLayoutManager;
 
 import java.util.ArrayList;
@@ -22,6 +26,8 @@ import butterknife.ButterKnife;
 public class MsgActivity extends BaseActivity {
     @BindView(R.id.rv)
     RecyclerView rv;
+    private List<MsgBean> list;
+    private MyAdapter myAdapter;
 
     @Override
     public int getLayoutId() {
@@ -36,13 +42,26 @@ public class MsgActivity extends BaseActivity {
     @Override
     protected void initView() {
         super.initView();
-        List<String> list = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            list.add("" + i);
-        }
-        MyAdapter myAdapter = new MyAdapter(list);
+        list = new ArrayList<>();
+        myAdapter = new MyAdapter(list);
         rv.setLayoutManager(new WrapContentLinearLayoutManager(this));
         rv.setAdapter(myAdapter);
+        requestMsgList();
+    }
+
+    public void requestMsgList() {
+        HttpManager.toRequst(HttpManager.getApi().getMsgList(), new BaseObserver<List<MsgBean>>(this) {
+            @Override
+            public void _onNext(List<MsgBean> msgList) {
+                list.addAll(msgList);
+                myAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void _onError(String message) {
+                ToastUtils.showShort(message);
+            }
+        });
     }
 
     @Override
@@ -52,15 +71,18 @@ public class MsgActivity extends BaseActivity {
         ButterKnife.bind(this);
     }
 
-    class MyAdapter extends BaseQuickAdapter<String, BaseViewHolder> {
+    class MyAdapter extends BaseQuickAdapter<MsgBean, BaseViewHolder> {
 
-        public MyAdapter(@Nullable List<String> data) {
+
+        public MyAdapter(@Nullable List<MsgBean> data) {
             super(R.layout.item_msg, data);
         }
 
         @Override
-        protected void convert(BaseViewHolder helper, String item) {
-
+        protected void convert(BaseViewHolder helper, MsgBean item) {
+            helper.setText(R.id.tv_time,item.getCreateTime());
+            helper.setText(R.id.tv_title,item.getTitle());
+            helper.setText(R.id.tv_content,item.getContent());
         }
     }
 }

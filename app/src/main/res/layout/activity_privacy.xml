@@ -14,6 +14,7 @@
     <include layout="@layout/spe_10dp_gray_f5"/>
 
     <LinearLayout
+        android:id="@+id/ll_setting_socialinfo"
         android:gravity="center_vertical"
         style="@style/white_btn_click_style"
         android:paddingBottom="21dp"
@@ -77,6 +78,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"/>
         <ImageView
+            android:id="@+id/iv_master"
             android:src="@drawable/setting_switch_open"
             android:layout_width="53dp"
             android:layout_height="36dp"/>
@@ -119,6 +121,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"/>
         <ImageView
+            android:id="@+id/iv_friend"
             android:src="@drawable/setting_switch_open"
             android:layout_width="53dp"
             android:layout_height="36dp"/>

@@ -7,8 +7,11 @@ import android.text.TextWatcher;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.vpfinace.cloud_cat.R;
 import com.vpfinace.cloud_cat.base.BaseActivity;
+import com.vpfinace.cloud_cat.base.BaseObserver;
+import com.vpfinace.cloud_cat.http.HttpManager;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -88,6 +91,20 @@ public class SocialInfoActivity extends BaseActivity {
         });
     }
 
+    public void requestCommit(){
+        HttpManager.toRequst(HttpManager.getApi().socialInfoCommit(etQq.getText().toString(), etWeixin.getText().toString()), new BaseObserver(this) {
+            @Override
+            public void _onNext(Object o) {
+                ToastUtils.showShort("保存成功!");
+                finish();
+            }
+
+            @Override
+            public void _onError(String message) {
+                ToastUtils.showShort(message);
+            }
+        });
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,5 +114,6 @@ public class SocialInfoActivity extends BaseActivity {
 
     @OnClick(R.id.btn_save)
     public void onViewClicked() {
+        requestCommit();
     }
 }

@@ -11,8 +11,12 @@ import android.widget.TextView;
 import com.blankj.utilcode.util.ToastUtils;
 import com.vpfinace.cloud_cat.R;
 import com.vpfinace.cloud_cat.base.BaseActivity;
+import com.vpfinace.cloud_cat.base.BaseObserver;
+import com.vpfinace.cloud_cat.bean.User;
+import com.vpfinace.cloud_cat.http.HttpManager;
 import com.vpfinace.cloud_cat.utils.CountDownTimerUtils;
 import com.vpfinace.cloud_cat.utils.MyUtils;
+import com.vpfinace.cloud_cat.weight.MyTitle;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,6 +31,8 @@ public class BindPhoneActivity extends BaseActivity {
     EditText etVercode;
     @BindView(R.id.btn_save)
     TextView btnSave;
+    @BindView(R.id.title)
+    MyTitle title;
     private CountDownTimerUtils countDownTimerUtils;
 
     @Override
@@ -46,6 +52,62 @@ public class BindPhoneActivity extends BaseActivity {
         ButterKnife.bind(this);
     }
 
+    private boolean isBindPhone = true;
+
+    //获取用户信息
+    public void requestGetUserInfo() {
+        HttpManager.toRequst(HttpManager.getApi().getUserInfo(), new BaseObserver<User>(this) {
+            @Override
+            public void _onNext(User user) {
+                if (TextUtils.isEmpty(user.getPhone())) {
+                    title.setTitle("绑定手机号");
+                }else {
+                    isBindPhone = false;
+                    title.setTitle("更换手机号");
+                    etPhone.setText(user.getPhone()+"");
+                }
+            }
+
+            @Override
+            public void _onError(String message) {
+                ToastUtils.showShort(message);
+            }
+        });
+    }
+
+    public void requestGetVerCode(){
+        HttpManager.toRequst(HttpManager.getApi().getVerifyCode(etPhone.getText().toString()), new BaseObserver(this) {
+            @Override
+            public void _onNext(Object o) {
+                ToastUtils.showShort("发送成功!");
+            }
+
+            @Override
+            public void _onError(String message) {
+                ToastUtils.showShort(message);
+            }
+        });
+    }
+
+    //绑定(更换手机号)
+    public void requestBindPhone(){
+        HttpManager.toRequst(HttpManager.getApi().bindPhone(etPhone.getText().toString(),etVercode.getText().toString()), new BaseObserver(this) {
+            @Override
+            public void _onNext(Object o) {
+                if(isBindPhone) {
+                    ToastUtils.showShort("绑定成功!");
+                }else {
+                    ToastUtils.showShort("更换成功!");
+                }
+                finish();
+            }
+
+            @Override
+            public void _onError(String message) {
+                ToastUtils.showShort(message);
+            }
+        });
+    }
     private boolean isPhoneEmpty = true;
     private boolean isCodeEmpty = true;
 
@@ -109,6 +171,7 @@ public class BindPhoneActivity extends BaseActivity {
                 }
             }
         });
+        requestGetUserInfo();
     }
 
     @OnClick({R.id.tv_btn_get_code, R.id.btn_save})
@@ -118,6 +181,7 @@ public class BindPhoneActivity extends BaseActivity {
                 countDownTimerUtils = new CountDownTimerUtils(tvBtnGetCode, 10000 + 50, 1000,
                         R.drawable.shape_gray_f4_c12, R.drawable.shape_red_554_c12, MyUtils.getColor(R.color.black_9), MyUtils.getColor(R.color.white), "s 可重发", "重新获取");
                 countDownTimerUtils.start();
+                requestGetVerCode();
                 break;
             case R.id.btn_save:
                 if (isPhoneEmpty) {
@@ -128,6 +192,7 @@ public class BindPhoneActivity extends BaseActivity {
                     ToastUtils.showShort("验证码不能为空");
                     return;
                 }
+                requestBindPhone();
                 break;
         }
     }

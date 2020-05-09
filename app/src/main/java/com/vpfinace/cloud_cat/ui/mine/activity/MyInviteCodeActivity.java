@@ -10,7 +10,10 @@ import android.widget.TextView;
 import com.blankj.utilcode.util.ToastUtils;
 import com.vpfinace.cloud_cat.R;
 import com.vpfinace.cloud_cat.base.BaseActivity;
+import com.vpfinace.cloud_cat.base.BaseObserver;
+import com.vpfinace.cloud_cat.bean.MyInviteCodeBean;
 import com.vpfinace.cloud_cat.dialog.MyInviteFriendDialog;
+import com.vpfinace.cloud_cat.http.HttpManager;
 import com.vpfinace.cloud_cat.utils.MyUtils;
 import com.vpfinace.cloud_cat.weight.MyTitle;
 
@@ -30,6 +33,10 @@ public class MyInviteCodeActivity extends BaseActivity {
     TextView tvInviteCode;
     @BindView(R.id.title)
     MyTitle title;
+    @BindView(R.id.tv_invite_fr_counts)
+    TextView tvInviteFrCounts;
+    @BindView(R.id.tv_diffusion_fr_counts)
+    TextView tvDiffusionFrCounts;
 
     @Override
     public int getLayoutId() {
@@ -52,7 +59,33 @@ public class MyInviteCodeActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
+        requestMyInviteCode();
     }
+
+
+    public void requestMyInviteCode() {
+        HttpManager.toRequst(HttpManager.getApi().getInviteCode(), new BaseObserver<MyInviteCodeBean>(this) {
+            @Override
+            public void _onNext(MyInviteCodeBean myInviteCodeBean) {
+                setViewData(myInviteCodeBean);
+            }
+
+            @Override
+            public void _onError(String message) {
+                ToastUtils.showShort(message);
+            }
+        });
+    }
+
+    private void setViewData(MyInviteCodeBean myInviteCodeBean) {
+        if (myInviteCodeBean == null) {
+            return;
+        }
+        tvInviteCode.setText(myInviteCodeBean.getInviteCode()+"");
+        tvInviteFrCounts.setText(myInviteCodeBean.getInviteNum()+"");
+        tvDiffusionFrCounts.setText(myInviteCodeBean.getDiffusionNum()+"");
+    }
+
 
     @OnClick({R.id.tv_btn_copy, R.id.tv_btn_invite})
     public void onViewClicked(View view) {
