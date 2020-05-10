@@ -11,6 +11,7 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.vpfinace.cloud_cat.R;
 import com.vpfinace.cloud_cat.base.BaseActivity;
 import com.vpfinace.cloud_cat.base.BaseObserver;
+import com.vpfinace.cloud_cat.bean.CatteryBean;
 import com.vpfinace.cloud_cat.bean.MyInviteCodeBean;
 import com.vpfinace.cloud_cat.dialog.MyInviteFriendDialog;
 import com.vpfinace.cloud_cat.http.HttpManager;
@@ -37,6 +38,7 @@ public class MyInviteCodeActivity extends BaseActivity {
     TextView tvInviteFrCounts;
     @BindView(R.id.tv_diffusion_fr_counts)
     TextView tvDiffusionFrCounts;
+    private CatteryBean catteryBean;
 
     @Override
     public int getLayoutId() {
@@ -51,7 +53,15 @@ public class MyInviteCodeActivity extends BaseActivity {
     @Override
     protected void initView() {
         super.initView();
-        title.setTitleBackgroudColor(MyUtils.getColor(R.color.gray_f5)).setIsRightTextVisible(View.VISIBLE);
+        title.setTitleBackgroudColor(MyUtils.getColor(R.color.gray_f5)).setIsRightTextVisible(View.VISIBLE).setOnRightTextClickListener(new MyTitle.OnRightTextClickListener() {
+            @Override
+            public void rightTextClick() {//我的邀请人
+                if(catteryBean != null) {
+                    MyInviteFriendDialog myInviteFriendDialog = new MyInviteFriendDialog(MyInviteCodeActivity.this,catteryBean.getMyInviter());
+                    myInviteFriendDialog.show();
+                }
+            }
+        });
     }
 
     @Override
@@ -60,6 +70,7 @@ public class MyInviteCodeActivity extends BaseActivity {
         // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
         requestMyInviteCode();
+        requestCatteyInfo();
     }
 
 
@@ -68,6 +79,20 @@ public class MyInviteCodeActivity extends BaseActivity {
             @Override
             public void _onNext(MyInviteCodeBean myInviteCodeBean) {
                 setViewData(myInviteCodeBean);
+            }
+
+            @Override
+            public void _onError(String message) {
+                ToastUtils.showShort(message);
+            }
+        });
+    }
+
+    public void requestCatteyInfo() {
+        HttpManager.toRequst(HttpManager.getApi().getCatteryInfo(), new BaseObserver<CatteryBean>(this) {
+            @Override
+            public void _onNext(CatteryBean catteryBean) {
+                MyInviteCodeActivity.this.catteryBean = catteryBean;
             }
 
             @Override
@@ -97,8 +122,7 @@ public class MyInviteCodeActivity extends BaseActivity {
                 ToastUtils.showShort("复制成功");
                 break;
             case R.id.tv_btn_invite:
-                MyInviteFriendDialog myInviteFriendDialog = new MyInviteFriendDialog(this);
-                myInviteFriendDialog.show();
+
                 break;
         }
     }

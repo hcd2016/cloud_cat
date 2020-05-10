@@ -39,7 +39,7 @@ public class InviteRecordsActivity extends BaseActivity {
     protected void initView() {
         super.initView();
         myTitle.setTitleBackgroudColor(MyUtils.getColor(R.color.gray_f5));
-        tabs = new String[]{"直邀好友","扩散好友","待激活"};
+        tabs = new String[]{"直邀好友","扩散好友"};
         viewPager.setAdapter(new MyAdapter(getSupportFragmentManager()));
         tableLayout.setViewPager(viewPager, tabs);
     }
@@ -59,7 +59,7 @@ public class InviteRecordsActivity extends BaseActivity {
 
         @Override
         public Fragment getItem(int position) {
-            return new InviteRecordsFragment();
+            return InviteRecordsFragment.getInstance(position);
         }
 
         @Override

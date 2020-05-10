@@ -101,7 +101,7 @@ public class HomeBean {
         public Object params;
         public int id;
         public int userId;
-        public int coin;
+        public long coin;
         public int cash;
 
         public Object getCreateTime() {
@@ -144,11 +144,11 @@ public class HomeBean {
             this.userId = userId;
         }
 
-        public int getCoin() {
+        public long getCoin() {
             return coin;
         }
 
-        public void setCoin(int coin) {
+        public void setCoin(long coin) {
             this.coin = coin;
         }
 

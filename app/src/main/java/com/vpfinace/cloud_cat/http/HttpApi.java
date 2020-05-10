@@ -5,12 +5,16 @@ import com.vpfinace.cloud_cat.base.BaseResponse;
 import com.vpfinace.cloud_cat.bean.CatBean;
 import com.vpfinace.cloud_cat.bean.CatPicBean;
 import com.vpfinace.cloud_cat.bean.CatShopBean;
+import com.vpfinace.cloud_cat.bean.CatteryBean;
+import com.vpfinace.cloud_cat.bean.GetEarningsBean;
 import com.vpfinace.cloud_cat.bean.HomeBean;
 import com.vpfinace.cloud_cat.bean.LoginBean;
 import com.vpfinace.cloud_cat.bean.MsgBean;
 import com.vpfinace.cloud_cat.bean.MyInviteCodeBean;
 import com.vpfinace.cloud_cat.bean.TopBean;
 import com.vpfinace.cloud_cat.bean.User;
+import com.vpfinace.cloud_cat.bean.WalletBean;
+import com.vpfinace.cloud_cat.bean.WalletRecordBean;
 
 import java.util.List;
 
@@ -207,7 +211,29 @@ public interface HttpApi {
 
     /**
      * 领取收益
+     * action=1获取剩余时间,action=2领取金币
      */
+    @FormUrlEncoded
     @POST("api/front/action/drawearning")
-    Observable<BaseResponse<Object>> getEarnings();
+    Observable<BaseResponse<GetEarningsBean>> getEarnings(@Field("action") String action);
+
+    /**
+     * 猫舍信息
+     */
+    @POST("api/front/client/cattery")
+    Observable<BaseResponse<CatteryBean>> getCatteryInfo();
+
+    /**
+     * 资产记录
+     */
+    @POST("api/front/client/capitalrecord")
+    Observable<BaseResponse<WalletRecordBean>> getWalletRecordList();
+
+    /**
+     * 我的钱包
+     */
+    @POST("api/front/client/wallet")
+    Observable<BaseResponse<WalletBean>> getWallet();
+
+
 }

@@ -10,6 +10,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <TextView
+            android:id="@+id/tv_step"
             android:gravity="center"
             android:layout_weight="1"
             android:layout_width="0dp"
@@ -19,6 +20,7 @@
             android:textSize="14sp"
             />
         <TextView
+            android:id="@+id/tv_target"
             android:gravity="center"
             android:layout_weight="1"
             android:layout_width="0dp"
@@ -28,6 +30,7 @@
             android:textSize="14sp"
             />
         <TextView
+            android:id="@+id/tv_sl"
             android:gravity="center"
             android:layout_weight="1"
             android:layout_width="0dp"

@@ -8,8 +8,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.BarUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.vpfinace.cloud_cat.R;
 import com.vpfinace.cloud_cat.base.BaseActivity;
+import com.vpfinace.cloud_cat.base.BaseObserver;
+import com.vpfinace.cloud_cat.bean.WalletBean;
+import com.vpfinace.cloud_cat.http.HttpManager;
 import com.vpfinace.cloud_cat.utils.MyUtils;
 
 import butterknife.BindView;
@@ -75,6 +79,8 @@ public class MyWalletActivity extends BaseActivity {
     ImageView ivAplipayIcon;
     @BindView(R.id.tv_alipay)
     TextView tvAlipay;
+    @BindView(R.id.tv_amount)
+    TextView tvAmount;
 
     @Override
     public int getLayoutId() {
@@ -93,6 +99,7 @@ public class MyWalletActivity extends BaseActivity {
         layoutParams.height = BarUtils.getStatusBarHeight();
         vStatusView.setLayoutParams(layoutParams);
         btnSave.setEnabled(true);
+        requestWallet();
     }
 
     @Override
@@ -100,6 +107,26 @@ public class MyWalletActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
+    }
+
+    public void requestWallet() {
+        HttpManager.toRequst(HttpManager.getApi().getWallet(), new BaseObserver<WalletBean>(this) {
+            @Override
+            public void _onNext(WalletBean walletBean) {
+                setViewData(walletBean);
+            }
+
+            @Override
+            public void _onError(String message) {
+                ToastUtils.showShort(message);
+            }
+        });
+    }
+
+    private void setViewData(WalletBean walletBean) {
+        if(walletBean != null) {
+            tvAmount.setText(walletBean.getFund().getCash()+"");
+        }
     }
 
 

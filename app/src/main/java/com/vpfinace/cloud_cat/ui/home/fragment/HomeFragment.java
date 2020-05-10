@@ -23,6 +23,7 @@ import com.vpfinace.cloud_cat.base.BaseFragment;
 import com.vpfinace.cloud_cat.base.BaseObserver;
 import com.vpfinace.cloud_cat.bean.CatBean;
 import com.vpfinace.cloud_cat.bean.CatShopBean;
+import com.vpfinace.cloud_cat.bean.GetEarningsBean;
 import com.vpfinace.cloud_cat.bean.HomeBean;
 import com.vpfinace.cloud_cat.bean.ViewBean;
 import com.vpfinace.cloud_cat.dialog.CatShopDialog;
@@ -47,6 +48,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import androidx.annotation.Nullable;
@@ -144,6 +146,7 @@ public class HomeFragment extends BaseFragment {
         llAddCatContainer.setEnabled(false);
         requestHomeData();
         startGetCoinTimer();
+        requestGetEarnings(1);
     }
 
     //离线收益弹窗
@@ -203,23 +206,37 @@ public class HomeFragment extends BaseFragment {
         }
     }
 
+
     //领取收益
-    public void requestGetEarnings(boolean isDialog) {
-        HttpManager.toRequst(HttpManager.getApi().getEarnings(), new BaseObserver(this) {
+    public void requestGetEarnings(int action) {
+        HttpManager.toRequst(HttpManager.getApi().getEarnings(action+""), new BaseObserver<GetEarningsBean>(this) {
             @Override
-            public void _onNext(Object o) {
-                if (isDialog) {
-                    GetMoneyDialog getMoneyDialog = new GetMoneyDialog(getActivity());
+            public void _onNext(GetEarningsBean o) {
+                long endTimeSecs = o.getEndTimeSecs();//可领取时间的毫秒值
+                long currentTimeMillis = System.currentTimeMillis();
+                String date = TimeUtils.millis2String(endTimeSecs);
+                if(endTimeSecs - currentTimeMillis <= 0) {//可以领取
+                    getCoinRemainMil = 0;
+                } else {
+                    getCoinRemainMil = endTimeSecs - currentTimeMillis;
+                }
+                if (action == 2) {
+                    GetMoneyDialog getMoneyDialog = new GetMoneyDialog(getActivity(),o.getEarnings());
                     getMoneyDialog.setOnCommitClickListener(new GetMoneyDialog.OnCommitClickListener() {
                         @Override
                         public void onClick() {
-                            getCoinRemainMil = 59 * 60 * 1000 + 59 * 1000;
-                            startGetCoinTimer();
+//                            getCoinRemainMil = 59 * 60 * 1000 + 59 * 1000;
+//                            getCoinRemainMil = endTimeSecs -  System.currentTimeMillis();
                         }
                     });
                     getMoneyDialog.show();
+                    getCoinRemainMil = endTimeSecs -  System.currentTimeMillis();
+                    amount += o.getEarnings();
+                    requestAmountSync();
+                    refresh();
+                    startGetCoinTimer();
                 } else {
-
+                    startGetCoinTimer();
                 }
             }
 
@@ -563,7 +580,7 @@ public class HomeFragment extends BaseFragment {
                 requestBuyCat(homeBean.getCat().getId());
                 break;
             case R.id.rl_get_money_container://领取金币
-                requestGetEarnings(true);
+                requestGetEarnings(2);
                 break;
             case R.id.iv_lucky_wheel:
                 LuckyWheelDialog luckyWheelDialog = new LuckyWheelDialog(getActivity());
@@ -665,7 +682,7 @@ public class HomeFragment extends BaseFragment {
                 public void run() {
                     //todo 同步数据
                     requestAmountSync();
-                    requestHandler.postDelayed(this, 5000);
+                    requestHandler.postDelayed(this, 5000* 1000);
                 }
             };
             requestHandler.postDelayed(requestRunnerble, 0);
@@ -682,7 +699,7 @@ public class HomeFragment extends BaseFragment {
 
     private Handler getCoinHandler = new Handler();
     private Runnable getCoinRunnable;
-    private long getCoinRemainMil = 70000;//剩余毫秒
+    private long getCoinRemainMil = 0;//剩余毫秒
 
     //领取金币倒计时
     public void startGetCoinTimer() {
@@ -696,7 +713,7 @@ public class HomeFragment extends BaseFragment {
             getCoinRunnable = new Runnable() {
                 @Override
                 public void run() {
-                    if (getCoinRemainMil == 0) {
+                    if (getCoinRemainMil <= 0) {
                         getCoinHandler.removeCallbacksAndMessages(this);
                         getCoinRunnable = null;
                         tvGet.setVisibility(View.VISIBLE);
