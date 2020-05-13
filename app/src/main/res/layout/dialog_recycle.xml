@@ -15,6 +15,7 @@
         android:src="@drawable/homepage_popup_icon_close_gray" />
 
     <ImageView
+        android:id="@+id/iv_img"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_gravity="center"
@@ -44,6 +45,7 @@
             android:src="@drawable/homepage_popup_cookies" />
 
         <TextView
+            android:id="@+id/tv_amount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"

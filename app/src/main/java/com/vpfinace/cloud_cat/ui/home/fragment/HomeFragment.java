@@ -1,6 +1,7 @@
 package com.vpfinace.cloud_cat.ui.home.fragment;
 
 import android.os.Handler;
+import android.os.SystemClock;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -48,7 +49,6 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import androidx.annotation.Nullable;
@@ -57,7 +57,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class HomeFragment extends BaseFragment { 
+public class HomeFragment extends BaseFragment {
     @BindView(R.id.v_status_view)
     View vStatusView;
     @BindView(R.id.rv)
@@ -112,6 +112,7 @@ public class HomeFragment extends BaseFragment {
     private long amount = 0;//当前总金额
     private int outPut = 0;//当前产出
     private CatShopDialog catShopDialog;
+    private List<CatBean> initList;
 
     @Override
     public int getLayoutId() {
@@ -140,6 +141,7 @@ public class HomeFragment extends BaseFragment {
         rv.addItemDecoration(new SpaceItemDecoration(ConvertUtils.dp2px(10), column));
         rv.setNestedScrollingEnabled(false);
         list = new ArrayList<>();
+        initList = new ArrayList<>();
         myAdapter = new MyAdapter(list);
         rv.setAdapter(myAdapter);
         llCatContainer.setEnabled(false);
@@ -161,6 +163,7 @@ public class HomeFragment extends BaseFragment {
 
     public HomeBean homeBean;
 
+    private boolean isRefesh = false;
     /**
      * 获取首页数据
      */
@@ -170,12 +173,15 @@ public class HomeFragment extends BaseFragment {
             public void _onNext(HomeBean myHomeBean) {
                 homeBean = myHomeBean;
                 setHomeData(myHomeBean);
+                list.clear();
                 for (int i = 0; i < 12; i++) {
                     CatBean catBean = new CatBean();
                     catBean.setStorageId(i + 1);
                     catBean.setCatId(0);
                     HomeFragment.this.list.add(catBean);
                 }
+                isRefesh=false;
+
                 List<CatBean> catBeanList = homeBean.getList();
                 if (catBeanList != null && catBeanList.size() != 0) {
                     for (int i = 0; i < catBeanList.size(); i++) {
@@ -194,6 +200,9 @@ public class HomeFragment extends BaseFragment {
                         initCat();
                     }
                 }, 100);
+                if (amountRunnerble == null) {
+                    startTimer();
+                }
             }
 
             @Override
@@ -201,9 +210,6 @@ public class HomeFragment extends BaseFragment {
                 ToastUtils.showShort(message);
             }
         });
-        if (amountRunnerble == null) {
-            startTimer();
-        }
     }
 
 
@@ -270,7 +276,6 @@ public class HomeFragment extends BaseFragment {
 
     //刷新数据
     public void refresh() {
-        list.clear();
         requestHomeData();
     }
 
@@ -279,6 +284,7 @@ public class HomeFragment extends BaseFragment {
         HttpManager.toRequst(HttpManager.getApi().mergeCat(from, to), new BaseObserver<Object>(this) {
             @Override
             public void _onNext(Object o) {
+                requestAmountSync();
                 refresh();
             }
 
@@ -349,7 +355,7 @@ public class HomeFragment extends BaseFragment {
             @Override
             public void _onNext(Object o) {
                 refresh();
-                ToastUtils.showShort("购买成功!");
+//                ToastUtils.showShort("购买成功!");
                 isRequest = false;
             }
 
@@ -363,6 +369,7 @@ public class HomeFragment extends BaseFragment {
 
     private void initCat() {
         rlContainer.removeAllViews();
+
         for (int i = 0; i < list.size(); i++) {//初始化
             DragView dragView = (DragView) View.inflate(getActivity(), R.layout.drag_cat_layout, null);
             CatManager catManager = new CatManager(dragView, rlContainer, myAdapter, rv);
@@ -395,20 +402,28 @@ public class HomeFragment extends BaseFragment {
                             int fromId = fromCatBean.getStorageId();
                             int toId = toCatBean.getStorageId();
                             BeanUtils.copyBeanWithoutView(toCatBean, fromCatBean);
-                            notifyViewDataChange();
+                            if(!isRefesh) {
+                                notifyViewDataChange();
+                            }
+                            isRefesh=true;
                             requestMergeCat(fromId, toId);
                         } else {//不是空的,看等级是否相同
                             if (fromCatBean.getCatLevel() == toCatBean.getCatLevel()) {//等级相同,合成
 //                                toCatBean.setCatLevel(toCatBean.getCatLevel() + 1);
 //                                fromCatBean.setCatId(0);
-                                fromCatBean.getView().setVisibility(View.GONE);
-                                toCatBean.getView().setVisibility(View.GONE);
+
+                                if(fromCatBean.getView() != null) {
+                                    fromCatBean.getView().setVisibility(View.GONE);
+                                }
+                                if(toCatBean.getView() != null) {
+                                    toCatBean.getView().setVisibility(View.GONE);
+                                }
                                 RelativeLayout rl_item_container = (RelativeLayout) myAdapter.getViewByPosition(rv, postion, R.id.rl_item_container);
                                 GifView gif_view = rl_item_container.findViewById(R.id.gif_view);
                                 gif_view.setVisibility(View.VISIBLE);
-                                gif_view.setGifResource(R.drawable.compund1);
+                                gif_view.setGifResource(R.drawable.compund2);
                                 gif_view.play();
-
+//
                                 CatBean finalViewBean = toCatBean;
                                 gif_view.postDelayed(new Runnable() {
                                     @Override
@@ -418,15 +433,30 @@ public class HomeFragment extends BaseFragment {
 //                                        notifyViewDataChange();
                                         finalViewBean.getView().setVisibility(View.VISIBLE);
                                         toCatBean.getView().setVisibility(View.GONE);
-                                        requestAmountSync();
+                                        isRefesh=true;
                                         requestMergeCat(fromCatBean.getStorageId(), toCatBean.getStorageId());
                                     }
                                 }, 300);
+
+//                                RelativeLayout rl_item_container = (RelativeLayout) myAdapter.getViewByPosition(rv, postion, R.id.rl_item_container);
+//                                ImageView iv_gif = rl_item_container.findViewById(R.id.iv_gif);
+//                                iv_gif.setVisibility(View.VISIBLE);
+//                                GlideUtils.loadOneTimeGif(getActivity(), R.drawable.compund2, iv_gif, new GlideUtils.GifListener() {
+//                                    @Override
+//                                    public void gifPlayComplete() {
+//                                        iv_gif.setVisibility(View.GONE);
+//                                        finalViewBean.getView().setVisibility(View.VISIBLE);
+//                                        toCatBean.getView().setVisibility(View.GONE);
+//                                        isRefesh=true;
+//                                        requestMergeCat(fromCatBean.getStorageId(), toCatBean.getStorageId());
+//                                    }
+//                                });
                             } else {//等级不同,互换位置
                                 int fromId = fromCatBean.getStorageId();
                                 int toId = toCatBean.getStorageId();
                                 BeanUtils.copyBeanWithoutView(toCatBean, fromCatBean);
-                                notifyViewDataChange();
+//                                notifyViewDataChange();
+                                isRefesh=true;
                                 requestMergeCat(fromId, toId);
                             }
                         }
@@ -437,7 +467,7 @@ public class HomeFragment extends BaseFragment {
                     int minY = llDelParent.getTop();//用父类gettop()
                     int maxY = llDelParent.getTop() + ivDel.getHeight();
                     if (rawX >= minX && rawX <= maxX && rawY >= minY && rawY <= maxY) {
-                        RecycleDialog recycleDialog = new RecycleDialog(getActivity());
+                        RecycleDialog recycleDialog = new RecycleDialog(getActivity(),list.get(finalI));
                         recycleDialog.setOnConfirmClickListener(new RecycleDialog.OnConfirmClickListener() {
                             @Override
                             public void onConfirmClick() {
@@ -480,6 +510,7 @@ public class HomeFragment extends BaseFragment {
     public void notifyViewDataChange() {
         for (int i = 0; i < list.size(); i++) {
             CatBean viewBean = list.get(i);
+            if(viewBean.getView() == null) return;
             if (viewBean.getCatId() == 0) {
                 viewBean.getView().setVisibility(View.GONE);
             } else {
@@ -540,10 +571,24 @@ public class HomeFragment extends BaseFragment {
 
     boolean isHadEmpty = false;
 
+    //解决按钮连点
+    private static long lastClickTime;
+    public static boolean isFastDoubleClick() {
+        long time = SystemClock.uptimeMillis(); // 此方法仅用于Android
+        if (time - lastClickTime < 500) {
+            return true;
+        }
+        lastClickTime = time;
+        return false;
+    }
+
     @OnClick({R.id.iv_shop, R.id.ll_add_cat_container, R.id.ll_cat_container, R.id.rl_get_money_container, R.id.iv_lucky_wheel, R.id.iv_top, R.id.iv_how_to_play, R.id.ll_dividends_cat_container, R.id.ll_pic_guide_container, R.id.ll_store_container})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_cat_container:
+                if(isFastDoubleClick()) {
+                    return;
+                }
                 if (isRequest) {
                     return;
                 }
@@ -562,6 +607,9 @@ public class HomeFragment extends BaseFragment {
                 requestBuyCat(homeBean.getCat().getId());
                 break;
             case R.id.ll_add_cat_container:
+                if(isFastDoubleClick()) {
+                    return;
+                }
                 if (isRequest) {
                     return;
                 }
@@ -682,7 +730,7 @@ public class HomeFragment extends BaseFragment {
                 public void run() {
                     //todo 同步数据
                     requestAmountSync();
-                    requestHandler.postDelayed(this, 5000* 1000);
+                    requestHandler.postDelayed(this, 60* 1000);
                 }
             };
             requestHandler.postDelayed(requestRunnerble, 0);

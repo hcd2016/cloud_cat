@@ -302,12 +302,32 @@
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
-                <ImageView
-                    android:layout_width="76dp"
-                    android:layout_height="20dp"
-                    android:layout_marginLeft="78dp"
+                
+                <LinearLayout
                     android:layout_marginTop="8dp"
-                    android:src="@drawable/cat_house_speed_up" />
+                    android:layout_marginLeft="78dp"
+                    android:background="@drawable/cat_house_speed_up_bg"
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginTop="3dp"
+                        android:layout_marginBottom="7dp"
+                        android:layout_width="10dp"
+                        android:layout_height="10dp"
+                        android:src="@drawable/icon_speed_up" />
+                    <TextView
+                        android:id="@+id/tv_speed_desc"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginLeft="2dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1.0倍加速中"
+                        android:textColor="#ffffffff"
+                        android:textSize="9sp"
+                        />
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"

@@ -8,7 +8,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.ConvertUtils;
+import com.bumptech.glide.Glide;
 import com.vpfinace.cloud_cat.R;
+import com.vpfinace.cloud_cat.bean.CatBean;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -18,6 +20,10 @@ public class RecycleDialog extends TBaseDialog {
     ImageView ivClose;
     @BindView(R.id.tv_btn_confirm)
     TextView tvBtnConfirm;
+    @BindView(R.id.iv_img)
+    ImageView ivImg;
+    @BindView(R.id.tv_amount)
+    TextView tvAmount;
 
     public void setOnConfirmClickListener(OnConfirmClickListener onConfirmClickListener) {
         this.onConfirmClickListener = onConfirmClickListener;
@@ -25,9 +31,13 @@ public class RecycleDialog extends TBaseDialog {
 
     private OnConfirmClickListener onConfirmClickListener;
 
-    public RecycleDialog(Context context) {
+    public RecycleDialog(Context context, CatBean catBean) {
         super(context, R.layout.dialog_recycle);
         setWindowParam(ConvertUtils.dp2px(270), WindowManager.LayoutParams.WRAP_CONTENT, Gravity.CENTER, 0);
+        Glide.with(mContext).load(catBean.getImg()).into(ivImg);
+        if(catBean.getCyclePrice() != 0) {
+            tvAmount.setText(catBean.getCyclePrice()+"");
+        }
     }
 
     @OnClick({R.id.iv_close, R.id.tv_btn_confirm})
@@ -38,7 +48,7 @@ public class RecycleDialog extends TBaseDialog {
                 break;
             case R.id.tv_btn_confirm:
                 dismiss();
-                if(onConfirmClickListener != null) {
+                if (onConfirmClickListener != null) {
                     onConfirmClickListener.onConfirmClick();
                 }
                 break;

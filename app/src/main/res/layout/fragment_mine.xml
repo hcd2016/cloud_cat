@@ -65,7 +65,6 @@
                     android:layout_width="64dp"
                     android:layout_height="64dp"
                     android:src="@mipmap/ic_launcher" />
-
             </LinearLayout>
 
             <LinearLayout
@@ -78,11 +77,12 @@
                 android:orientation="horizontal">
 
                 <ImageView
+                    android:layout_marginBottom="10dp"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_gravity="bottom"
                     android:clipChildren="false"
-                    android:src="@drawable/personal_center_cat" />
+                    android:src="@drawable/profit_cat1" />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -98,6 +98,7 @@
                         android:textSize="22sp" />
 
                     <LinearLayout
+                        android:layout_marginTop="4dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
@@ -111,18 +112,23 @@
                             android:textSize="12sp" />
 
                         <TextView
+                            android:textStyle="bold"
+                            android:layout_marginLeft="2dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="16dp"
-                            android:text="0.05%"
+                            android:text="50%"
                             android:textColor="@color/white"
                             android:textSize="14sp" />
 
-                        <View
-                            android:layout_marginLeft="16dp"
+                        <ProgressBar
+                            android:layout_marginLeft="17dp"
+                            android:id="@+id/pb"
+                            android:max="100"
+                            android:progress="50"
+                            android:progressDrawable="@drawable/progressbar_bg"
+                            style="?android:attr/progressBarStyleHorizontal"
                             android:layout_width="104dp"
-                            android:layout_height="8dp"
-                            android:background="@drawable/shape_white_c5" />
+                            android:layout_height="8dp"/>
                     </LinearLayout>
 
                 </LinearLayout>

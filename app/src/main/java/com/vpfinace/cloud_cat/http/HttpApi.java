@@ -235,5 +235,12 @@ public interface HttpApi {
     @POST("api/front/client/wallet")
     Observable<BaseResponse<WalletBean>> getWallet();
 
+    /**
+     * 提现
+     */
+    @FormUrlEncoded
+    @POST("wx/withdraw/dotransfer")
+    Observable<BaseResponse<Object>> wxWithDraw(@Field("money") String money);
+
 
 }

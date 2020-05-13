@@ -127,6 +127,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:visibility="gone"
                 android:id="@+id/ll_alipay_container"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -171,7 +172,10 @@
             android:layout_marginTop="12dp"
             android:orientation="horizontal">
 
+
             <RelativeLayout
+                android:id="@+id/rl_first_container"
+                android:layout_marginRight="16dp"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1">
@@ -190,7 +194,7 @@
                         android:id="@+id/tv_1_1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="0.5"
+                        android:text="0.3"
                         android:textColor="#ffffffff"
                         android:textSize="22sp"
                         android:textStyle="bold" />
@@ -224,7 +228,6 @@
                 android:id="@+id/ll_20_container"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_weight="1"
                 android:background="@drawable/shape_gray_6f8_c8"
@@ -281,6 +284,14 @@
                     android:textColor="@color/black_6"
                     android:textSize="12sp" />
             </LinearLayout>
+
+            <View
+                android:visibility="gone"
+                android:layout_marginLeft="16dp"
+                android:id="@+id/v_space"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"/>
         </LinearLayout>
 
         <LinearLayout
@@ -392,6 +403,7 @@
             android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/tv_fee_desc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
@@ -413,7 +425,7 @@
             android:layout_weight="1" />
 
         <TextView
-            android:id="@+id/btn_save"
+            android:id="@+id/tv_btn_withdraw"
             style="@style/style_btn_red_8e40_gray_f4_c23"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

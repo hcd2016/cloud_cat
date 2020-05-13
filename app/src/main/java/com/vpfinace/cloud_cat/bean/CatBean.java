@@ -40,6 +40,15 @@ public class CatBean {
     public String title;
     public String price;
     public String price1;
+    public long cyclePrice;
+
+    public long getCyclePrice() {
+        return cyclePrice;
+    }
+
+    public void setCyclePrice(long cyclePrice) {
+        this.cyclePrice = cyclePrice;
+    }
 
     public String getPrice() {
         return price;

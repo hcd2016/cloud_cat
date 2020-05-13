@@ -6,7 +6,7 @@
     </item>
 
     <!--  设置进度条颜色  -->
-    <item android:id="@android:id/progress">
+    <item android:id="@android:id/progress" android:top="1dp" android:bottom="1dp" android:left="1dp" android:right="1dp">
         <clip>
             <shape>
                <solid android:color="@color/red_554"/>

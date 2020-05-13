@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.blankj.utilcode.util.BarUtils;
 import com.vpfinace.cloud_cat.R;
 import com.vpfinace.cloud_cat.base.BaseActivity;
+import com.vpfinace.cloud_cat.utils.GlideUtils;
 import com.vpfinace.cloud_cat.utils.StatusTextUtils;
 
 import butterknife.BindView;
@@ -32,6 +33,8 @@ public class LoginActivity extends BaseActivity {
     TextView tvBtnYszc;
     @BindView(R.id.v_status_view)
     View vStatusView;
+    @BindView(R.id.iv_logo)
+    ImageView ivLogo;
 
     @Override
     public int getLayoutId() {
@@ -49,7 +52,8 @@ public class LoginActivity extends BaseActivity {
         ViewGroup.LayoutParams layoutParams = vStatusView.getLayoutParams();
         layoutParams.height = BarUtils.getStatusBarHeight();
         vStatusView.setLayoutParams(layoutParams);
-        StatusTextUtils.setLightStatusBar(this,true);
+        StatusTextUtils.setLightStatusBar(this, true);
+        GlideUtils.loadCorner(this,R.mipmap.logo,ivLogo,10);
     }
 
     @Override

@@ -62,6 +62,8 @@ public class CatteryFragment extends BaseFragment {
     TextView tvPbDesc;
     @BindView(R.id.tv_step_desc)
     TextView tvStepDesc;
+    @BindView(R.id.tv_speed_desc)
+    TextView tvSpeedDesc;
     private CatteryBean catteryBean;
 
     @Override
@@ -111,7 +113,7 @@ public class CatteryFragment extends BaseFragment {
         this.catteryBean = catteryBean;
         tvFriendCounts.setText(catteryBean.getFriendNum() + "");
         tvCurrentEarnings.setText(catteryBean.getTotalEarning() + "");
-        tvSpeedTotalAmount.setText(catteryBean.getTarget()+"");
+        tvSpeedTotalAmount.setText(catteryBean.getTarget() + "");
 
         double sl = 1.0;
         List<CatteryBean.SteplistBean> steplist = catteryBean.getSteplist();
@@ -121,18 +123,21 @@ public class CatteryFragment extends BaseFragment {
             }
 
         }
-        tvStepDesc.setText("第" + catteryBean.getStep() + "阶段×"+sl+"倍加速");
+        tvStepDesc.setText("第" + catteryBean.getStep() + "阶段×" + sl + "倍加速");
+        tvSpeedDesc.setText(sl+"倍加速中");
         pb.setProgress((int) catteryBean.getRate());
-        tvPbDesc.setText("已解锁"+catteryBean.getRate()+"%，解锁后"+catteryBean.getTarget()+"元现金将自动存入钱包");
+        tvPbDesc.setText("已解锁" + catteryBean.getRate() + "%，解锁后" + catteryBean.getTarget() + "元现金将自动存入钱包");
 
-        tvTotalEarnings.setText(catteryBean.getTotalEarning()+"");
-        tvInviteAmount.setText(catteryBean.getTodayInviteEarning()+"");
-        tvSpreadAmount.setText(catteryBean.getTodayDiffusionEarning()+"");
+        tvTotalEarnings.setText(catteryBean.getTotalEarning() + "");
+        tvInviteAmount.setText(catteryBean.getTodayInviteEarning() + "");
+        tvSpreadAmount.setText(catteryBean.getTodayDiffusionEarning() + "");
 
-        GlideUtils.loadCircle(getActivity(),catteryBean.getMyInviter().getHeadImgUrl(),ivInviter);
+        GlideUtils.loadCircle(getActivity(), catteryBean.getMyInviter().getHeadImgUrl(), ivInviter);
 
-        tvInviterDesc.setText("他邀请了"+catteryBean.getMyInviterNum()+"人，累计收益");
-        tvInviterAmount.setText(catteryBean.getMyInviterEarning()+"元");
+        tvInviterDesc.setText("他邀请了" + catteryBean.getMyInviterNum() + "人，累计收益");
+        tvInviterAmount.setText(catteryBean.getMyInviterEarning() + "元");
+
+
     }
 
     @OnClick({R.id.ll_invite_records_container, R.id.tv_btn_invite, R.id.tv_btn_rules, R.id.ll_my_invite_friend_container})
@@ -148,8 +153,8 @@ public class CatteryFragment extends BaseFragment {
                 startActivity(RulesActivity.class);
                 break;
             case R.id.ll_my_invite_friend_container:
-                if(catteryBean != null) {
-                    MyInviteFriendDialog myInviteFriendDialog = new MyInviteFriendDialog(getActivity(),catteryBean.getMyInviter());
+                if (catteryBean != null) {
+                    MyInviteFriendDialog myInviteFriendDialog = new MyInviteFriendDialog(getActivity(), catteryBean.getMyInviter());
                     myInviteFriendDialog.show();
                 }
                 break;

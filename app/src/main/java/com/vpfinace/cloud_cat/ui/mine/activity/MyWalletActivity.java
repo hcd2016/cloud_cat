@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.BarUtils;
@@ -14,6 +15,7 @@ import com.vpfinace.cloud_cat.base.BaseActivity;
 import com.vpfinace.cloud_cat.base.BaseObserver;
 import com.vpfinace.cloud_cat.bean.WalletBean;
 import com.vpfinace.cloud_cat.http.HttpManager;
+import com.vpfinace.cloud_cat.utils.ArithUtil;
 import com.vpfinace.cloud_cat.utils.MyUtils;
 
 import butterknife.BindView;
@@ -41,8 +43,6 @@ public class MyWalletActivity extends BaseActivity {
     LinearLayout ll500Container;
     @BindView(R.id.ll_1000_container)
     LinearLayout ll1000Container;
-    @BindView(R.id.btn_save)
-    TextView btnSave;
     @BindView(R.id.tv_1_1)
     TextView tv11;
     @BindView(R.id.tv_1_2)
@@ -81,6 +81,16 @@ public class MyWalletActivity extends BaseActivity {
     TextView tvAlipay;
     @BindView(R.id.tv_amount)
     TextView tvAmount;
+    @BindView(R.id.tv_btn_withdraw)
+    TextView tvBtnWithdraw;
+    @BindView(R.id.rl_first_container)
+    RelativeLayout rlFirstContainer;
+    @BindView(R.id.v_space)
+    View vSpace;
+    @BindView(R.id.tv_fee_desc)
+    TextView tvFeeDesc;
+    private WalletBean walletBean;
+    private double amount = 0.0;
 
     @Override
     public int getLayoutId() {
@@ -98,7 +108,6 @@ public class MyWalletActivity extends BaseActivity {
         ViewGroup.LayoutParams layoutParams = vStatusView.getLayoutParams();
         layoutParams.height = BarUtils.getStatusBarHeight();
         vStatusView.setLayoutParams(layoutParams);
-        btnSave.setEnabled(true);
         requestWallet();
     }
 
@@ -113,6 +122,7 @@ public class MyWalletActivity extends BaseActivity {
         HttpManager.toRequst(HttpManager.getApi().getWallet(), new BaseObserver<WalletBean>(this) {
             @Override
             public void _onNext(WalletBean walletBean) {
+                MyWalletActivity.this.walletBean = walletBean;
                 setViewData(walletBean);
             }
 
@@ -124,16 +134,55 @@ public class MyWalletActivity extends BaseActivity {
     }
 
     private void setViewData(WalletBean walletBean) {
-        if(walletBean != null) {
-            tvAmount.setText(walletBean.getFund().getCash()+"");
+        if (walletBean != null) {
+            amount = ArithUtil.div(walletBean.getFund().getCash(), 100);
+            tvAmount.setText(amount + "");
+            if (walletBean.getFirstWithsraw() == 0) {
+                rlFirstContainer.setVisibility(View.GONE);
+                vSpace.setVisibility(View.VISIBLE);
+                if (amount >= 20) {
+                    tvBtnWithdraw.setEnabled(true);
+                } else {
+                    tvBtnWithdraw.setEnabled(false);
+                }
+            } else {//首次提现
+                rlFirstContainer.setVisibility(View.VISIBLE);
+                vSpace.setVisibility(View.GONE);
+                if (amount >= 0.3) {
+                    tvBtnWithdraw.setEnabled(true);
+                } else {
+                    tvBtnWithdraw.setEnabled(false);
+                }
+            }
+            tvFeeDesc.setText("1.提现3个工作日内到账，手续费"+walletBean.getFee()+"%");
         }
     }
 
 
-    double choiseAmount = 0.5;
+    //提现
+    public void requestWithDraw() {
+        HttpManager.toRequst(HttpManager.getApi().wxWithDraw(choiseAmount + ""), new BaseObserver(this) {
+            @Override
+            public void _onNext(Object o) {
+                if(walletBean.getFirstWithsraw() == 1) {
+                    WithdrawResultActivity.goThis(MyWalletActivity.this,choiseAmount+"",0+"");
+                }else {
+                    WithdrawResultActivity.goThis(MyWalletActivity.this,choiseAmount+"",ArithUtil.mul(choiseAmount,ArithUtil.div(walletBean.getFee(),100))+"");
+                }
+            }
+
+            @Override
+            public void _onError(String message) {
+                ToastUtils.showShort(message);
+            }
+        });
+    }
+
+
+    double choiseAmount = 0.3;
     int withDrawWay = 0;//提现方式,0为微信,1为支付宝
 
-    @OnClick({R.id.tv_record, R.id.iv_close, R.id.ll_1_container, R.id.ll_20_container, R.id.ll_50_container, R.id.ll_100_container, R.id.ll_500_container, R.id.ll_1000_container, R.id.btn_save, R.id.ll_alipay_container, R.id.ll_wechat_container})
+    @OnClick({R.id.tv_record, R.id.iv_close, R.id.ll_1_container, R.id.ll_20_container, R.id.ll_50_container, R.id.ll_100_container, R.id.ll_500_container, R.id.ll_1000_container, R.id.tv_btn_withdraw, R.id.ll_alipay_container, R.id.ll_wechat_container})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_close:
@@ -141,30 +190,72 @@ public class MyWalletActivity extends BaseActivity {
                 break;
             case R.id.ll_1_container:
                 changeBg(ll1Container);
-                choiseAmount = 0.5;
+                choiseAmount = 0.3;
+                if (walletBean != null) {
+                    if (walletBean.getFund().getCash() >= 0.3) {
+                        tvBtnWithdraw.setEnabled(true);
+                    } else {
+                        tvBtnWithdraw.setEnabled(false);
+                    }
+                }
                 break;
             case R.id.ll_20_container:
                 changeBg(ll20Container);
                 choiseAmount = 20;
+                if (walletBean != null) {
+                    if (walletBean.getFund().getCash() >= 20) {
+                        tvBtnWithdraw.setEnabled(true);
+                    } else {
+                        tvBtnWithdraw.setEnabled(false);
+                    }
+                }
                 break;
             case R.id.ll_50_container:
                 changeBg(ll50Container);
                 choiseAmount = 50;
+                if (walletBean != null) {
+                    if (walletBean.getFund().getCash() >= 50) {
+                        tvBtnWithdraw.setEnabled(true);
+                    } else {
+                        tvBtnWithdraw.setEnabled(false);
+                    }
+                }
                 break;
             case R.id.ll_100_container:
                 changeBg(ll100Container);
                 choiseAmount = 100;
+                if (walletBean != null) {
+                    if (walletBean.getFund().getCash() >= 100) {
+                        tvBtnWithdraw.setEnabled(true);
+                    } else {
+                        tvBtnWithdraw.setEnabled(false);
+                    }
+                }
                 break;
             case R.id.ll_500_container:
                 changeBg(ll500Container);
                 choiseAmount = 500;
+                if (walletBean != null) {
+                    if (walletBean.getFund().getCash() >= 500) {
+                        tvBtnWithdraw.setEnabled(true);
+                    } else {
+                        tvBtnWithdraw.setEnabled(false);
+                    }
+                }
                 break;
             case R.id.ll_1000_container:
                 changeBg(ll1000Container);
                 choiseAmount = 1000;
+                if (walletBean != null) {
+                    if (walletBean.getFund().getCash() >= 1000) {
+                        tvBtnWithdraw.setEnabled(true);
+                    } else {
+                        tvBtnWithdraw.setEnabled(false);
+                    }
+                }
                 break;
-            case R.id.btn_save:
-                startActivity(WithdrawResultActivity.class);
+            case R.id.tv_btn_withdraw:
+                requestWithDraw();
                 break;
             case R.id.ll_alipay_container:
                 llAlipayContainer.setBackgroundResource(R.drawable.shape_blue_6db_c8);
@@ -216,4 +307,5 @@ public class MyWalletActivity extends BaseActivity {
         child2.setTextColor(MyUtils.getColor(R.color.white));
         clickView.setBackgroundResource(R.drawable.shape_red_8e_c8);
     }
+
 }
