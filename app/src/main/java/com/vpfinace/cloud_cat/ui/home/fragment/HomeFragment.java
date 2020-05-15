@@ -1,9 +1,12 @@
 package com.vpfinace.cloud_cat.ui.home.fragment;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -19,6 +22,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.cunoraz.gifview.library.GifView;
 import com.vpfinace.cloud_cat.R;
+import com.vpfinace.cloud_cat.ad.activity.RewardVideoActivity;
 import com.vpfinace.cloud_cat.base.BaseActivity;
 import com.vpfinace.cloud_cat.base.BaseFragment;
 import com.vpfinace.cloud_cat.base.BaseObserver;
@@ -26,10 +30,12 @@ import com.vpfinace.cloud_cat.bean.CatBean;
 import com.vpfinace.cloud_cat.bean.CatShopBean;
 import com.vpfinace.cloud_cat.bean.GetEarningsBean;
 import com.vpfinace.cloud_cat.bean.HomeBean;
+import com.vpfinace.cloud_cat.bean.MergeBean;
 import com.vpfinace.cloud_cat.bean.ViewBean;
 import com.vpfinace.cloud_cat.dialog.CatShopDialog;
 import com.vpfinace.cloud_cat.dialog.GetMoneyDialog;
 import com.vpfinace.cloud_cat.dialog.LuckyWheelDialog;
+import com.vpfinace.cloud_cat.dialog.MergeMaxDialog;
 import com.vpfinace.cloud_cat.dialog.OffLineEarningsDialog;
 import com.vpfinace.cloud_cat.dialog.RecycleDialog;
 import com.vpfinace.cloud_cat.dialog.StoreListDialog;
@@ -41,6 +47,8 @@ import com.vpfinace.cloud_cat.ui.home.activity.DividendCatActivity;
 import com.vpfinace.cloud_cat.ui.home.activity.PicListActivity;
 import com.vpfinace.cloud_cat.ui.home.activity.TopActivity;
 import com.vpfinace.cloud_cat.utils.BeanUtils;
+import com.vpfinace.cloud_cat.utils.ScreenUtils;
+import com.vpfinace.cloud_cat.utils.UnitUtils;
 import com.vpfinace.cloud_cat.weight.CatManager;
 import com.vpfinace.cloud_cat.weight.DragView;
 import com.vpfinace.cloud_cat.weight.SpaceItemDecoration;
@@ -149,7 +157,19 @@ public class HomeFragment extends BaseFragment {
         requestHomeData();
         startGetCoinTimer();
         requestGetEarnings(1);
+        ScreenUtils.setNavigationListener(ScreenUtils.getRootView(getActivity()), new ScreenUtils.NavigationListener() {
+            @Override
+            public void show() {
+                refresh();
+            }
+
+            @Override
+            public void hide() {
+                refresh();
+            }
+        });
     }
+
 
     //离线收益弹窗
     private void showOffLineDialog(long offlineEarnings) {
@@ -164,6 +184,7 @@ public class HomeFragment extends BaseFragment {
     public HomeBean homeBean;
 
     private boolean isRefesh = false;
+
     /**
      * 获取首页数据
      */
@@ -180,7 +201,7 @@ public class HomeFragment extends BaseFragment {
                     catBean.setCatId(0);
                     HomeFragment.this.list.add(catBean);
                 }
-                isRefesh=false;
+                isRefesh = false;
 
                 List<CatBean> catBeanList = homeBean.getList();
                 if (catBeanList != null && catBeanList.size() != 0) {
@@ -212,22 +233,21 @@ public class HomeFragment extends BaseFragment {
         });
     }
 
-
     //领取收益
     public void requestGetEarnings(int action) {
-        HttpManager.toRequst(HttpManager.getApi().getEarnings(action+""), new BaseObserver<GetEarningsBean>(this) {
+        HttpManager.toRequst(HttpManager.getApi().getEarnings(action + ""), new BaseObserver<GetEarningsBean>(this) {
             @Override
             public void _onNext(GetEarningsBean o) {
                 long endTimeSecs = o.getEndTimeSecs();//可领取时间的毫秒值
                 long currentTimeMillis = System.currentTimeMillis();
                 String date = TimeUtils.millis2String(endTimeSecs);
-                if(endTimeSecs - currentTimeMillis <= 0) {//可以领取
+                if (endTimeSecs - currentTimeMillis <= 0) {//可以领取
                     getCoinRemainMil = 0;
                 } else {
                     getCoinRemainMil = endTimeSecs - currentTimeMillis;
                 }
                 if (action == 2) {
-                    GetMoneyDialog getMoneyDialog = new GetMoneyDialog(getActivity(),o.getEarnings());
+                    GetMoneyDialog getMoneyDialog = new GetMoneyDialog(getActivity(), o.getEarnings());
                     getMoneyDialog.setOnCommitClickListener(new GetMoneyDialog.OnCommitClickListener() {
                         @Override
                         public void onClick() {
@@ -236,7 +256,7 @@ public class HomeFragment extends BaseFragment {
                         }
                     });
                     getMoneyDialog.show();
-                    getCoinRemainMil = endTimeSecs -  System.currentTimeMillis();
+                    getCoinRemainMil = endTimeSecs - System.currentTimeMillis();
                     amount += o.getEarnings();
                     requestAmountSync();
                     refresh();
@@ -258,9 +278,9 @@ public class HomeFragment extends BaseFragment {
         tvDividendsAccount.setText(myHomeBean.getAderanings() + "");
         Glide.with(getActivity()).load(myHomeBean.getCat().getImg()).into(ivCatImg);
         tvLevel.setText("Lv." + myHomeBean.getCat().getLevel());
-        tvPrice.setText(myHomeBean.getCat().getPrice1());
+        tvPrice.setText(UnitUtils.coin2String(myHomeBean.getCat().getPrice1()));
         List<CatBean> list = myHomeBean.getList();
-        tvAmount.setText(amount + "");
+        tvAmount.setText(UnitUtils.coin2String(amount));
         int outPut = 0;//速率计算
         if (list != null && list.size() != 0) {
             for (CatBean catBean : list) {
@@ -280,12 +300,18 @@ public class HomeFragment extends BaseFragment {
     }
 
     //合成或拖拽
-    public void requestMergeCat(int from, int to) {
-        HttpManager.toRequst(HttpManager.getApi().mergeCat(from, to), new BaseObserver<Object>(this) {
+    public void requestMergeCat(int from, int to, int statusId) {
+        HttpManager.toRequst(HttpManager.getApi().mergeCat(from, to), new BaseObserver<MergeBean>(this) {
             @Override
-            public void _onNext(Object o) {
+            public void _onNext(MergeBean mergeBean) {
                 requestAmountSync();
                 refresh();
+                if (statusId == 1) {
+                    if (mergeBean != null && mergeBean.getCat() != null && mergeBean.levelUp == true) {
+                        MergeMaxDialog mergeMaxDialog = new MergeMaxDialog(getActivity(), mergeBean, homeBean.getAderanings());
+                        mergeMaxDialog.show();
+                    }
+                }
             }
 
             @Override
@@ -355,7 +381,7 @@ public class HomeFragment extends BaseFragment {
             @Override
             public void _onNext(Object o) {
                 refresh();
-//                ToastUtils.showShort("购买成功!");
+                ToastUtils.showShort("购买成功!");
                 isRequest = false;
             }
 
@@ -366,6 +392,8 @@ public class HomeFragment extends BaseFragment {
             }
         });
     }
+
+    private int mergeState = 0;//0为移动空格子,1为合成,2为换位
 
     private void initCat() {
         rlContainer.removeAllViews();
@@ -402,20 +430,20 @@ public class HomeFragment extends BaseFragment {
                             int fromId = fromCatBean.getStorageId();
                             int toId = toCatBean.getStorageId();
                             BeanUtils.copyBeanWithoutView(toCatBean, fromCatBean);
-                            if(!isRefesh) {
+                            if (!isRefesh) {
                                 notifyViewDataChange();
                             }
-                            isRefesh=true;
-                            requestMergeCat(fromId, toId);
+                            isRefesh = true;
+                            requestMergeCat(fromId, toId, 0);
                         } else {//不是空的,看等级是否相同
                             if (fromCatBean.getCatLevel() == toCatBean.getCatLevel()) {//等级相同,合成
 //                                toCatBean.setCatLevel(toCatBean.getCatLevel() + 1);
 //                                fromCatBean.setCatId(0);
 
-                                if(fromCatBean.getView() != null) {
+                                if (fromCatBean.getView() != null) {
                                     fromCatBean.getView().setVisibility(View.GONE);
                                 }
-                                if(toCatBean.getView() != null) {
+                                if (toCatBean.getView() != null) {
                                     toCatBean.getView().setVisibility(View.GONE);
                                 }
                                 RelativeLayout rl_item_container = (RelativeLayout) myAdapter.getViewByPosition(rv, postion, R.id.rl_item_container);
@@ -433,8 +461,8 @@ public class HomeFragment extends BaseFragment {
 //                                        notifyViewDataChange();
                                         finalViewBean.getView().setVisibility(View.VISIBLE);
                                         toCatBean.getView().setVisibility(View.GONE);
-                                        isRefesh=true;
-                                        requestMergeCat(fromCatBean.getStorageId(), toCatBean.getStorageId());
+                                        isRefesh = true;
+                                        requestMergeCat(fromCatBean.getStorageId(), toCatBean.getStorageId(), 1);
                                     }
                                 }, 300);
 
@@ -456,8 +484,8 @@ public class HomeFragment extends BaseFragment {
                                 int toId = toCatBean.getStorageId();
                                 BeanUtils.copyBeanWithoutView(toCatBean, fromCatBean);
 //                                notifyViewDataChange();
-                                isRefesh=true;
-                                requestMergeCat(fromId, toId);
+                                isRefesh = true;
+                                requestMergeCat(fromId, toId, 2);
                             }
                         }
                     }
@@ -467,7 +495,7 @@ public class HomeFragment extends BaseFragment {
                     int minY = llDelParent.getTop();//用父类gettop()
                     int maxY = llDelParent.getTop() + ivDel.getHeight();
                     if (rawX >= minX && rawX <= maxX && rawY >= minY && rawY <= maxY) {
-                        RecycleDialog recycleDialog = new RecycleDialog(getActivity(),list.get(finalI));
+                        RecycleDialog recycleDialog = new RecycleDialog(getActivity(), list.get(finalI));
                         recycleDialog.setOnConfirmClickListener(new RecycleDialog.OnConfirmClickListener() {
                             @Override
                             public void onConfirmClick() {
@@ -510,7 +538,7 @@ public class HomeFragment extends BaseFragment {
     public void notifyViewDataChange() {
         for (int i = 0; i < list.size(); i++) {
             CatBean viewBean = list.get(i);
-            if(viewBean.getView() == null) return;
+            if (viewBean.getView() == null) return;
             if (viewBean.getCatId() == 0) {
                 viewBean.getView().setVisibility(View.GONE);
             } else {
@@ -573,6 +601,7 @@ public class HomeFragment extends BaseFragment {
 
     //解决按钮连点
     private static long lastClickTime;
+
     public static boolean isFastDoubleClick() {
         long time = SystemClock.uptimeMillis(); // 此方法仅用于Android
         if (time - lastClickTime < 500) {
@@ -582,11 +611,32 @@ public class HomeFragment extends BaseFragment {
         return false;
     }
 
+
+//    AccelerateDecelerateInterpolator：开始和结束的时候慢，中间快
+//    AccelerateInterpolator：开始的时候慢，然后加速
+//    AnticipateInterpolator：开始先后退，然后向前
+//    AnticipateOvershootInterpolator： 开始先后退，然向前到超标，最后回到最终值
+//    BounceInterpolator ：最后会反弹
+//    CycleInterpolator：动画会重复一定的周期数
+//    DecelerateInterpolator：开始快，然后减速
+//    LinearInterpolator：变化匀速
+//    OvershootInterpolator：到达最终值后超标，再回到最终值
+//    TimeInterpolator：用来自定义插值器
+    //金钱缩放动画
+    public void scalAnimator() {
+        ObjectAnimator animatorZoomX = ObjectAnimator.ofFloat(tvAmount,"scaleX",1.5f,1f);
+        ObjectAnimator animatorZoomY = ObjectAnimator.ofFloat(tvAmount,"scaleY",1.5f,1f);
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.setDuration(800);
+        animatorSet.setInterpolator(new AccelerateDecelerateInterpolator());
+        animatorSet.playTogether(animatorZoomX,animatorZoomY);
+        animatorSet.start();
+    }
     @OnClick({R.id.iv_shop, R.id.ll_add_cat_container, R.id.ll_cat_container, R.id.rl_get_money_container, R.id.iv_lucky_wheel, R.id.iv_top, R.id.iv_how_to_play, R.id.ll_dividends_cat_container, R.id.ll_pic_guide_container, R.id.ll_store_container})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_cat_container:
-                if(isFastDoubleClick()) {
+                if (isFastDoubleClick()) {
                     return;
                 }
                 if (isRequest) {
@@ -607,7 +657,7 @@ public class HomeFragment extends BaseFragment {
                 requestBuyCat(homeBean.getCat().getId());
                 break;
             case R.id.ll_add_cat_container:
-                if(isFastDoubleClick()) {
+                if (isFastDoubleClick()) {
                     return;
                 }
                 if (isRequest) {
@@ -638,11 +688,10 @@ public class HomeFragment extends BaseFragment {
                 startActivity(TopActivity.class);
                 break;
             case R.id.iv_how_to_play:
-                refresh();
-//                startActivity(LoginActivity.class);
-//                InviterDialog inviterDialog = new InviterDialog(getActivity());
-//                inviterDialog.show();
+//                refresh();
 //                startActivity(HowToPlayActivity.class);
+//                startActivity(FullScreenVideoActivity.class);
+                startActivity(RewardVideoActivity.class);
                 break;
             case R.id.ll_dividends_cat_container:
                 startActivity(DividendCatActivity.class);
@@ -714,10 +763,11 @@ public class HomeFragment extends BaseFragment {
                 @Override
                 public void run() {
                     amount += outPut;
-                    tvAmount.setText(amount + "");
+                    tvAmount.setText(UnitUtils.coin2String(amount));
                     if (catShopDialog != null && catShopDialog.isShowing()) {
                         catShopDialog.updateAmount(amount);
                     }
+                    scalAnimator();
                     amountHandler.postDelayed(this, 1000);
                 }
             };
@@ -730,7 +780,7 @@ public class HomeFragment extends BaseFragment {
                 public void run() {
                     //todo 同步数据
                     requestAmountSync();
-                    requestHandler.postDelayed(this, 60* 1000);
+                    requestHandler.postDelayed(this, 60 * 1000);
                 }
             };
             requestHandler.postDelayed(requestRunnerble, 0);

@@ -10,8 +10,17 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.vpfinace.cloud_cat.R;
+import com.vpfinace.cloud_cat.base.BaseFragment;
+import com.vpfinace.cloud_cat.base.BaseObserver;
+import com.vpfinace.cloud_cat.bean.UserCenter;
+import com.vpfinace.cloud_cat.global.EventStrings;
+import com.vpfinace.cloud_cat.http.HttpManager;
 import com.vpfinace.cloud_cat.ui.mine.activity.MyWalletActivity;
+import com.vpfinace.cloud_cat.utils.ArithUtil;
+
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -40,10 +49,33 @@ public class RedPacketDialog extends TBaseDialog {
     LinearLayout llPacketResultContainer;
     @BindView(R.id.ll_open_packet_container)
     LinearLayout llOpenPacketContainer;
+    BaseFragment baseFragment;
+    UserCenter userCenter;
 
-    public RedPacketDialog(Context context) {
+    public RedPacketDialog(Context context, UserCenter userCenter, BaseFragment baseFragment) {
         super(context, R.layout.dialog_red_packet);
         setWindowParam(0.8f, WindowManager.LayoutParams.WRAP_CONTENT, Gravity.CENTER, 0);
+        tvAmount.setText(ArithUtil.div(userCenter.getRedpack().getAmount(),100)+"");
+        tvDesc.setText(userCenter.getRedpack().getExplain());
+        this.baseFragment = baseFragment;
+        this.userCenter = userCenter;
+    }
+
+    public void requestOpenRedPack() {
+        HttpManager.toRequst(HttpManager.getApi().redPackOpen(userCenter.getRedpack().getId()+""), new BaseObserver(baseFragment) {
+            @Override
+            public void _onNext(Object o) {
+                llOpenPacketContainer.setVisibility(View.GONE);
+                llPacketResultContainer.setVisibility(View.VISIBLE);
+                tvDesc.setText("恭喜您开红包获得");
+                EventBus.getDefault().post(EventStrings.MINE_REFRESH);
+            }
+
+            @Override
+            public void _onError(String message) {
+                ToastUtils.showShort(message);
+            }
+        });
     }
 
     @OnClick({R.id.fl_close, R.id.iv_open, R.id.iv_btn_withdraw, R.id.ll_my_packet_container})
@@ -53,9 +85,7 @@ public class RedPacketDialog extends TBaseDialog {
                 dismiss();
                 break;
             case R.id.iv_open:
-                llOpenPacketContainer.setVisibility(View.GONE);
-                llPacketResultContainer.setVisibility(View.VISIBLE);
-                tvDesc.setText("恭喜您开红包获得");
+                requestOpenRedPack();
                 break;
             case R.id.iv_btn_withdraw:
                 Intent intent = new Intent(mContext, MyWalletActivity.class);
@@ -67,4 +97,6 @@ public class RedPacketDialog extends TBaseDialog {
                 break;
         }
     }
+
+
 }

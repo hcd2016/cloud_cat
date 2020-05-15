@@ -6,6 +6,7 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.vpfinace.cloud_cat.R;
+import com.vpfinace.cloud_cat.utils.UnitUtils;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -36,7 +37,7 @@ public class OffLineEarningsDialog extends TBaseDialog {
     }
 
     private void init(long amount) {
-        tvAmount.setText(amount+"");
+        tvAmount.setText(UnitUtils.coin2String(amount));
     }
 
     @OnClick(R.id.tv_btn_confirm)

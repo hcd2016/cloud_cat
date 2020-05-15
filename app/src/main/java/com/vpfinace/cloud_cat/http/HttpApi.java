@@ -9,10 +9,12 @@ import com.vpfinace.cloud_cat.bean.CatteryBean;
 import com.vpfinace.cloud_cat.bean.GetEarningsBean;
 import com.vpfinace.cloud_cat.bean.HomeBean;
 import com.vpfinace.cloud_cat.bean.LoginBean;
+import com.vpfinace.cloud_cat.bean.MergeBean;
 import com.vpfinace.cloud_cat.bean.MsgBean;
 import com.vpfinace.cloud_cat.bean.MyInviteCodeBean;
 import com.vpfinace.cloud_cat.bean.TopBean;
 import com.vpfinace.cloud_cat.bean.User;
+import com.vpfinace.cloud_cat.bean.UserCenter;
 import com.vpfinace.cloud_cat.bean.WalletBean;
 import com.vpfinace.cloud_cat.bean.WalletRecordBean;
 
@@ -54,13 +56,14 @@ public interface HttpApi {
      */
     @POST("api/front/action/list")
     Observable<BaseResponse<HomeBean>> getCatList();
+//    Observable<BaseResponse<TestBean>> getCatList();
 
     /**
      * 合成,拖拽
      */
     @FormUrlEncoded
     @POST("api/front/action/merge")
-    Observable<BaseResponse<Object>> mergeCat(@Field("storageIdFrom") int storageIdFrom,@Field("storageIdTo") int storageIdTo);
+    Observable<BaseResponse<MergeBean>> mergeCat(@Field("storageIdFrom") int storageIdFrom, @Field("storageIdTo") int storageIdTo);
 
     /**
      * 退出登录
@@ -242,5 +245,16 @@ public interface HttpApi {
     @POST("wx/withdraw/dotransfer")
     Observable<BaseResponse<Object>> wxWithDraw(@Field("money") String money);
 
+    /**
+     * 用户中心
+     */
+    @POST("api/front/client/ucenter")
+    Observable<BaseResponse<UserCenter>> getUserCenter();
 
+    /**
+     * 红包领取提交
+     */
+    @FormUrlEncoded
+    @POST("api/front/client/drawredpack")
+    Observable<BaseResponse<Object>> redPackOpen(@Field("redPackId") String redPackId);
 }

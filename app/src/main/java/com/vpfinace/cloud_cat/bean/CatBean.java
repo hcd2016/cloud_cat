@@ -3,7 +3,7 @@ package com.vpfinace.cloud_cat.bean;
 import android.view.View;
 
 public class CatBean {
-    public View getView() {
+    public  View getView() {
         return view;
     }
 
@@ -24,7 +24,7 @@ public class CatBean {
      * output : null
      */
 
-    private View view;//view对象
+    private transient View view;//view对象
 
 
     public Object createTime;
@@ -40,14 +40,14 @@ public class CatBean {
     public String title;
     public String price;
     public String price1;
-    public long cyclePrice;
+    public long gcprice;
 
-    public long getCyclePrice() {
-        return cyclePrice;
+    public long getGcprice() {
+        return gcprice;
     }
 
-    public void setCyclePrice(long cyclePrice) {
-        this.cyclePrice = cyclePrice;
+    public void setGcprice(long gcprice) {
+        this.gcprice = gcprice;
     }
 
     public String getPrice() {

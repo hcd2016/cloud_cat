@@ -177,6 +177,8 @@
                         android:layout_weight="1" />
 
                     <LinearLayout
+                        android:clipToPadding="false"
+                        android:clipChildren="false"
                         android:id="@+id/ll_del_parent"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -186,24 +188,30 @@
                         android:paddingLeft="16dp">
 
                         <RelativeLayout
+                            android:clipToPadding="false"
+                            android:clipChildren="false"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="bottom"
                             android:layout_marginBottom="4dp">
 
                             <LinearLayout
+                                android:clipToPadding="false"
+                                android:clipChildren="false"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="18dp"
                                 android:background="@drawable/shape_orange_a19_c8"
                                 android:gravity="center_vertical"
                                 android:orientation="horizontal"
-                                android:paddingLeft="32dp"
                                 android:paddingTop="4dp"
                                 android:paddingRight="12dp"
                                 android:paddingBottom="4dp">
 
                                 <TextView
+                                    android:clipToPadding="false"
+                                    android:paddingLeft="32dp"
+                                    android:clipChildren="false"
                                     android:id="@+id/tv_amount"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"

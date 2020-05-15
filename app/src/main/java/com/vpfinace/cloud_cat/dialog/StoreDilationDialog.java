@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.vpfinace.cloud_cat.R;
+import com.vpfinace.cloud_cat.utils.UnitUtils;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -32,7 +33,7 @@ public class StoreDilationDialog extends TBaseDialog {
     }
 
     private void init(int dilatation) {
-        tvDilatation.setText(dilatation+"");
+        tvDilatation.setText(UnitUtils.coin2String((long)dilatation));
     }
 
     @OnClick({R.id.iv_close, R.id.tv_btn_confirm})

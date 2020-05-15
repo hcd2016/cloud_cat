@@ -11,6 +11,7 @@ import com.blankj.utilcode.util.ConvertUtils;
 import com.bumptech.glide.Glide;
 import com.vpfinace.cloud_cat.R;
 import com.vpfinace.cloud_cat.bean.CatBean;
+import com.vpfinace.cloud_cat.utils.UnitUtils;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -35,8 +36,8 @@ public class RecycleDialog extends TBaseDialog {
         super(context, R.layout.dialog_recycle);
         setWindowParam(ConvertUtils.dp2px(270), WindowManager.LayoutParams.WRAP_CONTENT, Gravity.CENTER, 0);
         Glide.with(mContext).load(catBean.getImg()).into(ivImg);
-        if(catBean.getCyclePrice() != 0) {
-            tvAmount.setText(catBean.getCyclePrice()+"");
+        if(catBean.getGcprice() != 0) {
+            tvAmount.setText(UnitUtils.coin2String(catBean.getGcprice()));
         }
     }
 

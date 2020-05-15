@@ -4,6 +4,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.BarUtils;
@@ -13,6 +14,7 @@ import com.vpfinace.cloud_cat.base.BaseFragment;
 import com.vpfinace.cloud_cat.base.BaseObserver;
 import com.vpfinace.cloud_cat.bean.MyInviteCodeBean;
 import com.vpfinace.cloud_cat.bean.User;
+import com.vpfinace.cloud_cat.bean.UserCenter;
 import com.vpfinace.cloud_cat.dialog.RedPacketDialog;
 import com.vpfinace.cloud_cat.global.EventStrings;
 import com.vpfinace.cloud_cat.http.HttpManager;
@@ -64,6 +66,11 @@ public class MineFragment extends BaseFragment {
     ImageView ivHeader;
     @BindView(R.id.tv_amount)
     TextView tvAmount;
+    @BindView(R.id.pb)
+    ProgressBar pb;
+    @BindView(R.id.v_line_gone)
+    View vLineGone;
+    private UserCenter userCenter;
 
     @Override
     public int getLayoutId() {
@@ -84,6 +91,7 @@ public class MineFragment extends BaseFragment {
         EventBus.getDefault().register(this);
         requestMyInviteCode();
         requestGetUserInfo();
+        requestUserCenter();
     }
 
     public static MineFragment homeFragment;
@@ -100,6 +108,7 @@ public class MineFragment extends BaseFragment {
         if (event.equals(EventStrings.MINE_REFRESH)) {//刷新
             requestMyInviteCode();
             requestGetUserInfo();
+            requestUserCenter();
         }
     }
 
@@ -108,6 +117,28 @@ public class MineFragment extends BaseFragment {
             @Override
             public void _onNext(MyInviteCodeBean myInviteCodeBean) {
                 tvInviteCode.setText(myInviteCodeBean.getInviteCode() + "");
+            }
+
+            @Override
+            public void _onError(String message) {
+                ToastUtils.showShort(message);
+            }
+        });
+    }
+
+    //用户中心,红包信息
+    public void requestUserCenter() {
+        HttpManager.toRequst(HttpManager.getApi().getUserCenter(), new BaseObserver<UserCenter>(this) {
+            @Override
+            public void _onNext(UserCenter userCenter) {
+                MineFragment.this.userCenter = userCenter;
+                if(userCenter.getRedpack() == null) {
+                    llBtnRedPacket.setVisibility(View.GONE);
+                    vLineGone.setVisibility(View.GONE);
+                }else {
+                    llBtnRedPacket.setVisibility(View.VISIBLE);
+                    vLineGone.setVisibility(View.VISIBLE);
+                }
             }
 
             @Override
@@ -133,19 +164,21 @@ public class MineFragment extends BaseFragment {
     }
 
     private void setViewData(User user) {
-        if(user == null) return;
+        if (user == null) return;
         tvNickName.setText(user.getNickname());
-        tvId.setText("ID:"+user.getId());
-        tvAmount.setText(user.getUserFund().getCash()+"");
-        GlideUtils.loadCircle(getActivity(),user.getHeadImgUrl(),ivHeader);
+        tvId.setText("ID:" + user.getId());
+        tvAmount.setText(user.getUserFund().getCash() + "");
+        GlideUtils.loadCircle(getActivity(), user.getHeadImgUrl(), ivHeader);
     }
 
     @OnClick({R.id.ll_btn_red_packet, R.id.ll_btn_msg, R.id.ll_my_wallet, R.id.ll_btn_channel, R.id.ll_btn_my_invite_code, R.id.ll_btn_answer, R.id.ll_btn_auth, R.id.ll_btn_help, R.id.ll_btn_setting})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_btn_red_packet:
-                RedPacketDialog redPacketDialog = new RedPacketDialog(getActivity());
-                redPacketDialog.show();
+                if(userCenter != null) {
+                    RedPacketDialog redPacketDialog = new RedPacketDialog(getActivity(),userCenter,this);
+                    redPacketDialog.show();
+                }
                 break;
             case R.id.ll_btn_msg:
                 startActivity(MsgActivity.class);

@@ -63,7 +63,6 @@ public class LoginActivity extends BaseActivity {
         ButterKnife.bind(this);
     }
 
-
     boolean isAgreen = true;
 
     @OnClick({R.id.ll_btn_wechat_login, R.id.tv_btn_eles_login, R.id.fl_select_icon, R.id.tv_btn_yhxy, R.id.tv_btn_yszc})

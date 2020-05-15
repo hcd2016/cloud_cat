@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_white_c10"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="90dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="40dp">
+
+            <ImageView
+                android:id="@+id/iv_cat_img"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@drawable/profit_cat" />
+
+            <TextView
+                android:id="@+id/tv_level"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:background="@drawable/shape_red_554_c10"
+                android:paddingLeft="12dp"
+                android:paddingTop="1dp"
+                android:paddingRight="12dp"
+                android:paddingBottom="1dp"
+                android:text="Lv.2"
+                android:textColor="#ffffffff"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:text="布偶猫"
+            android:textColor="#ff232426"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp"
+            android:text="升级成功"
+            android:textColor="#ff666666"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tv_btn_confirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/shape_red_8e_04_c22"
+            android:paddingLeft="78dp"
+            android:paddingTop="11dp"
+            android:paddingRight="78dp"
+            android:paddingBottom="11dp"
+            android:text="确定"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="12dp"
+        android:background="@color/transparent" />
+
+    <LinearLayout
+        android:paddingBottom="20dp"
+        android:paddingTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_white_c10"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="距离可合成分红喵还差"
+                android:textColor="#ff666666"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tv_desc_level"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="36"
+                android:textColor="#fffea020"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="级"
+                android:textColor="#ff666666"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginTop="12dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/profit_cat1"
+                />
+            <LinearLayout
+                android:layout_marginLeft="12dp"
+                android:id="@+id/ll_dividends_cat_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_orange_c20_c22"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingLeft="12dp"
+                android:paddingTop="4dp"
+                android:paddingRight="12dp"
+                android:paddingBottom="4dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="分红喵今日收益"
+                    android:textColor="@color/white_6f8"
+                    android:textSize="7sp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="¥"
+                        android:textColor="@color/white_6f8"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:textStyle="bold"
+                        android:id="@+id/tv_dividends_account"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="162.83"
+                        android:textColor="@color/white_6f8"
+                        android:textSize="12sp" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:background="@color/transparent"
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
+        <ImageView
+            android:id="@+id/iv_close"
+            android:layout_alignParentBottom="true"
+            android:layout_centerInParent="true"
+            android:src="@drawable/homepage_popup_icon_close_white"
+            android:layout_width="20dp"
+            android:layout_height="20dp"/>
+    </RelativeLayout>
+</LinearLayout>

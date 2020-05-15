@@ -16,6 +16,7 @@ import com.vpfinace.cloud_cat.base.BaseActivity;
 import com.vpfinace.cloud_cat.base.BaseObserver;
 import com.vpfinace.cloud_cat.bean.CatShopBean;
 import com.vpfinace.cloud_cat.http.HttpManager;
+import com.vpfinace.cloud_cat.utils.UnitUtils;
 import com.vpfinace.cloud_cat.weight.WrapContentLinearLayoutManager;
 
 import java.util.ArrayList;
@@ -41,18 +42,18 @@ public class CatShopDialog extends TBaseDialog {
         this.onBuyClickListener = onBuyClickListener;
     }
 
-    public CatShopDialog(Context context, BaseActivity activity,long amount) {
+    public CatShopDialog(Context context, BaseActivity activity, long amount) {
         super(context, R.layout.dialog_cat_shop);
         setWindowParam(0.9f, ConvertUtils.dp2px(542), Gravity.CENTER, 0);
-        init(activity,amount);
+        init(activity, amount);
     }
 
     public void updateAmount(long amount) {
-        tvAmount.setText(amount+"");
+        tvAmount.setText(UnitUtils.coin2String(amount));
     }
 
-    public void init(BaseActivity activity,long amount) {
-        tvAmount.setText(amount+"");
+    public void init(BaseActivity activity, long amount) {
+        tvAmount.setText(UnitUtils.coin2String(amount));
         list = new ArrayList<>();
         rv.setLayoutManager(new WrapContentLinearLayoutManager(mContext));
         myAdapter = new MyAdapter(list);
@@ -99,14 +100,12 @@ public class CatShopDialog extends TBaseDialog {
             TextView tvOutPut = helper.getView(R.id.tv_out_put);
             TextView tvPrice = helper.getView(R.id.tv_price);
             TextView tvUnlockLevel = helper.getView(R.id.tv_unlock_level);
-            tvUnlockLevel.setText("Lv."+item.getLevel());
+            tvUnlockLevel.setText("Lv." + item.getLevel());
             Glide.with(mContext).load(item.getImg()).into(ivImg);
-            tvLevel.setText(item.getLevel()+"");
+            tvLevel.setText(item.getLevel() + "");
             tvTitle.setText(item.getTitle());
             tvOutPut.setText(item.getOutput() + "/s");
-            if (item.getPrice1() != null) {
-                tvPrice.setText(item.getPrice1());
-            }
+            tvPrice.setText(UnitUtils.coin2String(item.getPrice1()));
 
             if (item.getBuyStatus() == 1) {
                 helper.getView(R.id.ll_btn_unlock).setVisibility(View.VISIBLE);
@@ -116,14 +115,16 @@ public class CatShopDialog extends TBaseDialog {
                 helper.getView(R.id.ll_btn_locked).setVisibility(View.VISIBLE);
             }
 
-            helper.getView(R.id.ll_item_container).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (onBuyClickListener != null) {
-                        onBuyClickListener.OnBuyClick(item);
+            if (item.getBuyStatus() == 1) {
+                helper.getView(R.id.ll_item_container).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (onBuyClickListener != null) {
+                            onBuyClickListener.OnBuyClick(item);
+                        }
                     }
-                }
-            });
+                });
+            }
         }
     }
 

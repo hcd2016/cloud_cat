@@ -11,9 +11,11 @@ import com.scwang.smartrefresh.layout.api.RefreshFooter;
 import com.scwang.smartrefresh.layout.api.RefreshHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.vpfinace.cloud_cat.R;
+import com.vpfinace.cloud_cat.ad.config.TTAdManagerHolder;
 import com.vpfinace.cloud_cat.config.ConfigUtil;
 import com.vpfinace.cloud_cat.global.SpContant;
 
+import androidx.multidex.MultiDex;
 import androidx.multidex.MultiDexApplication;
 
 
@@ -28,7 +30,10 @@ public class App extends MultiDexApplication {
         configUtil = new ConfigUtil();
 //        DoraemonKit.install(this);
 //        MyUtils.init(this);
+        MultiDex.install(this);
         SPUtils.getInstance().put(SpContant.IS_SHOW_OFFLINE,true);
+
+        TTAdManagerHolder.init(this);
     }
 
     //保存一些常用的配置

@@ -5,8 +5,6 @@ import android.text.TextUtils;
 
 import com.blankj.utilcode.util.NetworkUtils;
 import com.blankj.utilcode.util.SPUtils;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.vpfinace.cloud_cat.app.App;
 import com.vpfinace.cloud_cat.base.BaseObserver;
 import com.vpfinace.cloud_cat.global.SpContant;
@@ -71,13 +69,20 @@ public class HttpManager {
 
     private HttpManager() {
         //为了避免使用Gson时遇到locale影响Date格式的问题，使用GsonBuilder来创建Gson对象，在创建过程中调用GsonBuilder.setDateFormat(String)指定一个固定的格式即可。
-        Gson gson = new GsonBuilder()
-                .setDateFormat("yyyy-MM-dd HH:mm:ss")
-                .create();
+//        Gson gson = new GsonBuilder()
+//                .setDateFormat("yyyy-MM-dd HH:mm:ss")
+//                .create();
+//        GsonBuilder builder = new GsonBuilder();
+//        builder.excludeFieldsWithModifiers(Modifier.FINAL, Modifier.TRANSIENT, Modifier.STATIC);
+//        Gson gson = builder.setDateFormat("yyyy-MM-dd HH:mm:ss").excludeFieldsWithModifiers(Modifier.PROTECTED).create();
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(App.getConfig().getBaseUrl())
                 .client(createOkHttpClient())
-                .addConverterFactory(StringConverterFactory.create())//返回类型转成String,这个解析器会先执行,取不到String才会解析Bean类,api中需申明泛型为String
+//                .addConverterFactory(StringConverterFactory.create())//返回类型转成String,这个解析器会先执行,取不到String才会解析Bean类,api中需申明泛型为String
+//                .addConverterFactory(GsonConverterFactory.create(gson))
+
+//                .addConverterFactory(StringConverterFactory.create())//返回类型转成String,这个解析器会先执行,取不到String才会解析Bean类,api中需申明泛型为String
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();

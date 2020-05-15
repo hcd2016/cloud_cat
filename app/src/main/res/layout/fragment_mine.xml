@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:background="@color/gray_4f4"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/gray_4f4">
 
     <View
         android:layout_width="match_parent"
@@ -10,9 +10,9 @@
         android:background="@drawable/shape_red_54_8e" />
 
     <ScrollView
-        android:scrollbars="none"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -25,7 +25,8 @@
             <View
                 android:id="@+id/v_status_view"
                 android:layout_width="match_parent"
-                android:layout_height="20dp"/>
+                android:layout_height="20dp" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -77,10 +78,10 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_marginBottom="10dp"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_gravity="bottom"
+                    android:layout_marginBottom="10dp"
                     android:clipChildren="false"
                     android:src="@drawable/profit_cat1" />
 
@@ -98,9 +99,9 @@
                         android:textSize="22sp" />
 
                     <LinearLayout
-                        android:layout_marginTop="4dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
 
@@ -112,23 +113,23 @@
                             android:textSize="12sp" />
 
                         <TextView
-                            android:textStyle="bold"
-                            android:layout_marginLeft="2dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginLeft="2dp"
                             android:text="50%"
                             android:textColor="@color/white"
-                            android:textSize="14sp" />
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
 
                         <ProgressBar
-                            android:layout_marginLeft="17dp"
                             android:id="@+id/pb"
-                            android:max="100"
-                            android:progress="50"
-                            android:progressDrawable="@drawable/progressbar_bg"
                             style="?android:attr/progressBarStyleHorizontal"
                             android:layout_width="104dp"
-                            android:layout_height="8dp"/>
+                            android:layout_height="8dp"
+                            android:layout_marginLeft="17dp"
+                            android:max="100"
+                            android:progress="50"
+                            android:progressDrawable="@drawable/progressbar_bg" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -146,9 +147,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:background="@drawable/shape_white_c10"
-                android:orientation="vertical"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp">
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:id="@+id/ll_btn_red_packet"
@@ -156,7 +155,9 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
+                    android:paddingLeft="16dp"
                     android:paddingTop="10dp"
+                    android:paddingRight="16dp"
                     android:paddingBottom="10dp">
 
                     <ImageView
@@ -181,7 +182,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="猫咪升到3级即可领取红包"
+                            android:text="猫咪升到5级即可领取红包"
                             android:textColor="@color/black_9"
                             android:textSize="12sp" />
                     </LinearLayout>
@@ -204,7 +205,12 @@
                         android:textSize="14sp" />
                 </LinearLayout>
 
-                <include layout="@layout/line_gray_e6" />
+                <View
+                    android:id="@+id/v_line_gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/gray_6e6" />
+
 
                 <LinearLayout
                     android:id="@+id/ll_btn_msg"
@@ -212,7 +218,9 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
+                    android:paddingLeft="16dp"
                     android:paddingTop="20dp"
+                    android:paddingRight="16dp"
                     android:paddingBottom="20dp">
 
                     <ImageView
@@ -414,10 +422,10 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_marginBottom="12dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
+                android:layout_marginBottom="12dp"
                 android:background="@drawable/shape_white_c10"
                 android:orientation="vertical"
                 android:paddingLeft="16dp"
