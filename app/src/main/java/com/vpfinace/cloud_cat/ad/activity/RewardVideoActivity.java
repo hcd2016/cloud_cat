@@ -40,9 +40,9 @@ public class RewardVideoActivity extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reward_video);
-        mLoadAd = (Button) findViewById(R.id.btn_reward_load);
-        mLoadAdVertical = (Button) findViewById(R.id.btn_reward_load_vertical);
-        mShowAd = (Button) findViewById(R.id.btn_reward_show);
+//        mLoadAd = (Button) findViewById(R.id.btn_reward_load);
+//        mLoadAdVertical = (Button) findViewById(R.id.btn_reward_load_vertical);
+//        mShowAd = (Button) findViewById(R.id.btn_reward_show);
         //step1:初始化sdk
         TTAdManager ttAdManager = TTAdManagerHolder.get();
         //step2:(可选，强烈建议在合适的时机调用):申请部分权限，如read_phone_state,防止获取不了imei时候，下载类广告没有填充的问题。
@@ -50,7 +50,8 @@ public class RewardVideoActivity extends Activity {
         //step3:创建TTAdNative对象,用于调用广告请求接口
         mTTAdNative = ttAdManager.createAdNative(getApplicationContext());
 //        getExtraInfo();
-        initClickEvent();
+//        initClickEvent();
+        loadAd(mVerticalCodeId, TTAdConstant.VERTICAL);
     }
 
 //    private void getExtraInfo() {
@@ -63,36 +64,36 @@ public class RewardVideoActivity extends Activity {
 //        mIsExpress = intent.getBooleanExtra("is_express", false);
 //    }
 
-    private void initClickEvent() {
-        mLoadAd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadAd(mHorizontalCodeId, TTAdConstant.HORIZONTAL);
-            }
-        });
-        mLoadAdVertical.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadAd(mVerticalCodeId, TTAdConstant.VERTICAL);
-            }
-        });
-        mShowAd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mttRewardVideoAd != null) {
-                    //step6:在获取到广告后展示,强烈建议在onRewardVideoCached回调后，展示广告，提升播放体验
-                    //该方法直接展示广告
-//                    mttRewardVideoAd.showRewardVideoAd(RewardVideoActivity.this);
-
-                    //展示广告，并传入广告展示的场景
-                    mttRewardVideoAd.showRewardVideoAd(RewardVideoActivity.this, TTAdConstant.RitScenes.CUSTOMIZE_SCENES, "scenes_test");
-                    mttRewardVideoAd = null;
-                } else {
-                    ToastUtils.showShort( "请先加载广告");
-                }
-            }
-        });
-    }
+//    private void initClickEvent() {
+//        mLoadAd.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                loadAd(mHorizontalCodeId, TTAdConstant.HORIZONTAL);
+//            }
+//        });
+//        mLoadAdVertical.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                loadAd(mVerticalCodeId, TTAdConstant.VERTICAL);
+//            }
+//        });
+//        mShowAd.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (mttRewardVideoAd != null) {
+//                    //step6:在获取到广告后展示,强烈建议在onRewardVideoCached回调后，展示广告，提升播放体验
+//                    //该方法直接展示广告
+////                    mttRewardVideoAd.showRewardVideoAd(RewardVideoActivity.this);
+//
+//                    //展示广告，并传入广告展示的场景
+//                    mttRewardVideoAd.showRewardVideoAd(RewardVideoActivity.this, TTAdConstant.RitScenes.CUSTOMIZE_SCENES, "scenes_test");
+//                    mttRewardVideoAd = null;
+//                } else {
+//                    ToastUtils.showShort( "请先加载广告");
+//                }
+//            }
+//        });
+//    }
 
     private boolean mHasShowDownloadActive = false;
 
@@ -227,6 +228,9 @@ public class RewardVideoActivity extends Activity {
                        ToastUtils.showShort(  "安装完成，点击下载区域打开", Toast.LENGTH_LONG);
                     }
                 });
+
+                mttRewardVideoAd.showRewardVideoAd(RewardVideoActivity.this, TTAdConstant.RitScenes.CUSTOMIZE_SCENES, "scenes_test");
+                mttRewardVideoAd = null;
             }
         });
     }

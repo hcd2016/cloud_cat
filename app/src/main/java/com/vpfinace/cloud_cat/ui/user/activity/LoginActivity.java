@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.util.BarUtils;
 import com.vpfinace.cloud_cat.R;
+import com.vpfinace.cloud_cat.ad.config.TTAdManagerHolder;
 import com.vpfinace.cloud_cat.base.BaseActivity;
 import com.vpfinace.cloud_cat.utils.GlideUtils;
 import com.vpfinace.cloud_cat.utils.StatusTextUtils;
@@ -54,6 +55,7 @@ public class LoginActivity extends BaseActivity {
         vStatusView.setLayoutParams(layoutParams);
         StatusTextUtils.setLightStatusBar(this, true);
         GlideUtils.loadCorner(this,R.mipmap.logo,ivLogo,10);
+        TTAdManagerHolder.get().requestPermissionIfNecessary(this);//广告权限申请
     }
 
     @Override

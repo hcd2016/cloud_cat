@@ -6,6 +6,8 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.vpfinace.cloud_cat.R;
+import com.vpfinace.cloud_cat.base.BaseActivity;
+import com.vpfinace.cloud_cat.utils.AdManager;
 import com.vpfinace.cloud_cat.utils.UnitUtils;
 
 import butterknife.BindView;
@@ -20,6 +22,7 @@ public class OffLineEarningsDialog extends TBaseDialog {
     @BindView(R.id.tv_amount)
     TextView tvAmount;
     private Long amount;
+    private BaseActivity activity;
 
     public TextView getTvBtnConfirm() {
         return tvBtnConfirm;
@@ -29,11 +32,12 @@ public class OffLineEarningsDialog extends TBaseDialog {
         this.tvBtnConfirm = tvBtnConfirm;
     }
 
-    public OffLineEarningsDialog(Context context, long amount) {
+    public OffLineEarningsDialog(Context context, long amount, BaseActivity activity) {
         super(context, R.layout.dialog_offline_earnings);
         setWindowParam(0.8f, WindowManager.LayoutParams.WRAP_CONTENT, Gravity.CENTER, 0);
         this.amount = amount;
         init(amount);
+        this.activity = activity;
     }
 
     private void init(long amount) {
@@ -42,6 +46,7 @@ public class OffLineEarningsDialog extends TBaseDialog {
 
     @OnClick(R.id.tv_btn_confirm)
     public void onViewClicked() {
+        AdManager.playRewardVideo(activity);
         dismiss();
     }
 }

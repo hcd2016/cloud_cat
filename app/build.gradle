@@ -24,6 +24,16 @@ android {
     }
 }
 
+//signingConfigs {
+//    release {
+//        storeFile file("cloud_cat.jks")
+//        storePassword "cloudcat"
+//        keyAlias "cloudcat"
+//        keyPassword "cloudcat"
+//        v2SigningEnabled false
+//    }
+//}
+
 repositories {
     flatDir {
         dirs 'libs'

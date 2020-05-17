@@ -46,6 +46,7 @@ import com.vpfinace.cloud_cat.http.HttpManager;
 import com.vpfinace.cloud_cat.ui.home.activity.DividendCatActivity;
 import com.vpfinace.cloud_cat.ui.home.activity.PicListActivity;
 import com.vpfinace.cloud_cat.ui.home.activity.TopActivity;
+import com.vpfinace.cloud_cat.utils.AdManager;
 import com.vpfinace.cloud_cat.utils.BeanUtils;
 import com.vpfinace.cloud_cat.utils.ScreenUtils;
 import com.vpfinace.cloud_cat.utils.UnitUtils;
@@ -175,7 +176,7 @@ public class HomeFragment extends BaseFragment {
     private void showOffLineDialog(long offlineEarnings) {
         boolean isShow = SPUtils.getInstance().getBoolean(SpContant.IS_SHOW_OFFLINE);
         if (isShow && offlineEarnings > 0) {
-            OffLineEarningsDialog offLineEarningsDialog = new OffLineEarningsDialog(getActivity(), offlineEarnings);
+            OffLineEarningsDialog offLineEarningsDialog = new OffLineEarningsDialog(getActivity(), offlineEarnings,(BaseActivity) getActivity());
             offLineEarningsDialog.show();
         }
         SPUtils.getInstance().put(SpContant.IS_SHOW_OFFLINE, false);
@@ -691,7 +692,8 @@ public class HomeFragment extends BaseFragment {
 //                refresh();
 //                startActivity(HowToPlayActivity.class);
 //                startActivity(FullScreenVideoActivity.class);
-                startActivity(RewardVideoActivity.class);
+//                startActivity(RewardVideoActivity.class);
+                AdManager.playRewardVideo(getActivity());
                 break;
             case R.id.ll_dividends_cat_container:
                 startActivity(DividendCatActivity.class);
