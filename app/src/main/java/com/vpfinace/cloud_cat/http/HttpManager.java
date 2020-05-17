@@ -79,7 +79,7 @@ public class HttpManager {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(App.getConfig().getBaseUrl())
                 .client(createOkHttpClient())
-//                .addConverterFactory(StringConverterFactory.create())//返回类型转成String,这个解析器会先执行,取不到String才会解析Bean类,api中需申明泛型为String
+                .addConverterFactory(StringConverterFactory.create())//返回类型转成String,这个解析器会先执行,取不到String才会解析Bean类,api中需申明泛型为String
 //                .addConverterFactory(GsonConverterFactory.create(gson))
 
 //                .addConverterFactory(StringConverterFactory.create())//返回类型转成String,这个解析器会先执行,取不到String才会解析Bean类,api中需申明泛型为String

@@ -1,6 +1,7 @@
 package com.vpfinace.cloud_cat.http;
 
 
+import com.google.gson.JsonElement;
 import com.vpfinace.cloud_cat.base.BaseResponse;
 import com.vpfinace.cloud_cat.bean.CatBean;
 import com.vpfinace.cloud_cat.bean.CatPicBean;
@@ -17,11 +18,15 @@ import com.vpfinace.cloud_cat.bean.User;
 import com.vpfinace.cloud_cat.bean.UserCenter;
 import com.vpfinace.cloud_cat.bean.WalletBean;
 import com.vpfinace.cloud_cat.bean.WalletRecordBean;
+import com.vpfinace.cloud_cat.bean.WheelResultBean;
+
+import org.json.JSONObject;
 
 import java.util.List;
 
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.Multipart;
@@ -257,4 +262,24 @@ public interface HttpApi {
     @FormUrlEncoded
     @POST("api/front/client/drawredpack")
     Observable<BaseResponse<Object>> redPackOpen(@Field("redPackId") String redPackId);
+
+    /**
+     * 获取转盘结果
+     */
+    @POST("api/front/award/roulette")
+    Observable<BaseResponse<WheelResultBean>> getWheelResult();
+
+    /**
+     * 获取转盘券和剩余视频次数
+     */
+    @POST("api/front/award/getAdAndVoucherTimes")
+    Observable<BaseResponse<Object>> getAdAndVoucherTimes();
+
+//    /**
+//     * 视频提交接口
+//     * @return
+//     */
+//    @FormUrlEncoded
+//    @POST("api/front/award/adResultSync")
+//    Observable<BaseResponse<Object>> getAdAndVoucherTimes();
 }

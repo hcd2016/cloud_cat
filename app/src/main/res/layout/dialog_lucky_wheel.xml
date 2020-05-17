@@ -81,6 +81,7 @@
                         android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/tv_voucher_counts"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="3dp"
@@ -100,17 +101,18 @@
         </RelativeLayout>
 
         <TextView
+            android:enabled="true"
             android:id="@+id/tv_btn_start"
             android:layout_width="wrap_content"
             android:layout_height="44dp"
             android:layout_gravity="center"
             android:layout_marginBottom="48dp"
-            android:background="@drawable/shape_red_8e_04_c22"
+            style="@style/style_btn_red_8e40_gray_f4_c23"
             android:gravity="center"
             android:paddingLeft="111dp"
             android:paddingRight="111dp"
             android:text="开始"
-            android:textColor="@color/white" />
+            />
     </LinearLayout>
 
 

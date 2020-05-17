@@ -28,6 +28,7 @@
             android:textSize="16sp"
             android:textStyle="bold" />
         <TextView
+            android:id="@+id/tv_earnings_desc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -48,6 +49,8 @@
             android:layout_height="19dp"
             android:src="@drawable/homepage_popup_cookies"/>
         <TextView
+            android:textStyle="bold"
+            android:id="@+id/tv_amount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="18900"
@@ -58,7 +61,7 @@
 
     <TextView
         android:layout_marginBottom="20dp"
-        android:id="@+id/tv_btn_look_sp"
+        android:id="@+id/tv_btn_confirm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"

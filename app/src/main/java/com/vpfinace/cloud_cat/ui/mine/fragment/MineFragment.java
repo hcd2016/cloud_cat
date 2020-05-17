@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.vpfinace.cloud_cat.R;
+import com.vpfinace.cloud_cat.base.BaseActivity;
 import com.vpfinace.cloud_cat.base.BaseFragment;
 import com.vpfinace.cloud_cat.base.BaseObserver;
 import com.vpfinace.cloud_cat.bean.MyInviteCodeBean;
@@ -176,7 +177,7 @@ public class MineFragment extends BaseFragment {
         switch (view.getId()) {
             case R.id.ll_btn_red_packet:
                 if(userCenter != null) {
-                    RedPacketDialog redPacketDialog = new RedPacketDialog(getActivity(),userCenter,this);
+                    RedPacketDialog redPacketDialog = new RedPacketDialog(getActivity(),userCenter.getRedpack(),(BaseActivity) getActivity());
                     redPacketDialog.show();
                 }
                 break;

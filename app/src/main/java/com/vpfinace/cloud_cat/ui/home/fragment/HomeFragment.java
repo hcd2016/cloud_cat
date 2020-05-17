@@ -65,6 +65,8 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.OnClick;
+import pl.droidsonroids.gif.GifDrawable;
+import pl.droidsonroids.gif.GifImageView;
 
 public class HomeFragment extends BaseFragment {
     @BindView(R.id.v_status_view)
@@ -447,25 +449,51 @@ public class HomeFragment extends BaseFragment {
                                 if (toCatBean.getView() != null) {
                                     toCatBean.getView().setVisibility(View.GONE);
                                 }
-                                RelativeLayout rl_item_container = (RelativeLayout) myAdapter.getViewByPosition(rv, postion, R.id.rl_item_container);
-                                GifView gif_view = rl_item_container.findViewById(R.id.gif_view);
-                                gif_view.setVisibility(View.VISIBLE);
-                                gif_view.setGifResource(R.drawable.compund2);
-                                gif_view.play();
-//
+
                                 CatBean finalViewBean = toCatBean;
+                                RelativeLayout rl_item_container = (RelativeLayout) myAdapter.getViewByPosition(rv, postion, R.id.rl_item_container);
+                                GifImageView gif_view = rl_item_container.findViewById(R.id.gif_view);
+                                gif_view.setVisibility(View.VISIBLE);
+                                gif_view.setImageResource(R.drawable.compund2);
+                                GifDrawable gifDrawable = (GifDrawable) gif_view.getDrawable();
+                                gifDrawable.setSpeed(1f);
+                                gifDrawable.setLoopCount(2);
+                                gifDrawable.start();
+                                finalViewBean.getView().setVisibility(View.VISIBLE);
+                                toCatBean.getView().setVisibility(View.GONE);
+                                isRefesh = true;
+                                requestMergeCat(fromCatBean.getStorageId(), toCatBean.getStorageId(), 1);
                                 gif_view.postDelayed(new Runnable() {
                                     @Override
                                     public void run() {
-                                        gif_view.pause();
                                         gif_view.setVisibility(View.GONE);
 //                                        notifyViewDataChange();
-                                        finalViewBean.getView().setVisibility(View.VISIBLE);
-                                        toCatBean.getView().setVisibility(View.GONE);
-                                        isRefesh = true;
-                                        requestMergeCat(fromCatBean.getStorageId(), toCatBean.getStorageId(), 1);
+
                                     }
-                                }, 300);
+                                },  gifDrawable.getDuration());
+
+
+//                                RelativeLayout rl_item_container = (RelativeLayout) myAdapter.getViewByPosition(rv, postion, R.id.rl_item_container);
+//                                GifView gif_view = rl_item_container.findViewById(R.id.gif_view);
+//                                gif_view.setVisibility(View.VISIBLE);
+//                                gif_view.setGifResource(R.drawable.compund2);
+//                                gif_view.play();
+////
+//                                CatBean finalViewBean = toCatBean;
+//                                gif_view.postDelayed(new Runnable() {
+//                                    @Override
+//                                    public void run() {
+//                                        gif_view.pause();
+//                                        gif_view.setVisibility(View.GONE);
+////                                        notifyViewDataChange();
+//                                        finalViewBean.getView().setVisibility(View.VISIBLE);
+//                                        toCatBean.getView().setVisibility(View.GONE);
+//                                        isRefesh = true;
+//                                        requestMergeCat(fromCatBean.getStorageId(), toCatBean.getStorageId(), 1);
+//                                    }
+//                                }, 300);
+
+
 
 //                                RelativeLayout rl_item_container = (RelativeLayout) myAdapter.getViewByPosition(rv, postion, R.id.rl_item_container);
 //                                ImageView iv_gif = rl_item_container.findViewById(R.id.iv_gif);
@@ -682,7 +710,7 @@ public class HomeFragment extends BaseFragment {
                 requestGetEarnings(2);
                 break;
             case R.id.iv_lucky_wheel:
-                LuckyWheelDialog luckyWheelDialog = new LuckyWheelDialog(getActivity());
+                LuckyWheelDialog luckyWheelDialog = new LuckyWheelDialog(getActivity(),(BaseActivity) getActivity());
                 luckyWheelDialog.show();
                 break;
             case R.id.iv_top:

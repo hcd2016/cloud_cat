@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.util.ToastUtils;
 import com.vpfinace.cloud_cat.R;
+import com.vpfinace.cloud_cat.base.BaseActivity;
 import com.vpfinace.cloud_cat.base.BaseFragment;
 import com.vpfinace.cloud_cat.base.BaseObserver;
 import com.vpfinace.cloud_cat.bean.UserCenter;
@@ -49,20 +50,20 @@ public class RedPacketDialog extends TBaseDialog {
     LinearLayout llPacketResultContainer;
     @BindView(R.id.ll_open_packet_container)
     LinearLayout llOpenPacketContainer;
-    BaseFragment baseFragment;
-    UserCenter userCenter;
+    BaseActivity baseFragment;
+    UserCenter.RedpackBean redPack;
 
-    public RedPacketDialog(Context context, UserCenter userCenter, BaseFragment baseFragment) {
+    public RedPacketDialog(Context context, UserCenter.RedpackBean redPack, BaseActivity baseFragment) {
         super(context, R.layout.dialog_red_packet);
         setWindowParam(0.8f, WindowManager.LayoutParams.WRAP_CONTENT, Gravity.CENTER, 0);
-        tvAmount.setText(ArithUtil.div(userCenter.getRedpack().getAmount(),100)+"");
-        tvDesc.setText(userCenter.getRedpack().getExplain());
+        tvAmount.setText(ArithUtil.div(redPack.getAmount(),100)+"");
+        tvDesc.setText(redPack.getExplain());
         this.baseFragment = baseFragment;
-        this.userCenter = userCenter;
+        this.redPack = redPack;
     }
 
     public void requestOpenRedPack() {
-        HttpManager.toRequst(HttpManager.getApi().redPackOpen(userCenter.getRedpack().getId()+""), new BaseObserver(baseFragment) {
+        HttpManager.toRequst(HttpManager.getApi().redPackOpen(redPack.getId()+""), new BaseObserver(baseFragment) {
             @Override
             public void _onNext(Object o) {
                 llOpenPacketContainer.setVisibility(View.GONE);
