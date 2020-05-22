@@ -87,7 +87,7 @@ public class StoreListDialog extends TBaseDialog {
                 storeDilationDialog.setOnConfirmClickListener(new StoreDilationDialog.OnConfirmClickListener() {
                     @Override
                     public void onConfirmClick() {
-                        homeFragment.requestAmountSync();
+//                        homeFragment.requestAmountSync();
                         //todo 总金额是否够判断
                         requestDilation(homeFragment);
                     }

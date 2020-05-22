@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/shape_white_c10"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:id="@+id/fl_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:padding="20dp">
+
+        <ImageView
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:src="@drawable/popup_icon_close" />
+    </FrameLayout>
+
+    <ImageView
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center"
+        android:src="@drawable/video" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="兑换转盘券"
+        android:textColor="#ff232426"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="8dp"
+        android:text="观看视频立即获得5张转盘券"
+        android:textColor="#ff232426"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/tv_btn_commit"
+        android:layout_width="wrap_content"
+        android:layout_height="44dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="37dp"
+        android:background="@drawable/shape_red_8e_04_c22"
+        android:enabled="true"
+        android:gravity="center"
+        android:paddingLeft="111dp"
+        android:paddingRight="111dp"
+        android:text="看视频获得"
+        android:textColor="@color/white"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="20dp"
+        android:text="每日中午、晚上12点重置视频次数(剩余18次)"
+        android:textColor="#ff999999"
+        android:textSize="12sp" />
+</LinearLayout>

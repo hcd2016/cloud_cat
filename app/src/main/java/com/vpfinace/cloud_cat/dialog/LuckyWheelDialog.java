@@ -7,6 +7,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.ConvertUtils;
@@ -15,8 +16,12 @@ import com.vpfinace.cloud_cat.R;
 import com.vpfinace.cloud_cat.base.BaseActivity;
 import com.vpfinace.cloud_cat.base.BaseObserver;
 import com.vpfinace.cloud_cat.bean.WheelResultBean;
+import com.vpfinace.cloud_cat.global.EventStrings;
 import com.vpfinace.cloud_cat.http.HttpManager;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -36,17 +41,25 @@ public class LuckyWheelDialog extends TBaseDialog {
     TextView tvBtnStart;
     @BindView(R.id.tv_voucher_counts)
     TextView tvVoucherCounts;
+    @BindView(R.id.tv_btn_get_quan)
+    TextView tvBtnGetQuan;
+    @BindView(R.id.ll_quan_container)
+    LinearLayout llQuanContainer;
+    @BindView(R.id.tv_btn_get_quan_unenable)
+    TextView tvBtnGetQuanUnenable;
     private ObjectAnimator objectAnimator;
     BaseActivity baseActivity;
+    private int currVoucherNum = 0;//转盘券数量
 
     public LuckyWheelDialog(Context context, BaseActivity baseActivity) {
         super(context, R.layout.dialog_lucky_wheel);
         setWindowParam(0.9f, ConvertUtils.dp2px(469), Gravity.CENTER, 0);
+        EventBus.getDefault().register(this);
         this.baseActivity = baseActivity;
         requestGetVideoTimes();
     }
 
-    @OnClick({R.id.iv_close, R.id.tv_btn_start})
+    @OnClick({R.id.iv_close, R.id.tv_btn_start, R.id.tv_btn_get_quan})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_close:
@@ -56,6 +69,18 @@ public class LuckyWheelDialog extends TBaseDialog {
                 tvBtnStart.setEnabled(false);
                 requestWheelResult(baseActivity);
                 break;
+            case R.id.tv_btn_get_quan://领取转盘券
+                GetQuanDialog getQuanDialog = new GetQuanDialog(baseActivity);
+                getQuanDialog.show();
+                break;
+
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(String event) {
+        if (event.equals(EventStrings.VIDEO_COMPLETE)) {//看完视频
+            requestGetVideoTimes();
         }
     }
 
@@ -63,6 +88,13 @@ public class LuckyWheelDialog extends TBaseDialog {
         HttpManager.toRequst(HttpManager.getApi().getWheelResult(), new BaseObserver<WheelResultBean>(baseActivity) {
             @Override
             public void _onNext(WheelResultBean wheelResultBean) {
+                if (currVoucherNum > 0) {
+                    currVoucherNum--;
+                }
+                if (currVoucherNum == 0) {
+                    tvBtnStart.setEnabled(false);
+                }
+                tvVoucherCounts.setText(currVoucherNum + "");//转盘券-1;
                 startWheel(wheelResultBean);
             }
 
@@ -77,15 +109,29 @@ public class LuckyWheelDialog extends TBaseDialog {
     //获取转盘券和视频观看次数
     public void requestGetVideoTimes() {
         HttpManager.toRequst(HttpManager.getApi().getAdAndVoucherTimes(), new BaseObserver<Object>(baseActivity) {
+
+
             @Override
             public void _onNext(Object obj) {
                 try {
                     JSONObject jsonObject = new JSONObject(obj.toString());
-                    int adRemainTimes = jsonObject.optInt("adRemainTimes");
-                    int voucherRemainTimes = jsonObject.optInt("voucherRemainTimes");
-                    tvVoucherCounts.setText(voucherRemainTimes + "");
-                    if (voucherRemainTimes <= 0) {
+                    int voucherRemainTimes = jsonObject.optInt("voucherRemainTimes");//可领券次数
+                    currVoucherNum = jsonObject.optInt("currVoucherNum");//剩余转盘券
+                    tvVoucherCounts.setText(currVoucherNum + "");
+                    if (currVoucherNum > 0) {//还有券
+                        tvBtnGetQuan.setVisibility(View.GONE);
+                        tvBtnGetQuanUnenable.setVisibility(View.VISIBLE);
+                        tvBtnStart.setEnabled(true);
+                    } else {//没有券了
                         tvBtnStart.setEnabled(false);
+                        if (voucherRemainTimes > 0) {
+                            tvBtnGetQuan.setVisibility(View.VISIBLE);
+                            tvBtnGetQuanUnenable.setVisibility(View.GONE);
+                        } else {
+                            tvBtnGetQuan.setVisibility(View.GONE);
+                            tvBtnGetQuanUnenable.setVisibility(View.VISIBLE);
+                            tvBtnStart.setEnabled(false);
+                        }
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -162,7 +208,12 @@ public class LuckyWheelDialog extends TBaseDialog {
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                tvBtnStart.setEnabled(true);
+                if (currVoucherNum > 0) {
+                    tvBtnStart.setEnabled(true);
+                } else {
+                    tvBtnStart.setEnabled(false);
+                    requestGetVideoTimes();
+                }
 //                ToastUtils.showShort(finalMessage);
                 switch (result) {
                     case 1://少量
@@ -198,6 +249,7 @@ public class LuckyWheelDialog extends TBaseDialog {
                         redPacketDialog.show();
                         break;
                 }
+                EventBus.getDefault().post(EventStrings.HOME_REFRESH);
             }
 
             @Override
@@ -211,5 +263,11 @@ public class LuckyWheelDialog extends TBaseDialog {
             }
         });
         objectAnimator.start();
+    }
+
+    @Override
+    public void dismiss() {
+        EventBus.getDefault().unregister(this);
+        super.dismiss();
     }
 }

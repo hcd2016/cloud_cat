@@ -22,21 +22,21 @@ public class TTAdManagerHolder {
         return TTAdSdk.getAdManager();
     }
 
-    public static void init(Context context) {
-        doInit(context);
+    public static void init(Context context, String toutiao_app_code) {
+        doInit(context,toutiao_app_code);
     }
 
     //step1:接入网盟广告sdk的初始化操作，详情见接入文档和穿山甲平台说明
-    private static void doInit(Context context) {
+    private static void doInit(Context context, String toutiao_app_code) {
         if (!sInit) {
-            TTAdSdk.init(context, buildConfig(context));
+            TTAdSdk.init(context, buildConfig(context,toutiao_app_code));
             sInit = true;
         }
     }
 
-    private static TTAdConfig buildConfig(Context context) {
+    private static TTAdConfig buildConfig(Context context, String toutiao_app_code) {
         return new TTAdConfig.Builder()
-                .appId("5066036")
+                .appId(toutiao_app_code)
                 .useTextureView(true) //使用TextureView控件播放视频,默认为SurfaceView,当有SurfaceView冲突的场景，可以使用TextureView
                 .appName("云养猫舍")
                 .titleBarTheme(TTAdConstant.TITLE_BAR_THEME_DARK)

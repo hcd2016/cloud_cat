@@ -10,7 +10,7 @@
 
     <!-- 解决启动页刚启动时白屏问题，实现秒启动-->
     <style name="AppTheme.Launcher" parent="AppTheme">
-        <item name="android:windowBackground">@drawable/shape_splash_bg</item>
+        <item name="android:windowBackground">@drawable/splash</item>
         <item name="android:windowFullscreen">true</item>
     </style>
 

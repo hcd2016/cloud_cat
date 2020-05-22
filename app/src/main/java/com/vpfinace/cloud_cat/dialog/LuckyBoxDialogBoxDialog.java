@@ -36,6 +36,7 @@ public class LuckyBoxDialogBoxDialog extends TBaseDialog {
     @BindView(R.id.tv_times_desc)
     TextView tvTimesDesc;
     private BaseActivity baseActivity;
+    private long num;//倍数
 
     public LuckyBoxDialogBoxDialog(Context context, WheelResultBean wheelResultBean, BaseActivity baseActivity) {
         super(context, R.layout.dialog_lucky_box);
@@ -48,9 +49,11 @@ public class LuckyBoxDialogBoxDialog extends TBaseDialog {
         if(wheelResultBean.getResult() == 6) {
             tvBoxDesc.setText("恭喜获得5倍宝箱");
             tvDesc2.setText("发财啦，下次奖励翻5倍！");
+            num = 5;
         }else if(wheelResultBean.getResult() == 7) {
             tvBoxDesc.setText("恭喜获得10倍宝箱");
             tvDesc2.setText("发财啦，下次奖励翻10倍！");
+            num = 10;
         }
         requestGetVideoTimes();
     }
@@ -84,7 +87,7 @@ public class LuckyBoxDialogBoxDialog extends TBaseDialog {
                 dismiss();
                 break;
             case R.id.tv_btn_look_sp:
-                AdManager.playRewardVideo(baseActivity);
+                AdManager.playRewardVideo(baseActivity,2,10);
                 dismiss();
                 break;
         }

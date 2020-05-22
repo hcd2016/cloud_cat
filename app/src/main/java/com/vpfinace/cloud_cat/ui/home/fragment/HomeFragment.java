@@ -20,9 +20,7 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-import com.cunoraz.gifview.library.GifView;
 import com.vpfinace.cloud_cat.R;
-import com.vpfinace.cloud_cat.ad.activity.RewardVideoActivity;
 import com.vpfinace.cloud_cat.base.BaseActivity;
 import com.vpfinace.cloud_cat.base.BaseFragment;
 import com.vpfinace.cloud_cat.base.BaseObserver;
@@ -36,6 +34,7 @@ import com.vpfinace.cloud_cat.dialog.CatShopDialog;
 import com.vpfinace.cloud_cat.dialog.GetMoneyDialog;
 import com.vpfinace.cloud_cat.dialog.LuckyWheelDialog;
 import com.vpfinace.cloud_cat.dialog.MergeMaxDialog;
+import com.vpfinace.cloud_cat.dialog.NoCoinToGetDialog;
 import com.vpfinace.cloud_cat.dialog.OffLineEarningsDialog;
 import com.vpfinace.cloud_cat.dialog.RecycleDialog;
 import com.vpfinace.cloud_cat.dialog.StoreListDialog;
@@ -46,7 +45,6 @@ import com.vpfinace.cloud_cat.http.HttpManager;
 import com.vpfinace.cloud_cat.ui.home.activity.DividendCatActivity;
 import com.vpfinace.cloud_cat.ui.home.activity.PicListActivity;
 import com.vpfinace.cloud_cat.ui.home.activity.TopActivity;
-import com.vpfinace.cloud_cat.utils.AdManager;
 import com.vpfinace.cloud_cat.utils.BeanUtils;
 import com.vpfinace.cloud_cat.utils.ScreenUtils;
 import com.vpfinace.cloud_cat.utils.UnitUtils;
@@ -55,6 +53,8 @@ import com.vpfinace.cloud_cat.weight.DragView;
 import com.vpfinace.cloud_cat.weight.SpaceItemDecoration;
 
 import org.greenrobot.eventbus.EventBus;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -152,6 +152,12 @@ public class HomeFragment extends BaseFragment {
         rv.addItemDecoration(new SpaceItemDecoration(ConvertUtils.dp2px(10), column));
         rv.setNestedScrollingEnabled(false);
         list = new ArrayList<>();
+        for (int i = 0; i < 12; i++) {
+            CatBean catBean = new CatBean();
+            catBean.setStorageId(i + 1);
+            catBean.setCatId(0);
+            HomeFragment.this.list.add(catBean);
+        }
         initList = new ArrayList<>();
         myAdapter = new MyAdapter(list);
         rv.setAdapter(myAdapter);
@@ -178,7 +184,7 @@ public class HomeFragment extends BaseFragment {
     private void showOffLineDialog(long offlineEarnings) {
         boolean isShow = SPUtils.getInstance().getBoolean(SpContant.IS_SHOW_OFFLINE);
         if (isShow && offlineEarnings > 0) {
-            OffLineEarningsDialog offLineEarningsDialog = new OffLineEarningsDialog(getActivity(), offlineEarnings,(BaseActivity) getActivity());
+            OffLineEarningsDialog offLineEarningsDialog = new OffLineEarningsDialog(getActivity(), offlineEarnings, (BaseActivity) getActivity());
             offLineEarningsDialog.show();
         }
         SPUtils.getInstance().put(SpContant.IS_SHOW_OFFLINE, false);
@@ -261,7 +267,7 @@ public class HomeFragment extends BaseFragment {
                     getMoneyDialog.show();
                     getCoinRemainMil = endTimeSecs - System.currentTimeMillis();
                     amount += o.getEarnings();
-                    requestAmountSync();
+//                    requestAmountSync();
                     refresh();
                     startGetCoinTimer();
                 } else {
@@ -289,7 +295,7 @@ public class HomeFragment extends BaseFragment {
             for (CatBean catBean : list) {
                 outPut += catBean.getOutput();
             }
-            tvOutPut.setText(outPut + "/s");
+            tvOutPut.setText(UnitUtils.coin2String(outPut) + "/s");
         } else {
             tvOutPut.setText("0/s");
         }
@@ -307,7 +313,7 @@ public class HomeFragment extends BaseFragment {
         HttpManager.toRequst(HttpManager.getApi().mergeCat(from, to), new BaseObserver<MergeBean>(this) {
             @Override
             public void _onNext(MergeBean mergeBean) {
-                requestAmountSync();
+//                requestAmountSync();
                 refresh();
                 if (statusId == 1) {
                     if (mergeBean != null && mergeBean.getCat() != null && mergeBean.levelUp == true) {
@@ -383,9 +389,24 @@ public class HomeFragment extends BaseFragment {
         HttpManager.toRequst(HttpManager.getApi().buyCat(catId), new BaseObserver(this) {
             @Override
             public void _onNext(Object o) {
-                refresh();
-                ToastUtils.showShort("购买成功!");
                 isRequest = false;
+                if (o == null) {
+                    refresh();
+                    ToastUtils.showShort("购买成功!");
+                } else {//余额不足
+                    try {
+                        JSONObject jsonObject = new JSONObject(o.toString());
+                        int insufficientBalance = jsonObject.optInt("insufficientBalance");
+                        if (insufficientBalance == 1) {
+                            long rewardSec = jsonObject.optLong("rewardSec");
+                            long coinNum = jsonObject.optLong("coinNum");
+                            NoCoinToGetDialog noCoinToGetDialog = new NoCoinToGetDialog((BaseActivity) getActivity(), rewardSec, coinNum);
+                            noCoinToGetDialog.show();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
 
             @Override
@@ -457,12 +478,17 @@ public class HomeFragment extends BaseFragment {
                                 gif_view.setImageResource(R.drawable.compund2);
                                 GifDrawable gifDrawable = (GifDrawable) gif_view.getDrawable();
                                 gifDrawable.setSpeed(1f);
-                                gifDrawable.setLoopCount(2);
+                                gifDrawable.setLoopCount(1);
                                 gifDrawable.start();
                                 finalViewBean.getView().setVisibility(View.VISIBLE);
                                 toCatBean.getView().setVisibility(View.GONE);
                                 isRefesh = true;
-                                requestMergeCat(fromCatBean.getStorageId(), toCatBean.getStorageId(), 1);
+                                gif_view.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        requestMergeCat(fromCatBean.getStorageId(), toCatBean.getStorageId(), 1);
+                                    }
+                                }, 100);
                                 gif_view.postDelayed(new Runnable() {
                                     @Override
                                     public void run() {
@@ -470,7 +496,7 @@ public class HomeFragment extends BaseFragment {
 //                                        notifyViewDataChange();
 
                                     }
-                                },  gifDrawable.getDuration());
+                                }, gifDrawable.getDuration());
 
 
 //                                RelativeLayout rl_item_container = (RelativeLayout) myAdapter.getViewByPosition(rv, postion, R.id.rl_item_container);
@@ -492,7 +518,6 @@ public class HomeFragment extends BaseFragment {
 //                                        requestMergeCat(fromCatBean.getStorageId(), toCatBean.getStorageId(), 1);
 //                                    }
 //                                }, 300);
-
 
 
 //                                RelativeLayout rl_item_container = (RelativeLayout) myAdapter.getViewByPosition(rv, postion, R.id.rl_item_container);
@@ -529,7 +554,7 @@ public class HomeFragment extends BaseFragment {
                             @Override
                             public void onConfirmClick() {
                                 dragView.setVisibility(View.GONE);
-                                requestAmountSync();
+//                                requestAmountSync();
                                 requestGcCat(list.get(finalI));
                             }
                         });
@@ -550,7 +575,7 @@ public class HomeFragment extends BaseFragment {
                         toStoreDialog.setOnComfirmClickListener(new ToStoreDialog.OnComfirmClickListener() {
                             @Override
                             public void onComfirmClick() {
-                                requestAmountSync();
+//                                requestAmountSync();
                                 requestInPutStore(list.get(finalI));
                             }
                         });
@@ -622,7 +647,7 @@ public class HomeFragment extends BaseFragment {
     }
 
     //获取当前总金额
-    public long getAmount() {
+    public double getAmount() {
         return amount;
     }
 
@@ -641,7 +666,7 @@ public class HomeFragment extends BaseFragment {
     }
 
 
-//    AccelerateDecelerateInterpolator：开始和结束的时候慢，中间快
+    //    AccelerateDecelerateInterpolator：开始和结束的时候慢，中间快
 //    AccelerateInterpolator：开始的时候慢，然后加速
 //    AnticipateInterpolator：开始先后退，然后向前
 //    AnticipateOvershootInterpolator： 开始先后退，然向前到超标，最后回到最终值
@@ -653,14 +678,15 @@ public class HomeFragment extends BaseFragment {
 //    TimeInterpolator：用来自定义插值器
     //金钱缩放动画
     public void scalAnimator() {
-        ObjectAnimator animatorZoomX = ObjectAnimator.ofFloat(tvAmount,"scaleX",1.5f,1f);
-        ObjectAnimator animatorZoomY = ObjectAnimator.ofFloat(tvAmount,"scaleY",1.5f,1f);
+        ObjectAnimator animatorZoomX = ObjectAnimator.ofFloat(tvAmount, "scaleX", 1.5f, 1f);
+        ObjectAnimator animatorZoomY = ObjectAnimator.ofFloat(tvAmount, "scaleY", 1.5f, 1f);
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.setDuration(800);
         animatorSet.setInterpolator(new AccelerateDecelerateInterpolator());
-        animatorSet.playTogether(animatorZoomX,animatorZoomY);
+        animatorSet.playTogether(animatorZoomX, animatorZoomY);
         animatorSet.start();
     }
+
     @OnClick({R.id.iv_shop, R.id.ll_add_cat_container, R.id.ll_cat_container, R.id.rl_get_money_container, R.id.iv_lucky_wheel, R.id.iv_top, R.id.iv_how_to_play, R.id.ll_dividends_cat_container, R.id.ll_pic_guide_container, R.id.ll_store_container})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -682,7 +708,7 @@ public class HomeFragment extends BaseFragment {
                     ToastUtils.showShort("猫咪已满,请先合成!");
                     return;
                 }
-                requestAmountSync();
+//                requestAmountSync();
                 requestBuyCat(homeBean.getCat().getId());
                 break;
             case R.id.ll_add_cat_container:
@@ -703,25 +729,26 @@ public class HomeFragment extends BaseFragment {
                     ToastUtils.showShort("猫咪已满,请先合成!");
                     return;
                 }
-                requestAmountSync();
+//                requestAmountSync();
                 requestBuyCat(homeBean.getCat().getId());
                 break;
             case R.id.rl_get_money_container://领取金币
                 requestGetEarnings(2);
                 break;
             case R.id.iv_lucky_wheel:
-                LuckyWheelDialog luckyWheelDialog = new LuckyWheelDialog(getActivity(),(BaseActivity) getActivity());
+                LuckyWheelDialog luckyWheelDialog = new LuckyWheelDialog(getActivity(), (BaseActivity) getActivity());
                 luckyWheelDialog.show();
                 break;
             case R.id.iv_top:
                 startActivity(TopActivity.class);
                 break;
             case R.id.iv_how_to_play:
-//                refresh();
 //                startActivity(HowToPlayActivity.class);
-//                startActivity(FullScreenVideoActivity.class);
-//                startActivity(RewardVideoActivity.class);
-                AdManager.playRewardVideo(getActivity());
+//                startActivity(BannerActivity.class);
+                GetMoneyDialog getMoneyDialog = new GetMoneyDialog(getActivity(), 0);
+                getMoneyDialog.setBanner();
+                getMoneyDialog.show();
+
                 break;
             case R.id.ll_dividends_cat_container:
                 startActivity(DividendCatActivity.class);
@@ -740,7 +767,7 @@ public class HomeFragment extends BaseFragment {
                         for (CatBean catBean1 : list) {
                             if (catBean1.getCatId() == 0) {
                                 isHadEmpty = true;
-                                requestAmountSync();
+//                                requestAmountSync();
                                 requestGetOutCat(catBean.getCatId());
                                 break;
                             }
@@ -797,24 +824,26 @@ public class HomeFragment extends BaseFragment {
                     if (catShopDialog != null && catShopDialog.isShowing()) {
                         catShopDialog.updateAmount(amount);
                     }
-                    scalAnimator();
+                    if (outPut != 0) {
+                        scalAnimator();
+                    }
                     amountHandler.postDelayed(this, 1000);
                 }
             };
             amountHandler.postDelayed(amountRunnerble, 0);
         }
 
-        if (requestRunnerble == null) {
-            requestRunnerble = new Runnable() {
-                @Override
-                public void run() {
-                    //todo 同步数据
-                    requestAmountSync();
-                    requestHandler.postDelayed(this, 60 * 1000);
-                }
-            };
-            requestHandler.postDelayed(requestRunnerble, 0);
-        }
+//        if (requestRunnerble == null) {
+//            requestRunnerble = new Runnable() {
+//                @Override
+//                public void run() {
+//                    //todo 同步数据
+////                    requestAmountSync();
+//                    requestHandler.postDelayed(this, 60 * 1000);
+//                }
+//            };
+//            requestHandler.postDelayed(requestRunnerble, 0);
+//        }
     }
 
     public void stopTimer() {
@@ -862,19 +891,19 @@ public class HomeFragment extends BaseFragment {
     }
 
 
-    public void requestAmountSync() {
-        HttpManager.toRequst(HttpManager.getApi().amountSync(amount), new BaseObserver(this, false) {
-            @Override
-            public void _onNext(Object o) {
-//                ToastUtils.showShort("提交成功");
-            }
-
-            @Override
-            public void _onError(String message) {
-                ToastUtils.showShort(message);
-            }
-        });
-    }
+//    public void requestAmountSync() {
+//        HttpManager.toRequst(HttpManager.getApi().amountSync(amount), new BaseObserver(this, false) {
+//            @Override
+//            public void _onNext(Object o) {
+////                ToastUtils.showShort("提交成功");
+//            }
+//
+//            @Override
+//            public void _onError(String message) {
+//                ToastUtils.showShort(message);
+//            }
+//        });
+//    }
 
     @Override
     public void onDestroy() {

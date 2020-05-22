@@ -1,8 +1,8 @@
 package com.vpfinace.cloud_cat.http;
 
 
-import com.google.gson.JsonElement;
 import com.vpfinace.cloud_cat.base.BaseResponse;
+import com.vpfinace.cloud_cat.bean.AdSettingBean;
 import com.vpfinace.cloud_cat.bean.CatBean;
 import com.vpfinace.cloud_cat.bean.CatPicBean;
 import com.vpfinace.cloud_cat.bean.CatShopBean;
@@ -13,6 +13,7 @@ import com.vpfinace.cloud_cat.bean.LoginBean;
 import com.vpfinace.cloud_cat.bean.MergeBean;
 import com.vpfinace.cloud_cat.bean.MsgBean;
 import com.vpfinace.cloud_cat.bean.MyInviteCodeBean;
+import com.vpfinace.cloud_cat.bean.ShareBean;
 import com.vpfinace.cloud_cat.bean.TopBean;
 import com.vpfinace.cloud_cat.bean.User;
 import com.vpfinace.cloud_cat.bean.UserCenter;
@@ -20,13 +21,10 @@ import com.vpfinace.cloud_cat.bean.WalletBean;
 import com.vpfinace.cloud_cat.bean.WalletRecordBean;
 import com.vpfinace.cloud_cat.bean.WheelResultBean;
 
-import org.json.JSONObject;
-
 import java.util.List;
 
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.Multipart;
@@ -137,13 +135,13 @@ public interface HttpApi {
     @POST("api/front/action/buy")
     Observable<BaseResponse<Object>> buyCat(@Field("catId") int catId);
 
-    /**
-     * 金币同步提交
-     * @return
-     */
-    @FormUrlEncoded
-    @POST("api/front/action/coinsync")
-    Observable<BaseResponse<Object>> amountSync(@Field("coinNum") long coinNum);
+//    /**
+//     * 金币同步提交
+//     * @return
+//     */
+//    @FormUrlEncoded
+//    @POST("api/front/action/coinsync")
+//    Observable<BaseResponse<Object>> amountSync(@Field("coinNum") long coinNum);
 
 
     /**
@@ -275,11 +273,38 @@ public interface HttpApi {
     @POST("api/front/award/getAdAndVoucherTimes")
     Observable<BaseResponse<Object>> getAdAndVoucherTimes();
 
-//    /**
-//     * 视频提交接口
-//     * @return
-//     */
-//    @FormUrlEncoded
-//    @POST("api/front/award/adResultSync")
-//    Observable<BaseResponse<Object>> getAdAndVoucherTimes();
+    /**
+     * platformId    平台ID , 1.腾讯广告平台 2.头条广告平台(穿山甲)
+     *  pId           产品ID
+     *  adId          广告位ID
+     *  type          类型:1.金币（在线） 2.倍数 3.红包 4.金币（离线） 5.分享 6.领券 7.其它
+     *  num           对应数额(金币数/倍数金额)
+     * 视频提交接口
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("api/front/award/adResultSync")
+    Observable<BaseResponse<Object>> videoCommit(@Field("platformId") String platformId,@Field("pId") String pId,@Field("adId") String adId,@Field("type") int type,@Field("num")long num);
+
+    /**
+     * 获取分享信息
+     */
+    @POST("api/front/client/share")
+    Observable<BaseResponse<ShareBean>> getShareInfo();
+
+    /**
+     * 微信登录
+     */
+    @FormUrlEncoded
+    @POST("api/front/client/wxlogin")
+    Observable<BaseResponse<LoginBean>> wxLogin(@Field("wxMsg") String wxMsg);
+
+    /**
+     * 广告设置
+     */
+    @POST("api/front/app/adconfig")
+    Observable<BaseResponse<AdSettingBean>> getAdSetting();
+
+
+
 }

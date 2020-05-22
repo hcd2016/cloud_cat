@@ -7,7 +7,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.TextView;
 
 import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.ToastUtils;
@@ -16,15 +15,15 @@ import com.bytedance.sdk.openadsdk.TTAdConstant;
 import com.bytedance.sdk.openadsdk.TTAdNative;
 import com.bytedance.sdk.openadsdk.TTAppDownloadListener;
 import com.bytedance.sdk.openadsdk.TTSplashAd;
-import com.vpfinace.cloud_cat.MainActivity;
 import com.vpfinace.cloud_cat.R;
 import com.vpfinace.cloud_cat.ad.config.TTAdManagerHolder;
 import com.vpfinace.cloud_cat.base.BaseActivity;
+import com.vpfinace.cloud_cat.base.BaseObserver;
+import com.vpfinace.cloud_cat.bean.AdSettingBean;
+import com.vpfinace.cloud_cat.http.HttpManager;
 import com.vpfinace.cloud_cat.ui.user.activity.LoginActivity;
 
 import androidx.annotation.MainThread;
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class SplashActivity extends BaseActivity {
     private static final String TAG = "SplashActivity";
@@ -43,14 +42,12 @@ public class SplashActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mSplashContainer = (FrameLayout) findViewById(R.id.splash_container);
-        //step2:创建TTAdNative对象
-        mTTAdNative = TTAdManagerHolder.get().createAdNative(this);
-        getExtraInfo();
+
+
         //在合适的时机申请权限，如read_phone_state,防止获取不了imei时候，下载类广告没有填充的问题
         //在开屏时候申请不太合适，因为该页面倒计时结束或者请求超时会跳转，在该页面申请权限，体验不好
         // TTAdManagerHolder.getInstance(this).requestPermissionIfNecessary(this);
-        //加载开屏广告
-        loadSplashAd();
+        reqeustAdSetting();
     }
 
     @Override
@@ -65,14 +62,41 @@ public class SplashActivity extends BaseActivity {
 
     private void getExtraInfo() {
         Intent intent = getIntent();
-        if(intent == null) {
+        if (intent == null) {
             return;
         }
         String codeId = intent.getStringExtra("splash_rit");
-        if (!TextUtils.isEmpty(codeId)){
+        if (!TextUtils.isEmpty(codeId)) {
             mCodeId = codeId;
         }
         mIsExpress = intent.getBooleanExtra("is_express", false);
+    }
+
+    public void reqeustAdSetting() {
+        HttpManager.toRequst(HttpManager.getApi().getAdSetting(), new BaseObserver<AdSettingBean>(this) {
+            @Override
+            public void _onNext(AdSettingBean adSettingBean) {
+                if (adSettingBean.getToutiao_ad_switch() == 1) {
+                    if (adSettingBean.getToutiao_load_ad() == 1) {//开启广告
+                        //加载开屏广告
+                        //step2:创建TTAdNative对象
+                        mTTAdNative = TTAdManagerHolder.get().createAdNative(SplashActivity.this);
+                        getExtraInfo();
+                        loadSplashAd(adSettingBean.getToutiao_load_ad_code());
+                    } else {
+                        goToMainActivity();
+                    }
+                } else {
+                    goToMainActivity();
+                }
+            }
+
+            @Override
+            public void _onError(String message) {
+//                ToastUtils.showShort(message);
+                goToMainActivity();
+            }
+        });
     }
 
     @Override
@@ -92,8 +116,9 @@ public class SplashActivity extends BaseActivity {
 
     /**
      * 加载开屏广告
+     * @param
      */
-    private void loadSplashAd() {
+    private void loadSplashAd(String toutiao_load_ad_code) {
         //step3:创建开屏广告请求参数AdSlot,具体参数含义参考文档
         AdSlot adSlot = null;
         if (mIsExpress) {
@@ -102,7 +127,7 @@ public class SplashActivity extends BaseActivity {
             float expressViewWidth = ScreenUtils.getScreenWidth();
             float expressViewHeight = ScreenUtils.getScreenHeight();
             adSlot = new AdSlot.Builder()
-                    .setCodeId(mCodeId)
+                    .setCodeId(toutiao_load_ad_code)
                     .setSupportDeepLink(true)
                     .setImageAcceptedSize(1080, 1920)
                     //模板广告需要设置期望个性化模板广告的大小,单位dp,代码位是否属于个性化模板广告，请在穿山甲平台查看
@@ -110,7 +135,7 @@ public class SplashActivity extends BaseActivity {
                     .build();
         } else {
             adSlot = new AdSlot.Builder()
-                    .setCodeId(mCodeId)
+                    .setCodeId(toutiao_load_ad_code)
                     .setSupportDeepLink(true)
                     .setImageAcceptedSize(1080, 1920)
                     .build();
@@ -148,7 +173,7 @@ public class SplashActivity extends BaseActivity {
                     mSplashContainer.addView(view);
                     //设置不开启开屏广告倒计时功能以及不显示跳过按钮,如果这么设置，您需要自定义倒计时逻辑
                     //ad.setNotAllowSdkCountdown();
-                }else {
+                } else {
                     goToMainActivity();
                 }
 
@@ -181,7 +206,7 @@ public class SplashActivity extends BaseActivity {
                         goToMainActivity();
                     }
                 });
-                if(ad.getInteractionType() == TTAdConstant.INTERACTION_TYPE_DOWNLOAD) {
+                if (ad.getInteractionType() == TTAdConstant.INTERACTION_TYPE_DOWNLOAD) {
                     ad.setDownloadListener(new TTAppDownloadListener() {
                         boolean hasShow = false;
 

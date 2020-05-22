@@ -37,21 +37,27 @@ public abstract class BaseObserver<T> extends DisposableObserver<BaseResponse<T>
         } else {
             _onError(response.getMsg());
         }
-        view.FinishLoading();
+        if(view != null) {
+            view.FinishLoading();
+        }
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         if(isShowDialog) {
-            view.showLoading();
+            if(view != null) {
+                view.showLoading();
+            }
         }
     }
 
     @Override
     public void onError(Throwable e) {
         if(isShowDialog) {
-            view.FinishLoading();
+            if(view != null) {
+                view.FinishLoading();
+            }
         }
         e.printStackTrace();
         if (!NetworkUtils.isConnected() || !NetworkUtils.isAvailableByPing()) {
@@ -85,7 +91,9 @@ public abstract class BaseObserver<T> extends DisposableObserver<BaseResponse<T>
     @Override
     public void onComplete() {
         if(isShowDialog) {
-            view.FinishLoading();
+            if(view != null) {
+                view.FinishLoading();
+            }
         }
     }
 

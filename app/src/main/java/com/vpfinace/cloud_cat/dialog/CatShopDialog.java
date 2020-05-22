@@ -104,7 +104,7 @@ public class CatShopDialog extends TBaseDialog {
             Glide.with(mContext).load(item.getImg()).into(ivImg);
             tvLevel.setText(item.getLevel() + "");
             tvTitle.setText(item.getTitle());
-            tvOutPut.setText(item.getOutput() + "/s");
+            tvOutPut.setText(UnitUtils.coin2String(item.getOutput()) + "/s");
             tvPrice.setText(UnitUtils.coin2String(item.getPrice1()));
 
             if (item.getBuyStatus() == 1) {

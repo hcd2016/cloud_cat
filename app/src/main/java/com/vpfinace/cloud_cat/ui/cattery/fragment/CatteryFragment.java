@@ -10,10 +10,12 @@ import android.widget.TextView;
 import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.vpfinace.cloud_cat.R;
+import com.vpfinace.cloud_cat.base.BaseActivity;
 import com.vpfinace.cloud_cat.base.BaseFragment;
 import com.vpfinace.cloud_cat.base.BaseObserver;
 import com.vpfinace.cloud_cat.bean.CatteryBean;
 import com.vpfinace.cloud_cat.dialog.MyInviteFriendDialog;
+import com.vpfinace.cloud_cat.dialog.ShareDialog;
 import com.vpfinace.cloud_cat.http.HttpManager;
 import com.vpfinace.cloud_cat.ui.cattery.activity.InviteRecordsActivity;
 import com.vpfinace.cloud_cat.ui.cattery.activity.RulesActivity;
@@ -146,8 +148,9 @@ public class CatteryFragment extends BaseFragment {
             case R.id.ll_invite_records_container:
                 startActivity(InviteRecordsActivity.class);
                 break;
-            case R.id.tv_btn_invite:
-                //todo
+            case R.id.tv_btn_invite://分享朋友圈
+                ShareDialog shareDialog = new ShareDialog((BaseActivity) getActivity());
+                shareDialog.show();
                 break;
             case R.id.tv_btn_rules:
                 startActivity(RulesActivity.class);

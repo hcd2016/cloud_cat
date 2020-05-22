@@ -27,6 +27,7 @@ import com.vpfinace.cloud_cat.ui.mine.activity.MsgActivity;
 import com.vpfinace.cloud_cat.ui.mine.activity.MyInviteCodeActivity;
 import com.vpfinace.cloud_cat.ui.mine.activity.MyWalletActivity;
 import com.vpfinace.cloud_cat.ui.mine.activity.SettingActivity;
+import com.vpfinace.cloud_cat.utils.ArithUtil;
 import com.vpfinace.cloud_cat.utils.GlideUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -168,7 +169,7 @@ public class MineFragment extends BaseFragment {
         if (user == null) return;
         tvNickName.setText(user.getNickname());
         tvId.setText("ID:" + user.getId());
-        tvAmount.setText(user.getUserFund().getCash() + "");
+        tvAmount.setText(ArithUtil.div(user.getUserFund().getCash(), 100) + "");
         GlideUtils.loadCircle(getActivity(), user.getHeadImgUrl(), ivHeader);
     }
 

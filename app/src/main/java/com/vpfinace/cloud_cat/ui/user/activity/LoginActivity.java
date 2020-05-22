@@ -9,10 +9,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.BarUtils;
+import com.blankj.utilcode.util.ToastUtils;
+import com.tencent.mm.opensdk.modelmsg.SendAuth;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.vpfinace.cloud_cat.R;
 import com.vpfinace.cloud_cat.ad.config.TTAdManagerHolder;
+import com.vpfinace.cloud_cat.app.App;
 import com.vpfinace.cloud_cat.base.BaseActivity;
 import com.vpfinace.cloud_cat.utils.GlideUtils;
+import com.vpfinace.cloud_cat.utils.LoadingUtil;
 import com.vpfinace.cloud_cat.utils.StatusTextUtils;
 
 import butterknife.BindView;
@@ -54,8 +59,10 @@ public class LoginActivity extends BaseActivity {
         layoutParams.height = BarUtils.getStatusBarHeight();
         vStatusView.setLayoutParams(layoutParams);
         StatusTextUtils.setLightStatusBar(this, true);
-        GlideUtils.loadCorner(this,R.mipmap.logo,ivLogo,10);
-        TTAdManagerHolder.get().requestPermissionIfNecessary(this);//广告权限申请
+        GlideUtils.loadCorner(this, R.mipmap.logo, ivLogo, 10);
+        if(App.isAdInit) {
+            TTAdManagerHolder.get().requestPermissionIfNecessary(this);//广告权限申请
+        }
     }
 
     @Override
@@ -71,6 +78,16 @@ public class LoginActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_btn_wechat_login:
+                IWXAPI mWxApi = App.getWxApi();
+                if (!mWxApi.isWXAppInstalled()) {
+                    ToastUtils.showShort("您还未安装微信客户端");
+                    return;
+                }
+                final SendAuth.Req req = new SendAuth.Req();
+                req.scope = "snsapi_userinfo";
+                req.state = "diandi_wx_login";
+                mWxApi.sendReq(req);
+                showLoading();
                 break;
             case R.id.tv_btn_eles_login:
                 startActivity(PhoneLoginActivity.class);
@@ -90,5 +107,16 @@ public class LoginActivity extends BaseActivity {
             case R.id.tv_btn_yszc:
                 break;
         }
+    }
+
+    @Override
+    public void showLoading() {
+        LoadingUtil.showLoading(this,"登录中...");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        FinishLoading();
     }
 }

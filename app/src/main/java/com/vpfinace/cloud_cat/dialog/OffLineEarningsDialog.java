@@ -21,7 +21,7 @@ public class OffLineEarningsDialog extends TBaseDialog {
     TextView tvBtnConfirm;
     @BindView(R.id.tv_amount)
     TextView tvAmount;
-    private Long amount;
+    private long amount;
     private BaseActivity activity;
 
     public TextView getTvBtnConfirm() {
@@ -46,7 +46,7 @@ public class OffLineEarningsDialog extends TBaseDialog {
 
     @OnClick(R.id.tv_btn_confirm)
     public void onViewClicked() {
-        AdManager.playRewardVideo(activity);
+        AdManager.playRewardVideo(activity,4,amount);
         dismiss();
     }
 }
