@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.vpfinace.cloud_cat.R;
-import com.vpfinace.cloud_cat.bean.MergeBean;
+import com.vpfinace.cloud_cat.bean.CatBean;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -36,13 +36,13 @@ public class MergeMaxDialog extends TBaseDialog {
     @BindView(R.id.iv_close)
     ImageView ivClose;
 
-    public MergeMaxDialog(Context context, MergeBean mergeBean, double aderanings) {
+    public MergeMaxDialog(Context context, CatBean catBean, double aderanings) {
         super(context, R.layout.dialog_merge_max);
         setWindowParam(0.8f, WindowManager.LayoutParams.WRAP_CONTENT, Gravity.CENTER, 0);
-        Glide.with(mContext).load(mergeBean.getCat().getImg()).into(ivCatImg);
-        tvLevel.setText(mergeBean.getCat().getLevel()+"");
-        tvName.setText(mergeBean.getCat().getTitle());
-        tvDescLevel.setText(mergeBean.getRemainLevel()+"");
+        Glide.with(mContext).load(catBean.getImg()).into(ivCatImg);
+        tvLevel.setText(catBean.getCatLevel()+"");
+        tvName.setText(catBean.getTitle());
+        tvDescLevel.setText(38-catBean.getCatLevel()+"");
         tvDividendsAccount.setText(aderanings+"");
     }
 

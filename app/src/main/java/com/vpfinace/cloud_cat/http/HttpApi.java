@@ -92,6 +92,12 @@ public interface HttpApi {
     Observable<BaseResponse<List<CatShopBean>>> getShopList();
 
     /**
+     * 商店可购买列表(首页,返回泛型设置不一样)
+     */
+    @POST("api/front/action/allcatlist")
+    Observable<BaseResponse<List<CatBean>>> getShopListForHome();
+
+    /**
      * 放入仓库
      */
     @FormUrlEncoded

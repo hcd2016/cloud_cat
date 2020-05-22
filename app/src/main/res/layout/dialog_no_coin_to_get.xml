@@ -64,9 +64,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
-            android:paddingLeft="78dp"
+            android:paddingLeft="54dp"
             android:paddingTop="11dp"
-            android:paddingRight="78dp"
+            android:paddingRight="54dp"
             android:paddingBottom="11dp"
             android:text="立即获得2小时收益"
             android:textSize="16sp" />

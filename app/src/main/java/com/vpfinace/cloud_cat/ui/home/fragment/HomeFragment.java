@@ -29,7 +29,9 @@ import com.vpfinace.cloud_cat.bean.CatShopBean;
 import com.vpfinace.cloud_cat.bean.GetEarningsBean;
 import com.vpfinace.cloud_cat.bean.HomeBean;
 import com.vpfinace.cloud_cat.bean.MergeBean;
+import com.vpfinace.cloud_cat.bean.User;
 import com.vpfinace.cloud_cat.bean.ViewBean;
+import com.vpfinace.cloud_cat.dialog.CatDetailDialog;
 import com.vpfinace.cloud_cat.dialog.CatShopDialog;
 import com.vpfinace.cloud_cat.dialog.GetMoneyDialog;
 import com.vpfinace.cloud_cat.dialog.LuckyWheelDialog;
@@ -53,12 +55,16 @@ import com.vpfinace.cloud_cat.weight.DragView;
 import com.vpfinace.cloud_cat.weight.SpaceItemDecoration;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -121,9 +127,12 @@ public class HomeFragment extends BaseFragment {
     private List<ViewBean> currentViewList;//当前显示的view
     private List<CatBean> list;
     private long amount = 0;//当前总金额
-    private int outPut = 0;//当前产出
+    private long outPut = 0;//当前产出
     private CatShopDialog catShopDialog;
     private List<CatBean> initList;
+    private List<CatBean> catList;//所有猫咪列表
+    private Map<Integer, CatBean> catMap = new HashMap<Integer, CatBean>(); //所有猫咪map,key是等级
+    private int currentMaxLevel = 0;//当前拥有的最高等级猫
 
     @Override
     public int getLayoutId() {
@@ -141,6 +150,7 @@ public class HomeFragment extends BaseFragment {
         ViewGroup.LayoutParams layoutParams = vStatusView.getLayoutParams();
         layoutParams.height = BarUtils.getStatusBarHeight();
         vStatusView.setLayoutParams(layoutParams);
+        EventBus.getDefault().register(this);
         int column = 4;
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 4);
         rv.setLayoutManager(gridLayoutManager);
@@ -163,6 +173,9 @@ public class HomeFragment extends BaseFragment {
         rv.setAdapter(myAdapter);
         llCatContainer.setEnabled(false);
         llAddCatContainer.setEnabled(false);
+        catList = new ArrayList<>();
+        requestShopList();
+        requestGetUserInfo();
         requestHomeData();
         startGetCoinTimer();
         requestGetEarnings(1);
@@ -177,8 +190,16 @@ public class HomeFragment extends BaseFragment {
                 refresh();
             }
         });
+
     }
 
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(String event) {
+        if (event.equals(EventStrings.HOME_REFRESH)) {//刷新
+            refresh();
+        }
+    }
 
     //离线收益弹窗
     private void showOffLineDialog(long offlineEarnings) {
@@ -242,6 +263,24 @@ public class HomeFragment extends BaseFragment {
         });
     }
 
+    //获取所有猫咪数据
+    public void requestShopList() {
+        HttpManager.toRequst(HttpManager.getApi().getShopListForHome(), new BaseObserver<List<CatBean>>(this) {
+
+            public void _onNext(List<CatBean> list) {
+                catList.addAll(list);
+                for (int i = 0; i < list.size(); i++) {
+                    catMap.put(list.get(i).getLevel(), list.get(i));
+                }
+            }
+
+            @Override
+            public void _onError(String message) {
+                ToastUtils.showShort(message);
+            }
+        });
+    }
+
     //领取收益
     public void requestGetEarnings(int action) {
         HttpManager.toRequst(HttpManager.getApi().getEarnings(action + ""), new BaseObserver<GetEarningsBean>(this) {
@@ -290,9 +329,17 @@ public class HomeFragment extends BaseFragment {
         tvPrice.setText(UnitUtils.coin2String(myHomeBean.getCat().getPrice1()));
         List<CatBean> list = myHomeBean.getList();
         tvAmount.setText(UnitUtils.coin2String(amount));
-        int outPut = 0;//速率计算
+        computingSpeed(list);
+        showOffLineDialog(myHomeBean.getOffline_earning());
+    }
+
+    private void computingSpeed(List<CatBean> list) {
+        long outPut = 0;//速率计算
         if (list != null && list.size() != 0) {
             for (CatBean catBean : list) {
+                if(catBean.getCatId() == 0) {
+                    break;
+                }
                 outPut += catBean.getOutput();
             }
             tvOutPut.setText(UnitUtils.coin2String(outPut) + "/s");
@@ -300,7 +347,6 @@ public class HomeFragment extends BaseFragment {
             tvOutPut.setText("0/s");
         }
         this.outPut = outPut;
-        showOffLineDialog(myHomeBean.getOffline_earning());
     }
 
     //刷新数据
@@ -314,13 +360,13 @@ public class HomeFragment extends BaseFragment {
             @Override
             public void _onNext(MergeBean mergeBean) {
 //                requestAmountSync();
-                refresh();
-                if (statusId == 1) {
-                    if (mergeBean != null && mergeBean.getCat() != null && mergeBean.levelUp == true) {
-                        MergeMaxDialog mergeMaxDialog = new MergeMaxDialog(getActivity(), mergeBean, homeBean.getAderanings());
-                        mergeMaxDialog.show();
-                    }
-                }
+//                refresh();
+//                if (statusId == 1) {
+//                    if (mergeBean != null && mergeBean.getCat() != null && mergeBean.levelUp == true) {
+//                        MergeMaxDialog mergeMaxDialog = new MergeMaxDialog(getActivity(), mergeBean, homeBean.getAderanings());
+//                        mergeMaxDialog.show();
+//                    }
+//                }
             }
 
             @Override
@@ -417,7 +463,23 @@ public class HomeFragment extends BaseFragment {
         });
     }
 
+    //获取用户信息
+    public void requestGetUserInfo() {
+        HttpManager.toRequst(HttpManager.getApi().getUserInfo(), new BaseObserver<User>(this) {
+            @Override
+            public void _onNext(User user) {
+                currentMaxLevel = user.getUserLevel();//用户当前猫的最高等级
+            }
+
+            @Override
+            public void _onError(String message) {
+                ToastUtils.showShort(message);
+            }
+        });
+    }
+
     private int mergeState = 0;//0为移动空格子,1为合成,2为换位
+
 
     private void initCat() {
         rlContainer.removeAllViews();
@@ -440,6 +502,13 @@ public class HomeFragment extends BaseFragment {
             }
             RelativeLayout rl_item_container = (RelativeLayout) myAdapter.getViewByPosition(rv, i, R.id.rl_item_container);
             int finalI = i;
+            dragView.setOnClickListener(new View.OnClickListener() {//点击查看猫的详情
+                @Override
+                public void onClick(View v) {
+                    CatDetailDialog catDetailDialog = new CatDetailDialog(getActivity(),catBean);
+                    catDetailDialog.show();
+                }
+            });
             dragView.setOnActionUpListener(new DragView.OnActionUpListener() {
                 @Override
                 public void onActionUp(int lastX, int lastY, int startLeft, int startTop, int startRight, int startBottom, int rawX, int rawY) {
@@ -454,49 +523,60 @@ public class HomeFragment extends BaseFragment {
                             int fromId = fromCatBean.getStorageId();
                             int toId = toCatBean.getStorageId();
                             BeanUtils.copyBeanWithoutView(toCatBean, fromCatBean);
-                            if (!isRefesh) {
-                                notifyViewDataChange();
-                            }
-                            isRefesh = true;
+                            fromCatBean.setCatId(0);
+                            notifyViewDataChange();
                             requestMergeCat(fromId, toId, 0);
                         } else {//不是空的,看等级是否相同
                             if (fromCatBean.getCatLevel() == toCatBean.getCatLevel()) {//等级相同,合成
-//                                toCatBean.setCatLevel(toCatBean.getCatLevel() + 1);
-//                                fromCatBean.setCatId(0);
 
-                                if (fromCatBean.getView() != null) {
-                                    fromCatBean.getView().setVisibility(View.GONE);
-                                }
-                                if (toCatBean.getView() != null) {
-                                    toCatBean.getView().setVisibility(View.GONE);
-                                }
 
-                                CatBean finalViewBean = toCatBean;
+                                fromCatBean.getView().setVisibility(View.GONE);
+                                toCatBean.getView().setVisibility(View.GONE);
+                                requestMergeCat(fromCatBean.getStorageId(), toCatBean.getStorageId(), 1);
+
+                                //数据更换
+                                CatBean newCat = catMap.get(fromCatBean.getCatLevel() + 1);
+                                newCat.setCatId(newCat.getId());
+                                BeanUtils.onlyCopyBeanWithoutView(toCatBean, newCat);//新猫数据赋值
+                                toCatBean.setCatLevel(toCatBean.getLevel());
+                                fromCatBean.setCatId(0);//拖动猫位置改为空
+
+                                //gif
                                 RelativeLayout rl_item_container = (RelativeLayout) myAdapter.getViewByPosition(rv, postion, R.id.rl_item_container);
                                 GifImageView gif_view = rl_item_container.findViewById(R.id.gif_view);
                                 gif_view.setVisibility(View.VISIBLE);
-                                gif_view.setImageResource(R.drawable.compund2);
+                                gif_view.setImageResource(R.drawable.compund4);
                                 GifDrawable gifDrawable = (GifDrawable) gif_view.getDrawable();
-                                gifDrawable.setSpeed(1f);
+                                gifDrawable.setSpeed(5f);
                                 gifDrawable.setLoopCount(1);
                                 gifDrawable.start();
-                                finalViewBean.getView().setVisibility(View.VISIBLE);
-                                toCatBean.getView().setVisibility(View.GONE);
-                                isRefesh = true;
+
+
                                 gif_view.postDelayed(new Runnable() {
                                     @Override
                                     public void run() {
-                                        requestMergeCat(fromCatBean.getStorageId(), toCatBean.getStorageId(), 1);
+                                        notifyViewDataChange();
                                     }
-                                }, 100);
+                                }, gifDrawable.getDuration() - (gifDrawable.getDuration() - 200));
+
+
                                 gif_view.postDelayed(new Runnable() {
                                     @Override
                                     public void run() {
                                         gif_view.setVisibility(View.GONE);
-//                                        notifyViewDataChange();
 
                                     }
                                 }, gifDrawable.getDuration());
+
+                                if(toCatBean.getCatLevel() > currentMaxLevel) {//突破最高等级
+                                    MergeMaxDialog mergeMaxDialog = new MergeMaxDialog(getActivity(), toCatBean, homeBean.getAderanings());
+                                    mergeMaxDialog.show();
+                                    currentMaxLevel = toCatBean.getCatLevel();
+                                }
+
+//
+//                                finalViewBean.getView().setVisibility(View.VISIBLE);
+//                                toCatBean.getView().setVisibility(View.GONE);
 
 
 //                                RelativeLayout rl_item_container = (RelativeLayout) myAdapter.getViewByPosition(rv, postion, R.id.rl_item_container);
@@ -537,8 +617,7 @@ public class HomeFragment extends BaseFragment {
                                 int fromId = fromCatBean.getStorageId();
                                 int toId = toCatBean.getStorageId();
                                 BeanUtils.copyBeanWithoutView(toCatBean, fromCatBean);
-//                                notifyViewDataChange();
-                                isRefesh = true;
+                                notifyViewDataChange();
                                 requestMergeCat(fromId, toId, 2);
                             }
                         }
@@ -603,6 +682,7 @@ public class HomeFragment extends BaseFragment {
                 tv_counts.setText(viewBean.getCatLevel() + "");
             }
         }
+        computingSpeed(list);
     }
 
     public static HomeFragment homeFragment;
@@ -832,18 +912,6 @@ public class HomeFragment extends BaseFragment {
             };
             amountHandler.postDelayed(amountRunnerble, 0);
         }
-
-//        if (requestRunnerble == null) {
-//            requestRunnerble = new Runnable() {
-//                @Override
-//                public void run() {
-//                    //todo 同步数据
-////                    requestAmountSync();
-//                    requestHandler.postDelayed(this, 60 * 1000);
-//                }
-//            };
-//            requestHandler.postDelayed(requestRunnerble, 0);
-//        }
     }
 
     public void stopTimer() {
@@ -909,6 +977,7 @@ public class HomeFragment extends BaseFragment {
     public void onDestroy() {
         super.onDestroy();
         stopTimer();
+        EventBus.getDefault().unregister(this);
     }
 
     public class MyAdapter extends BaseQuickAdapter<CatBean, BaseViewHolder> {

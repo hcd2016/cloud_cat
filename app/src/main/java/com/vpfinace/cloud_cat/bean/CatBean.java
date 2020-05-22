@@ -36,18 +36,56 @@ public class CatBean {
     public int catLevel;
     public String img;
     public int storageId;
-    public int output;
+    public long output;
     public String title;
     public String price;
     public String price1;
-    public long gcprice;
+    public long gcPrice;
+    public String catName;
+    private long offlineoutput;
+
+    public long getOfflineoutput() {
+        return offlineoutput;
+    }
+
+    public void setOfflineoutput(long offlineoutput) {
+        this.offlineoutput = offlineoutput;
+    }
+
+    public String getCatName() {
+        return catName;
+    }
+
+    public void setCatName(String catName) {
+        this.catName = catName;
+    }
+
+
+
+    public long getGcPrice() {
+        return gcPrice;
+    }
+
+    public void setGcPrice(long gcPrice) {
+        this.gcPrice = gcPrice;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    public int level;//全猫咪列表时候的等级
 
     public long getGcprice() {
-        return gcprice;
+        return gcPrice;
     }
 
     public void setGcprice(long gcprice) {
-        this.gcprice = gcprice;
+        this.gcPrice = gcprice;
     }
 
     public String getPrice() {
@@ -146,11 +184,11 @@ public class CatBean {
         this.storageId = storageId;
     }
 
-    public int getOutput() {
+    public long getOutput() {
         return output;
     }
 
-    public void setOutput(int output) {
+    public void setOutput(long output) {
         this.output = output;
     }
 }

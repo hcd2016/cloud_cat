@@ -33,9 +33,10 @@ public class LuckMoneyDialog extends TBaseDialog {
         long second = wheelResultBean.getSecond();
         double hTime = ArithUtil.div(second, 60 * 60);
         if(hTime >= 1) {
-            tvEarningsDesc.setText(hTime+"小时收益");
+            tvEarningsDesc.setText(UnitUtils.nPoint(hTime)+"小时收益");
         }else {
             int mTime = (int) ArithUtil.div(second, 60,0);
+
             tvEarningsDesc.setText(mTime+"分钟收益");
         }
     }

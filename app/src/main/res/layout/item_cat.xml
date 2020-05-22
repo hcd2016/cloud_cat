@@ -7,6 +7,14 @@
     android:background="@drawable/shape_gray_ff2_c10"
     android:orientation="vertical">
 
+        <pl.droidsonroids.gif.GifImageView
+            android:background="@color/transparent"
+            android:layout_centerInParent="true"
+            android:visibility="gone"
+            android:id="@+id/gif_view"
+            android:src="@drawable/compund2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
         <com.vpfinace.cloud_cat.weight.DragView
             android:visibility="invisible"
             android:layout_centerInParent="true"
@@ -44,11 +52,5 @@
 <!--            android:layout_centerInParent="true"-->
 <!--            android:layout_width="wrap_content"-->
 <!--            android:layout_height="wrap_content"/>-->
-        <pl.droidsonroids.gif.GifImageView
-            android:layout_centerInParent="true"
-            android:visibility="gone"
-            android:id="@+id/gif_view"
-            android:src="@drawable/compund2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+
 </RelativeLayout>

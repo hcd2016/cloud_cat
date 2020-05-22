@@ -125,6 +125,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ad.activity.BannerActivity" />
+        <activity android:name=".ui.home.activity.CatDetailActivity" />
     </application>
 
 </manifest>

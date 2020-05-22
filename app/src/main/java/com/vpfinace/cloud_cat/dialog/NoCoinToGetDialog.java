@@ -48,7 +48,7 @@ public class NoCoinToGetDialog extends TBaseDialog {
         tvAmount.setText(UnitUtils.coin2String(coinNum));
         double hTime = ArithUtil.div(rewardSec, 60 * 60);
         if (hTime >= 1) {
-            tvBtnConfirm.setText("立即获得" + hTime + "小时收益");
+            tvBtnConfirm.setText("立即获得" + UnitUtils.nPoint(hTime) + "小时收益");
         } else {
             int mTime = (int) ArithUtil.div(rewardSec, 60, 0);
             tvBtnConfirm.setText("立即获得" + mTime + "分钟收益");

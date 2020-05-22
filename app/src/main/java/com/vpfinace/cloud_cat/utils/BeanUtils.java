@@ -47,4 +47,23 @@ public class BeanUtils {
         fromCatBean.setStorageId(srcFromBean.getStorageId());
         toCatBean.setStorageId(srcToBean.getStorageId());
     }
+
+    /**
+     * 复制catbean的值,不互换
+     * @param toCatBean
+     * @param fromCatBean
+     */
+    public static void onlyCopyBeanWithoutView(CatBean toCatBean,CatBean fromCatBean) {
+        CatBean srcFromBean = new CatBean();
+        CatBean srcToBean = new CatBean();
+        BeanUtils.copy(srcFromBean, fromCatBean);
+        BeanUtils.copy(srcToBean, toCatBean);
+        //互换值
+        BeanUtils.copy(toCatBean, fromCatBean);
+//        BeanUtils.copy(fromCatBean, srcToBean);
+//        fromCatBean.setView(srcFromBean.getView());
+        toCatBean.setView(srcToBean.getView());
+//        fromCatBean.setStorageId(srcFromBean.getStorageId());
+        toCatBean.setStorageId(srcToBean.getStorageId());
+    }
 }

@@ -178,6 +178,7 @@ public class AdManager {
             public void _onNext(Object o) {
                 ToastUtils.showShort("视频看完提交成功!");
                 EventBus.getDefault().post(EventStrings.VIDEO_COMPLETE);
+                EventBus.getDefault().post(EventStrings.HOME_REFRESH);
             }
 
             @Override
